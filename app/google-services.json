@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "875042120702",
+    "project_id": "bridedressesproject",
+    "storage_bucket": "bridedressesproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875042120702:android:4b6d21c5af752b026ad6af",
+        "android_client_info": {
+          "package_name": "com.example.bride_dresses_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875042120702-fhp83h89lo78sjvkj8o7kdifnlk024r9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBttH9gBbINIYSvY_xMyoVU-YZqKeqF8ak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875042120702-fhp83h89lo78sjvkj8o7kdifnlk024r9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
