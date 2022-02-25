@@ -16,81 +16,75 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class LoginActivity extends AppCompatActivity {
 
-    TextView createAccount;
-    EditText inputEmail , inputPassword;
+    EditText phone, password;
     Button loginBtn;
+    TextView clickForRegister;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = database.getReferenceFromUrl("https://bridedressesproject-default-rtdb.firebaseio.com/");
     String emailPattern = "^[A-Za-z0-9+_.-]+@(.+)$";
-    ProgressDialog progressDialog;
-    FirebaseAuth mAuth;
-    FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
 
-        createAccount = findViewById(R.id.signin_create_account);
-        inputEmail = findViewById(R.id.signin_email);
-        inputPassword = findViewById(R.id.signin_password);
-        loginBtn = findViewById(R.id.signin_loginbtn);
+        phone = findViewById(R.id.login_phone);
+        password = findViewById(R.id.login_password);
+        loginBtn = findViewById(R.id.login_btn);
+        clickForRegister = findViewById(R.id.login_click_here);
 
-        progressDialog = new ProgressDialog(this);
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String phoneTxt = phone.getText().toString();
+                final String passwordTxt = password.getText().toString();
 
-        createAccount.setOnClickListener(new View.OnClickListener() {
+                if (phoneTxt.isEmpty() || passwordTxt.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Please enter your mobile or password", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.hasChild(phoneTxt)) {
+                                final String getPassword = snapshot.child(phoneTxt).child("password").getValue(String.class);
+                                if (getPassword.equals(passwordTxt)) {
+                                    Toast.makeText(LoginActivity.this, "Successfully Logged in", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Wrong Password Or Mobile Number", Toast.LENGTH_SHORT).show();
+
+                                }
+                                Toast.makeText(LoginActivity.this, "Phone or Email is already registered", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Phone or Email is already registered", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+        });
+
+        clickForRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                performLogin();
-            }
-        });
-    }
-
-    private void performLogin() {
-        String email = inputEmail.getText().toString();
-        String password = inputPassword.getText().toString();
-
-        if (!email.matches(emailPattern)) {
-            inputEmail.setError("Please enter a valid email address");
-        } else if (password.isEmpty() || password.length() < 6) {
-            inputPassword.setError("Please Enter a valid password");
-        } else {
-            progressDialog.setMessage("Pleas Wait While Login...");
-            progressDialog.setTitle("Login");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
-        }
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    sendUserToNextActivity();
-                    progressDialog.dismiss();
-                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                }else{
-                    progressDialog.dismiss();
-                    Toast.makeText(LoginActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    private void sendUserToNextActivity() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
     }
 }

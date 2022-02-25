@@ -1,16 +1,24 @@
 package com.example.bride_dresses_project;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -20,76 +28,157 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bride_dresses_project.databinding.ActivityMainBinding;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-public class MainActivity extends AppCompatActivity
-{
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
-    BottomNavigationView navigationView;
+public class MainActivity extends AppCompatActivity {
 
-    NavController navController;
+//    BottomNavigationView navigationView;
+//    NavController navController;
+
+    ActivityMainBinding binding;
+    Uri imageUri;
+    StorageReference storageReference;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        getSupportActionBar().hide();
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        navigationView = findViewById(R.id.bottom_navigation);
-//        getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new HomePageFragment()).commit();
-//        navigationView.getSelectedItemId(R.id.miHome);
-
-        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        binding.mainSelect.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment = null;
-                switch (item.getItemId()){
-                    case R.id.miHome:
-//                        fragment = new HomePageFragment();
-//                        break;
-                    case R.id.miProfile:
-//                        fragment = new ProfileFragment();
-//                        break;
-
-                    case R.id.miSearch:
-//                        fragment = new SearchFragment();
-//                        break;
-
-                    case R.id.miSettings:
-//                        fragment = new SettingsFragment();
-//                        break;
-                }
-                getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
-
-                return true;
+            public void onClick(View view) {
+                selectImage();
             }
         });
 
-        View navView = findViewById(R.id.bottom_navigation);
-        navView.setBackground(null);
-        View placeholder = findViewById(R.id.placeholder);
-        placeholder.setEnabled(false);
+        binding.mainUploadFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uploadImageToFirebase();
+            }
+        });
+    }
 
-        navController = Navigation.findNavController(this, R.id.main_navhost);
-        NavigationUI.setupActionBarWithNavController(this, navController);
+    private void uploadImageToFirebase() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploaded File...");
+        progressDialog.show();
+
+        SimpleDateFormat format = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss", Locale.CANADA);
+        Date now = new Date();
+        String fileName = format.format(now);
+
+        storageReference = FirebaseStorage.getInstance().getReference("images/" + fileName);
+        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                binding.mainImage.setImageURI(null);
+                Toast.makeText(MainActivity.this, "Successfully Uploaded", Toast.LENGTH_SHORT).show();
+                if(progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if(progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+                Toast.makeText(MainActivity.this, "Failed to Upload", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void selectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 100);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.bottom_nav_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
-            navController.navigateUp();
-            return true;
-        }else{
-            return NavigationUI.onNavDestinationSelected(item, navController);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100 && data != null && data.getData() != null){
+            imageUri = data.getData();
+            binding.mainImage.setImageURI(imageUri);
         }
     }
+
+    //    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//        getSupportActionBar().hide();
+//
+////        binding = ActivityMainBinding.inflate(getLayoutInflater());
+////        setContentView(binding.getRoot());
+//
+//        navigationView = findViewById(R.id.bottom_navigation);
+////        getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new HomePageFragment()).commit();
+////        navigationView.getSelectedItemId(R.id.miHome);
+//
+//        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                Fragment fragment = null;
+//                switch (item.getItemId()){
+//                    case R.id.miHome:
+////                        fragment = new HomePageFragment();
+////                        break;
+//                    case R.id.miProfile:
+////                        fragment = new ProfileFragment();
+////                        break;
+//
+//                    case R.id.miSearch:
+////                        fragment = new SearchFragment();
+////                        break;
+//
+//                    case R.id.miSettings:
+////                        fragment = new SettingsFragment();
+////                        break;
+//                }
+//                getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
+//
+//                return true;
+//            }
+//        });
+//
+//        View navView = findViewById(R.id.bottom_navigation);
+//        navView.setBackground(null);
+//        View placeholder = findViewById(R.id.placeholder);
+//        placeholder.setEnabled(false);
+//
+//        navController = Navigation.findNavController(this, R.id.main_navhost);
+//        NavigationUI.setupActionBarWithNavController(this, navController);
+//    }
+//
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        super.onCreateOptionsMenu(menu);
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.bottom_nav_menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        if (item.getItemId() == android.R.id.home){
+//            navController.navigateUp();
+//            return true;
+//        }else{
+//            return NavigationUI.onNavDestinationSelected(item, navController);
+//        }
+//    }
 //    private AppBarConfiguration mAppBarConfiguration;
 //
 //    private ActivityMainBinding binding;
