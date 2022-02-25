@@ -7,9 +7,11 @@
         <entry key="app/src/main/res/drawable-v21/ic_menu_gallery.xml" value="0.3625" />
         <entry key="app/src/main/res/drawable/ic_email.xml" value="0.28072916666666664" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3625" />
+        <entry key="app/src/main/res/drawable/ic_security.xml" value="0.24791666666666667" />
+        <entry key="app/src/main/res/drawable/ic_street.xml" value="0.24791666666666667" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.27717391304347827" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_user_profile.xml" value="0.3463541666666667" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.27717391304347827" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.27717391304347827" />
