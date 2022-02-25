@@ -13,23 +13,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
+        android:layout_marginBottom="10dp"
         android:fontFamily="sans-serif-condensed"
-        android:textStyle="bold"
+        android:gravity="center"
         android:text="Designer Register"
         android:textColor="@color/white"
-        android:textSize="34dp" />
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/register_add_image"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/register_title"
+        android:src="@drawable/ic_add_image_profile"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="2dp" />
+
 
     <EditText
         android:id="@+id/register_full_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/register_title"
+        android:layout_below="@+id/register_add_image"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_person_signin"
@@ -50,7 +61,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:background="#30ffffff"
-        android:drawableLeft="@drawable/ic_person_signin"
+        android:drawableLeft="@android:drawable/stat_sys_phone_call"
         android:drawablePadding="20dp"
         android:hint="Mobile Number"
         android:maxLines="1"
@@ -103,7 +114,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:background="#30ffffff"
-        android:drawableLeft="@drawable/ic_person_signin"
+        android:drawableLeft="@android:drawable/ic_dialog_map"
         android:drawablePadding="20dp"
         android:hint="Street Address"
         android:inputType="text"
@@ -120,7 +131,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:background="#30ffffff"
-        android:drawableLeft="@drawable/ic_person_signin"
+        android:drawableLeft="@android:drawable/ic_dialog_map"
         android:drawablePadding="20dp"
         android:hint="City And State"
         android:inputType="text"
@@ -137,7 +148,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:background="#30ffffff"
-        android:drawableLeft="@drawable/ic_person_signin"
+        android:drawableLeft="@android:drawable/ic_dialog_map"
         android:drawablePadding="20dp"
         android:hint="Country"
         android:inputType="text"
@@ -152,7 +163,7 @@
         android:layout_below="@+id/register_country"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="50dp"
         android:text="Sign Up"
         app:backgroundTint="#C81F3D95" />
@@ -164,10 +175,13 @@
         android:layout_below="@+id/register_btn"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:text="Have an account? Click here"
         android:textColor="@color/white" />
+
+
+
 
 </RelativeLayout>
