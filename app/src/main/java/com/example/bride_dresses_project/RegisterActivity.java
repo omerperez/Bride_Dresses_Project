@@ -60,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
         edStreetAddress = findViewById(R.id.edStreet);
         edState = findViewById(R.id.edState);
         edCountry = findViewById(R.id.edCountry);
-        imgDesigner = findViewById(R.id.imgDesigner);
+        imgDesigner = findViewById(R.id.register_img_designer);
 
         registerBtn = findViewById(R.id.register_btn);
         clickForLogin = findViewById(R.id.register_click_here);

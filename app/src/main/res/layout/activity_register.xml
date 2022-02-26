@@ -29,10 +29,7 @@
         android:layout_below="@+id/register_title"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/ic_add_image_profile"
-        app:civ_border_color="@color/white"
-        app:civ_border_width="2dp" />
-
+        android:src="@drawable/ic_add_img" />
 
     <EditText
         android:id="@+id/register_full_name"
