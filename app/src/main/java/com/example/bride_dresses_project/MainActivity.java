@@ -1,6 +1,7 @@
 package com.example.bride_dresses_project;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,9 +9,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.bride_dresses_project.model.Dress;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,6 +33,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bride_dresses_project.databinding.ActivityMainBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,17 +48,57 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-        NavController navController;
-
+    EditText price, type;
+    ImageView dressImage;
+    Button saveBtn;
+    String fileName;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = database.getReferenceFromUrl("https://bridedressesproject-default-rtdb.firebaseio.com/");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Fragment createDressFrag = getSupportFragmentManager().findFragmentById(R.id.nav_graph);
-        NavHost nh = (NavHost) createDressFrag;
-        navController = nh.getNavController();
-        NavigationUI.setupActionBarWithNavController(this, navController);
+        price=findViewById(R.id.create_dress_price);
+        type=findViewById(R.id.create_dress_type);
+        dressImage=findViewById(R.id.create_dress_image);
+        saveBtn=findViewById(R.id.create_dress_save_btn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String priceTxt = price.getText().toString();
+                final  String typeTxt = type.getText().toString();
+//                Dress dress = new Dress(priceTxt,typeTxt,fileName);
+                Dress dress = new Dress(priceTxt,typeTxt, "Linoy Bekker");
+
+                if (priceTxt.isEmpty() || typeTxt.isEmpty()) {
+                    Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+                } else if (priceTxt.indexOf("-")!=-1) {
+                    Toast.makeText(getContext(), "Price is Illegal", Toast.LENGTH_SHORT).show();
+                } else {
+                    databaseReference.child("dresses").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.hasChild(dress.getId())) {
+                                Toast.makeText(getContext(), "Please try again", Toast.LENGTH_SHORT).show();
+                            } else {
+                                databaseReference.child("dresses").child(dress.getId()).setValue(dress);
+                                Toast.makeText(getContext(), "Dress Created successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) { }
+                    });
+
+                }
+            }
+        });
+
+    }
+
+    private Context getContext() {
+        return MainActivity.this;
     }
 
 
