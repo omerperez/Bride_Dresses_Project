@@ -1,7 +1,5 @@
 package com.example.bride_dresses_project;
 
-import static java.security.AccessController.getContext;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,14 +7,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -179,17 +176,15 @@ public class RegisterActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(File file) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                        ByteArrayOutputStream b = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG,100,b);
-                        byte[] byteArray = b.toByteArray();
-                        fileName = Base64.encodeToString(byteArray,Base64.DEFAULT);
-                        //SimpleDateFormat format = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss", Locale.CANADA);
-                        //Date now = new Date();
-                        //fileName = format.format(now);
+
+//                        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+//                        ByteArrayOutputStream b = new ByteArrayOutputStream();
+//                        bitmap.compress(Bitmap.CompressFormat.JPEG,100,b);
+//                        byte[] byteArray = b.toByteArray();
+                        SimpleDateFormat format = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss", Locale.CANADA);
+                        Date now = new Date();
+                        fileName = format.format(now);
                         Picasso.with(RegisterActivity.this).load(file).into(imgDesigner);
-
-
                     }
 
                     @Override
