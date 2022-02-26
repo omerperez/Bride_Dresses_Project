@@ -1,29 +1,37 @@
 package com.example.bride_dresses_project.model;
 
+import com.example.bride_dresses_project.Designer;
+
 public class Dress
 {
-    String id;
+    Integer id;
     String price;
     String imageUrl;
     String type;
-    Long updateDate = new Long(0);
     boolean isAvailable;
-    boolean deleted = false;
-    // Designer designer
-
+    Designer designer;
     public Dress()
     {
+        id = (int)Math.floor(Math.random()*(100-50+1)+50);
         type = "";
         price = "";
         imageUrl = "";
-
-
     }
-    public String getName() {
+    public Dress(String type,String price,String imageUrl)
+    {
+        this.id = (int)Math.floor(Math.random()*(100-50+1)+50);
+        this.type=type;
+        this.price=price+"$";
+        this.imageUrl=imageUrl;
+    }
+    public String getType() {
         return type;
     }
-    public void setName(String name) {
-        this.type = name;
+    public String getId() {
+        return id.toString();
+    }
+    public void setType(String type) {
+        this.type = type;
     }
     public String getPrice() {
         return price;
@@ -37,18 +45,7 @@ public class Dress
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-    public boolean isDeleted() {
-        return deleted;
-    }
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-    public Long getUpdateDate() {
-        return updateDate;
-    }
-    public void setUpdateDate(Long updateDate) {
-        this.updateDate = updateDate;
-    }
+
     //---------------------------------//
 
 }

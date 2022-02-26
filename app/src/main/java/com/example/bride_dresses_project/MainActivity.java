@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -38,80 +39,19 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-//    BottomNavigationView navigationView;
-//    NavController navController;
+        NavController navController;
 
-    ActivityMainBinding binding;
-    Uri imageUri;
-    StorageReference storageReference;
-    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        binding.mainSelect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectImage();
-            }
-        });
-
-        binding.mainUploadFile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uploadImageToFirebase();
-            }
-        });
+        Fragment createDressFrag = getSupportFragmentManager().findFragmentById(R.id.nav_graph);
+        NavHost nh = (NavHost) createDressFrag;
+        navController = nh.getNavController();
+        NavigationUI.setupActionBarWithNavController(this, navController);
     }
 
-    private void uploadImageToFirebase() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Uploaded File...");
-        progressDialog.show();
-
-        SimpleDateFormat format = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss", Locale.CANADA);
-        Date now = new Date();
-        String fileName = format.format(now);
-
-        storageReference = FirebaseStorage.getInstance().getReference("images/" + fileName);
-        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                binding.mainImage.setImageURI(null);
-                Toast.makeText(MainActivity.this, "Successfully Uploaded", Toast.LENGTH_SHORT).show();
-                if(progressDialog.isShowing()){
-                    progressDialog.dismiss();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if(progressDialog.isShowing()){
-                    progressDialog.dismiss();
-                }
-                Toast.makeText(MainActivity.this, "Failed to Upload", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 100);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100 && data != null && data.getData() != null){
-            imageUri = data.getData();
-            binding.mainImage.setImageURI(imageUri);
-        }
-    }
 
     //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {

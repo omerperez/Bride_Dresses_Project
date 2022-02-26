@@ -25,4 +25,9 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/createDressFragment"
+        android:name="com.example.bride_dresses_project.CreateDressFragment"
+        android:label="fragment_create_dress"
+        tools:layout="@layout/fragment_create_dress" />
 </navigation>
