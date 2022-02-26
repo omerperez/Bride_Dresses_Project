@@ -1,6 +1,7 @@
 package com.example.bride_dresses_project;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,9 +9,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.bride_dresses_project.model.Dress;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -28,6 +33,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bride_dresses_project.databinding.ActivityMainBinding;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -38,80 +48,59 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-//    BottomNavigationView navigationView;
-//    NavController navController;
-
-    ActivityMainBinding binding;
-    Uri imageUri;
-    StorageReference storageReference;
-    ProgressDialog progressDialog;
+    EditText price, type;
+    ImageView dressImage;
+    Button saveBtn;
+    String fileName;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = database.getReferenceFromUrl("https://bridedressesproject-default-rtdb.firebaseio.com/");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        binding.mainSelect.setOnClickListener(new View.OnClickListener() {
+        price=findViewById(R.id.create_dress_price);
+        type=findViewById(R.id.create_dress_type);
+        dressImage=findViewById(R.id.create_dress_image);
+        saveBtn=findViewById(R.id.create_dress_save_btn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectImage();
-            }
-        });
+                final String priceTxt = price.getText().toString();
+                final  String typeTxt = type.getText().toString();
+//                Dress dress = new Dress(priceTxt,typeTxt,fileName);
+                Dress dress = new Dress(priceTxt,typeTxt, "Linoy Bekker");
 
-        binding.mainUploadFile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uploadImageToFirebase();
-            }
-        });
-    }
+                if (priceTxt.isEmpty() || typeTxt.isEmpty()) {
+                    Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+                } else if (priceTxt.indexOf("-")!=-1) {
+                    Toast.makeText(getContext(), "Price is Illegal", Toast.LENGTH_SHORT).show();
+                } else {
+                    databaseReference.child("dresses").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.hasChild(dress.getId())) {
+                                Toast.makeText(getContext(), "Please try again", Toast.LENGTH_SHORT).show();
+                            } else {
+                                databaseReference.child("dresses").child(dress.getId()).setValue(dress);
+                                Toast.makeText(getContext(), "Dress Created successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
-    private void uploadImageToFirebase() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Uploaded File...");
-        progressDialog.show();
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) { }
+                    });
 
-        SimpleDateFormat format = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss", Locale.CANADA);
-        Date now = new Date();
-        String fileName = format.format(now);
-
-        storageReference = FirebaseStorage.getInstance().getReference("images/" + fileName);
-        storageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                binding.mainImage.setImageURI(null);
-                Toast.makeText(MainActivity.this, "Successfully Uploaded", Toast.LENGTH_SHORT).show();
-                if(progressDialog.isShowing()){
-                    progressDialog.dismiss();
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if(progressDialog.isShowing()){
-                    progressDialog.dismiss();
-                }
-                Toast.makeText(MainActivity.this, "Failed to Upload", Toast.LENGTH_SHORT).show();
-            }
         });
+
     }
 
-    private void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 100);
+    private Context getContext() {
+        return MainActivity.this;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100 && data != null && data.getData() != null){
-            imageUri = data.getData();
-            binding.mainImage.setImageURI(imageUri);
-        }
-    }
 
     //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
