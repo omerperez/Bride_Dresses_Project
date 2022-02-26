@@ -23,7 +23,8 @@ public class RegisterActivity extends AppCompatActivity {
     DatabaseReference databaseReference = database.getReferenceFromUrl("https://bridedressesproject-default-rtdb.firebaseio.com/");
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         fullName = findViewById(R.id.register_full_name);
@@ -34,7 +35,8 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn = findViewById(R.id.register_btn);
         clickForLogin = findViewById(R.id.register_click_here);
 
-        registerBtn.setOnClickListener(new View.OnClickListener() {
+        registerBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view) {
                 final String fullNameTxt = fullName.getText().toString();
