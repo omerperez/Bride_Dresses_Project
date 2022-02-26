@@ -1,8 +1,11 @@
 package com.example.bride_dresses_project;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +25,11 @@ public class LoginActivity extends AppCompatActivity {
     TextView clickForRegister;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReferenceFromUrl("https://bridedressesproject-default-rtdb.firebaseio.com/");
+
+    @Override
+    public void startActivityFromFragment(@NonNull Fragment fragment, Intent intent, int requestCode, @Nullable Bundle options) {
+        super.startActivityFromFragment(fragment, intent, requestCode, options);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
