@@ -1,7 +1,7 @@
 package com.example.bride_dresses_project.model;
 
 public class Model {
-    public final static Model instance = new Model();
+  /*  public final static Model instance = new Model();
 
     ModelFirebase modelFirebase = new ModelFirebase();
     ModelSql modelSql = new ModelSql();
@@ -14,5 +14,5 @@ public class Model {
         modelFirebase.addDress(dress,listener);
     }
 
-
+*/
 }
