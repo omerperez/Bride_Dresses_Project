@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.bride_dresses_project.model.Designer;
+import com.example.bride_dresses_project.model.Model;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,28 +53,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (phoneTxt.isEmpty() || passwordTxt.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Please enter your mobile or password", Toast.LENGTH_SHORT).show();
                 } else {
-
-                    databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.hasChild(phoneTxt)) {
-                                final String getPassword = snapshot.child(phoneTxt).child("password").getValue(String.class);
-                                if (getPassword.equals(passwordTxt)) {
-                                    Toast.makeText(LoginActivity.this, "Successfully Logged in", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "Wrong Password Or Mobile Number", Toast.LENGTH_SHORT).show();
-
-                                }
-                                Toast.makeText(LoginActivity.this, "Phone or Email is already registered", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(LoginActivity.this, "Phone or Email is already registered", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
+                    Model.instance.getDesignerByPhone(phoneTxt, (designer)->{
+                        if(passwordTxt.equals(designer.getPassword())) {
+                            Toast.makeText(LoginActivity.this, "Successfully Logged in", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(LoginActivity.this, BaseActivity.class));
+                        }else{
+                            Toast.makeText(LoginActivity.this, "Wrong Password Or Mobile Number", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

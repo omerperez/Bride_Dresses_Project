@@ -1,6 +1,56 @@
 package com.example.bride_dresses_project.model;
 
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
+
+import androidx.core.os.HandlerCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 public class Model {
+    public static final Model instance = new Model();
+    Executor executor = Executors.newFixedThreadPool(1);
+    Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
+
+    public enum DesignerListLoadingState{
+        loading,
+        loaded
+    }
+
+    MutableLiveData<DesignerListLoadingState> designerListLoadingState = new MutableLiveData<DesignerListLoadingState>();
+    public LiveData<DesignerListLoadingState> getDesignerListLoadingState() {
+        return designerListLoadingState;
+    }
+
+
+    ModelFirebase modelFirebase = new ModelFirebase();
+    private Model(){
+        designerListLoadingState.setValue(DesignerListLoadingState.loaded);
+    }
+
+
+    public interface AddDesignerListener{
+        void onComplete();
+    }
+
+    public void createDesigner(Designer designer, Uri profileImage, AddDesignerListener listener){
+        modelFirebase.createDesigner( designer, profileImage ,listener);
+    }
+
+    public interface GetDesignerById{
+        void onComplete(Designer designer);
+    }
+
+    public Designer getDesignerByPhone(String designerPhoneNumber, GetDesignerById listener) {
+        modelFirebase.getDesignerByPhone(designerPhoneNumber, listener);
+        return null;
+    }
+
   /*  public final static Model instance = new Model();
 
     ModelFirebase modelFirebase = new ModelFirebase();
