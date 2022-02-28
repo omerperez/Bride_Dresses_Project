@@ -69,7 +69,12 @@ public class CreateDressFragment extends Fragment {
 //        saveBtn.setOnClickListener((v)->{
 ////            Navigation.findNavController(v).navigate(FragmentHomeBinding.actionNewUserFragmentToHomeFragment());
 //        });
+
+        uploadImageBtn.setOnClickListener((v)->{
+            Navigation.findNavController(v).navigate(R.id.action_createDressFragment_to_googleMapsFragment);
+        });
                 saveBtn.setOnClickListener(new View.OnClickListener() {
+
                     @Override
                     public void onClick(View view) {
                         final String priceTxt = price.getText().toString();

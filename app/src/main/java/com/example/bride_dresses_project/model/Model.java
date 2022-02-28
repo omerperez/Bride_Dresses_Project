@@ -28,7 +28,7 @@ public class Model {
     }
 
 
-    ModelFirebase modelFirebase = new ModelFirebase();
+    static ModelFirebase modelFirebase = new ModelFirebase();
     private Model(){
         designerListLoadingState.setValue(DesignerListLoadingState.loaded);
     }
@@ -49,6 +49,11 @@ public class Model {
     public Designer getDesignerByPhone(String designerPhoneNumber, GetDesignerById listener) {
         modelFirebase.getDesignerByPhone(designerPhoneNumber, listener);
         return null;
+    }
+
+    public static void getDataFromFirebase()
+    {
+        modelFirebase.getDataFromFirebase();
     }
 
   /*  public final static Model instance = new Model();

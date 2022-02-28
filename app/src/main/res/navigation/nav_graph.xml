@@ -9,7 +9,11 @@
         android:id="@+id/createDressFragment"
         android:name="com.example.bride_dresses_project.CreateDressFragment"
         android:label="fragment_create_dress"
-        tools:layout="@layout/fragment_create_dress" />
+        tools:layout="@layout/fragment_create_dress" >
+        <action
+            android:id="@+id/action_createDressFragment_to_googleMapsFragment"
+            app:destination="@id/googleMapsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homePageFragment"
         android:name="com.example.bride_dresses_project.HomePageFragment"
@@ -19,4 +23,9 @@
             android:id="@+id/action_homePageFragment_to_createDressFragment"
             app:destination="@id/createDressFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/googleMapsFragment"
+        android:name="com.example.bride_dresses_project.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps2" />
 </navigation>

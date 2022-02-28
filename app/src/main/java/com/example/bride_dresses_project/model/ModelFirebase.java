@@ -1,11 +1,14 @@
 package com.example.bride_dresses_project.model;
 
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,10 +28,18 @@ public class ModelFirebase {
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-//    FirebaseDatabase db = FirebaseDatabase.getInstance();
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://bridedressesproject-default-rtdb.firebaseio.com/");
     FirebaseStorage storage = FirebaseStorage.getInstance();
-//    DatabaseReference databaseReference;
-    StorageReference storageReference;
+  DatabaseReference databaseReference = firebaseDatabase.getReference("designers");
+  StorageReference storageReference;
+
+  Designer designer;
+    List<Designer> designersList = new ArrayList<>();
+
+    public List<Designer> getDesignersList() {
+        return designersList;
+    }
+
 //    private FirebaseDatabase database;
 //    private DatabaseReference databaseReference;
 //    private FirebaseStorage storage;
@@ -40,6 +52,47 @@ public class ModelFirebase {
                 .setPersistenceEnabled(false)
                 .build();
         db.setFirestoreSettings(settings);
+    }
+
+    public void getDataFromFirebase() {
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Map<String, String> map = (Map<String, String>) snapshot.getValue();
+                designer = new Designer(map.get("fullName"),
+                                        map.get("phone"),
+                                        map.get("password"),
+                                        map.get("streetAddress"),
+                                        map.get("state"),
+                                        map.get("country"),
+                                        map.get("image"));
+
+                designersList.add(designer);
+                Log.d("tag1", String.valueOf(designersList.size()));
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     public interface GetAllDesignersListener{

@@ -105,9 +105,9 @@ public class RegisterActivity extends AppCompatActivity {
         final String phoneTxt = phone.getText().toString();
         final String passwordTxt = password.getText().toString();
         final String confirmPasswordTxt = confirmPassword.getText().toString();
-        final String streetTxt = password.getText().toString();
-        final String stateTxt = confirmPassword.getText().toString();
-        final String countryTxt = confirmPassword.getText().toString();
+        final String streetTxt = edStreetAddress.getText().toString();
+        final String stateTxt = edState.getText().toString();
+        final String countryTxt = edCountry.getText().toString();
 
         Designer designer = new Designer(fullNameTxt,phoneTxt,
                 passwordTxt, streetTxt, stateTxt, countryTxt, fileName);
