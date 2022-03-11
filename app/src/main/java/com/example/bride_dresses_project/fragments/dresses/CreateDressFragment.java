@@ -1,4 +1,4 @@
-package com.example.bride_dresses_project;
+package com.example.bride_dresses_project.fragments.dresses;
 
 import android.Manifest;
 import android.app.Activity;
@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.bride_dresses_project.R;
 import com.example.bride_dresses_project.databinding.FragmentHomeBinding;
 import com.example.bride_dresses_project.model.Dress;
 import com.google.firebase.database.DataSnapshot;

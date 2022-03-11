@@ -27,7 +27,33 @@
     </fragment>
     <fragment
         android:id="@+id/createDressFragment"
-        android:name="com.example.bride_dresses_project.CreateDressFragment"
+        android:name="com.example.bride_dresses_project.fragments.dresses.CreateDressFragment"
         android:label="fragment_create_dress"
-        tools:layout="@layout/fragment_create_dress" />
+        tools:layout="@layout/fragment_create_dress" >
+        <action
+            android:id="@+id/action_createDressFragment_to_dressDescriptionFragment"
+            app:destination="@id/dressDescriptionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editDressFragment"
+        android:name="com.example.bride_dresses_project.fragments.dresses.EditDressFragment"
+        android:label="fragment_edit_dress"
+        tools:layout="@layout/fragment_edit_dress" />
+    <fragment
+        android:id="@+id/deleteDressFragment"
+        android:name="com.example.bride_dresses_project.fragments.dresses.DeleteDressFragment"
+        android:label="fragment_delete_dress"
+        tools:layout="@layout/fragment_delete_dress" />
+    <fragment
+        android:id="@+id/dressDescriptionFragment"
+        android:name="com.example.bride_dresses_project.fragments.dresses.DressDescriptionFragment"
+        android:label="fragment_dress_description"
+        tools:layout="@layout/fragment_dress_description" >
+        <action
+            android:id="@+id/action_dressDescriptionFragment_to_editDressFragment"
+            app:destination="@id/editDressFragment" />
+        <action
+            android:id="@+id/action_dressDescriptionFragment_to_deleteDressFragment"
+            app:destination="@id/deleteDressFragment" />
+    </fragment>
 </navigation>
