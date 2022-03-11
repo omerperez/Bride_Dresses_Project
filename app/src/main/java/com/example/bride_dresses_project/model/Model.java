@@ -27,7 +27,6 @@ public class Model {
         return designerListLoadingState;
     }
 
-
     static ModelFirebase modelFirebase = new ModelFirebase();
     private Model(){
         designerListLoadingState.setValue(DesignerListLoadingState.loaded);
@@ -54,6 +53,35 @@ public class Model {
     public static void getDataFromFirebase()
     {
         modelFirebase.getDataFromFirebase();
+    }
+
+    public interface GetDesignerListener{
+        void onComplete(Designer designer);
+    }
+
+    public void GetDesigner(String phone, GetDesignerListener listener) {
+        modelFirebase.getDesiner(phone,listener);
+    }
+
+
+    public interface GetAllDesignersListener{
+        void onComplete(List<Designer> data);
+    }
+
+
+    public void getAllDesigners(final GetAllDesignersListener listener){
+        modelFirebase.getAllDesigners(listener);
+    }
+
+    public interface UpdateDesignerListener extends AddDesignerListener {}
+
+    public void updateDesigner(final Designer designer, final AddDesignerListener listener){
+        modelFirebase.updateDesigner(designer, listener);
+    }
+
+    interface deleteListener extends AddDesignerListener{}
+    public void deleteDesigner(Designer designer, deleteListener listener){
+        modelFirebase.deleteDesigner(designer,listener);
     }
 
   /*  public final static Model instance = new Model();

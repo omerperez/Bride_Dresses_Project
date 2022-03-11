@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -17,10 +19,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -95,6 +99,55 @@ public class ModelFirebase {
 
     }
 
+    public void updateDesigner(Designer designer, Model.AddDesignerListener listener) {
+        addDesigner(designer,listener);
+    }
+
+    public void getAllDesigners(Model.GetAllDesignersListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Designers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<Designer> data = new LinkedList<Designer>();
+                if(task.isSuccessful()){
+                    for(DocumentSnapshot doc:task.getResult()){
+                        Designer designer = doc.toObject(Designer.class); //בונה מהפיירבייס אוביקט של מעצבת
+                        data.add(designer);
+                    }
+                }
+                listener.onComplete(data);
+            }
+        });
+    }
+
+    public void getDesiner(String phone, Model.GetDesignerListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Designers").document(phone).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                Designer designer= null;
+                if(task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc != null){
+                        designer = task.getResult().toObject(Designer.class);
+                    }
+                }
+                listener.onComplete(designer);
+            }
+        });
+    }
+
+    public void deleteDesigner(Designer designer, Model.deleteListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Designers").document(designer.getPhone()).delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        listener.onComplete();
+                    }
+                });
+    }
+
     public interface GetAllDesignersListener{
         void onComplete(List<Designer> list);
     }
@@ -112,6 +165,25 @@ public class ModelFirebase {
                 .set(json)
                 .addOnSuccessListener(unused -> listener.onComplete())
                 .addOnFailureListener(e -> listener.onComplete());
+    }
+
+    public void addDesigner(Designer designer,Model.AddDesignerListener listener){
+        db.collection("Designer")
+                .document(designer.getPhone())
+                .set(designer)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("tag","designer added successfully");
+                        listener.onComplete();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("tag","failed added designer");
+                listener.onComplete();
+            }
+        });
     }
 
     public void getDesignerByPhone(String designerPhoneNumber, Model.GetDesignerById listener) {
