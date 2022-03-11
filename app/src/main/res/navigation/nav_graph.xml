@@ -3,57 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/homePageFragment">
 
-    <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.bride_dresses_project.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first" >
-
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.bride_dresses_project.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second" >
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
     <fragment
         android:id="@+id/createDressFragment"
-        android:name="com.example.bride_dresses_project.fragments.dresses.CreateDressFragment"
+        android:name="com.example.bride_dresses_project.CreateDressFragment"
         android:label="fragment_create_dress"
         tools:layout="@layout/fragment_create_dress" >
         <action
-            android:id="@+id/action_createDressFragment_to_dressDescriptionFragment"
-            app:destination="@id/dressDescriptionFragment" />
+            android:id="@+id/action_createDressFragment_to_googleMapsFragment"
+            app:destination="@id/googleMapsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/editDressFragment"
-        android:name="com.example.bride_dresses_project.fragments.dresses.EditDressFragment"
-        android:label="fragment_edit_dress"
-        tools:layout="@layout/fragment_edit_dress" />
-    <fragment
-        android:id="@+id/deleteDressFragment"
-        android:name="com.example.bride_dresses_project.fragments.dresses.DeleteDressFragment"
-        android:label="fragment_delete_dress"
-        tools:layout="@layout/fragment_delete_dress" />
-    <fragment
-        android:id="@+id/dressDescriptionFragment"
-        android:name="com.example.bride_dresses_project.fragments.dresses.DressDescriptionFragment"
-        android:label="fragment_dress_description"
-        tools:layout="@layout/fragment_dress_description" >
+        android:id="@+id/homePageFragment"
+        android:name="com.example.bride_dresses_project.HomePageFragment"
+        android:label="fragment_home_page"
+        tools:layout="@layout/fragment_home_page" >
         <action
-            android:id="@+id/action_dressDescriptionFragment_to_editDressFragment"
-            app:destination="@id/editDressFragment" />
-        <action
-            android:id="@+id/action_dressDescriptionFragment_to_deleteDressFragment"
-            app:destination="@id/deleteDressFragment" />
+            android:id="@+id/action_homePageFragment_to_createDressFragment"
+            app:destination="@id/createDressFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/googleMapsFragment"
+        android:name="com.example.bride_dresses_project.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps2" />
 </navigation>

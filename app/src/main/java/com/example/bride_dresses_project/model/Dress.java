@@ -1,7 +1,5 @@
 package com.example.bride_dresses_project.model;
 
-import com.example.bride_dresses_project.Designer;
-
 public class Dress
 {
     Integer id;

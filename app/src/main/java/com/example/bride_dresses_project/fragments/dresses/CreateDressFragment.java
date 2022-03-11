@@ -43,10 +43,11 @@ import me.shaohui.advancedluban.OnCompressListener;
 public class CreateDressFragment extends Fragment {
     EditText price, type;
     ImageView dressImage;
-    Button saveBtn;
+    Button saveBtn, uploadImageBtn;
     String fileName;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReferenceFromUrl("https://bridedressesproject-default-rtdb.firebaseio.com/");
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -55,6 +56,7 @@ public class CreateDressFragment extends Fragment {
         price=view.findViewById(R.id.create_dress_price);
         type=view.findViewById(R.id.create_dress_type);
         dressImage=view.findViewById(R.id.create_dress_image);
+        uploadImageBtn = view.findViewById(R.id.create_dress_upload_btn);
         saveBtn=view.findViewById(R.id.create_dress_save_btn);
 
 //        dressImage.setOnClickListener(new View.OnClickListener() {
@@ -68,69 +70,46 @@ public class CreateDressFragment extends Fragment {
 //        saveBtn.setOnClickListener((v)->{
 ////            Navigation.findNavController(v).navigate(FragmentHomeBinding.actionNewUserFragmentToHomeFragment());
 //        });
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String priceTxt = price.getText().toString();
-                final  String typeTxt = type.getText().toString();
-//                Dress dress = new Dress(priceTxt,typeTxt,fileName);
-                Dress dress = new Dress(priceTxt,typeTxt, "Linoy Bekker");
 
-                if (priceTxt.isEmpty() || typeTxt.isEmpty()) {
-                    Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
-                } else if (priceTxt.indexOf("-")!=-1) {
-                    Toast.makeText(getContext(), "Price is Illegal", Toast.LENGTH_SHORT).show();
-                } else {
-                    databaseReference.child("dresses").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.hasChild(dress.getId())) {
-                                Toast.makeText(getContext(), "Please try again", Toast.LENGTH_SHORT).show();
-                            } else {
-                                databaseReference.child("dresses").child(dress.getId()).setValue(dress);
-                                Toast.makeText(getContext(), "Dress Created successfully", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) { }
-                    });
-
-                }
-            }
+        uploadImageBtn.setOnClickListener((v)->{
+            Navigation.findNavController(v).navigate(R.id.action_createDressFragment_to_googleMapsFragment);
         });
+                saveBtn.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        final String priceTxt = price.getText().toString();
+                        final String typeTxt = type.getText().toString();
+//                Dress dress = new Dress(priceTxt,typeTxt,fileName);
+                        Dress dress = new Dress(priceTxt, typeTxt, "Linoy Bekker");
+
+                        if (priceTxt.isEmpty() || typeTxt.isEmpty()) {
+                            Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+                        } else if (priceTxt.indexOf("-") != -1) {
+                            Toast.makeText(getContext(), "Price is Illegal", Toast.LENGTH_SHORT).show();
+                        } else {
+                            databaseReference.child("dresses").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.hasChild(dress.getId())) {
+                                        Toast.makeText(getContext(), "Please try again", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        databaseReference.child("dresses").child(dress.getId()).setValue(dress);
+                                        Toast.makeText(getContext(), "Dress Created successfully", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                }
+                            });
+
+                        }
+                    }
+                });
 
         return view;
     }
-//    void takeImage(){
-//        CropImage.activity().setGuidelines(CropImageView.Guidelines.ON)
-//                .start((Activity) getContext());
-//    }
-
-//    void compressImage(String path){
-//        Luban.compress(getContext(),new File(path))
-//                .setMaxSize(50)
-//                .launch(new OnCompressListener() {
-//                    @Override
-//                    public void onStart() {
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(File file) {
-//                        SimpleDateFormat format = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss", Locale.CANADA);
-//                        Date now = new Date();
-//                        fileName = format.format(now);
-//                        Picasso.with(getContext()).load(file).into(dressImage);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//                });
-//
-//    }
-
 
 
 }
