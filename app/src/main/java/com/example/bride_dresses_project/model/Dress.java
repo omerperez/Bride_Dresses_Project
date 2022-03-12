@@ -1,8 +1,12 @@
 package com.example.bride_dresses_project.model;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.util.UUID;
+
 public class Dress
 {
-    Integer id;
+    String id;
     String price;
     String imageUrl;
     String type;
@@ -10,18 +14,19 @@ public class Dress
     Designer designer;
     public Dress()
     {
-        id = (int)Math.floor(Math.random()*(100-50+1)+50);
+        this.id = UUID.randomUUID().toString();
         type = "";
         price = "";
         imageUrl = "";
     }
     public Dress(String type,String price,String imageUrl)
     {
-        this.id = (int)Math.floor(Math.random()*(100-50+1)+50);
+        this.id = UUID.randomUUID().toString();
         this.type=type;
         this.price=price+"$";
         this.imageUrl=imageUrl;
     }
+
     public String getType() {
         return type;
     }
