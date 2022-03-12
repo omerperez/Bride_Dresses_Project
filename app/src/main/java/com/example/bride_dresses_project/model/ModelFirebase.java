@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -148,13 +149,6 @@ public class ModelFirebase {
                 });
     }
 
-    public interface GetAllDesignersListener{
-        void onComplete(List<Designer> list);
-    }
-
-    public interface GetAllDressesListener{
-        void onComplete(List<Dress> list);
-    }
 
     public void createDesigner(Designer designer, Uri profileImage ,Model.AddDesignerListener listener) {
         Map<String, Object> json = designer.toJson();
@@ -167,20 +161,20 @@ public class ModelFirebase {
                 .addOnFailureListener(e -> listener.onComplete());
     }
 
-    public void addDesigner(Designer designer,Model.AddDesignerListener listener){
+    public void addDesigner(Designer designer,Model.AddDesignerListener listener) {
         db.collection("Designer")
                 .document(designer.getPhone())
                 .set(designer)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Log.d("tag","designer added successfully");
+                        Log.d("tag", "designer added successfully");
                         listener.onComplete();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d("tag","failed added designer");
+                Log.d("tag", "failed added designer");
                 listener.onComplete();
             }
         });
@@ -203,13 +197,108 @@ public class ModelFirebase {
 
     }
 
-    /*
-    public void getAllDresses(Model.GetAllDressListener listener) {
-        listener.onComplete(null);
+            /* Dresses*/
+
+
+
+
+
+    public void getDressById(String dressId,Model.GetDressByIdListener listener) {
+        db.collection("Dresses")
+                .document(dressId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        listener.onComplete(documentSnapshot.toObject(Dress.class));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onFailure(e);
+            }
+        });
     }
 
-    public void addDress(Dress dress, Model.AddDressListener listener) {
+
+    public void updateDress(Dress dress,Model.UpdateDressListener listener) {
+
+        db.collection("Dresses")
+                .document(dress.getId())
+                .set(dress)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        listener.onComplete(new FirebaseDressStatus("Successfully updated " + dress.getId()));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onFailure(e);
+            }
+        });
+
     }
-    */
+
+    public void deleteDress(String dressId,Model.DeleteDressByIdListener listener) {
+        db.collection("Dresses")
+                .document(dressId)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        listener.onComplete(new FirebaseDressStatus("Successfully deleted dress " + dressId));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onFailure(e);
+            }
+        });
+    }
+
+
+    public void addDress(Dress dress,Uri dressImageUri, Model.AddDressListener listener) {
+        StorageReference dressStorageRef = storageReference.child("dresses/" + dress.getId());
+        dressStorageRef.putFile(dressImageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    if(taskSnapshot.getMetadata() != null) {
+                      dressStorageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                          dress.setImageUrl(uri.toString());
+                          db.collection("Dresses")
+                                  .document(dress.getId())
+                                  .set(dress)
+                                  .addOnSuccessListener(unused -> listener.onComplete(new FirebaseDressStatus("Successfully added dress " + dress.getId()))).addOnFailureListener(new OnFailureListener() {
+                              @Override
+                              public void onFailure(@NonNull Exception e) {
+                                  listener.onFailure(e);
+                              }
+                          });
+                      }).addOnFailureListener(listener::onFailure);
+
+                    }
+                }).addOnFailureListener(listener::onFailure);
+    }
+
+    public void getAllDresses(Model.GetAllDressesListener listener) {
+        db.collection("Dresses") // name
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<Dress> allDresses = new ArrayList<>();
+                        for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                            allDresses.add (doc.toObject(Dress.class));
+                        }
+                        listener.onComplete(allDresses);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onFailure(e);
+                    }
+                });
+
+    }
 
 }
