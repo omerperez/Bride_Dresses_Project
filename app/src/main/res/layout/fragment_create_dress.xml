@@ -49,9 +49,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/create_dress_price"
         android:layout_marginTop="40dp"
-        android:background="#F5F5F5"
-        android:backgroundTint="#707070"
+        android:backgroundTint="@color/begin"
         android:text="Upload photo"
+        android:textColor="@color/black"
         android:textSize="18sp" />
 
 <!--    <ImageView-->

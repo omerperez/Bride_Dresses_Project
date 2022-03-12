@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homePageFragment">
+    app:startDestination="@id/dressesListFragment">
 
     <fragment
         android:id="@+id/createDressFragment"
-        android:name="com.example.bride_dresses_project.CreateDressFragment"
+        android:name="com.example.bride_dresses_project.fragments.dresses.CreateDressFragment"
         android:label="fragment_create_dress"
         tools:layout="@layout/fragment_create_dress" >
         <action
@@ -18,19 +18,10 @@
             app:destination="@id/dressDescriptionFragment" />
     </fragment>
     <fragment
-        android:id="@+id/homePageFragment"
-        android:name="com.example.bride_dresses_project.HomePageFragment"
-        android:label="fragment_home_page"
-        tools:layout="@layout/fragment_home_page" >
-        <action
-            android:id="@+id/action_homePageFragment_to_createDressFragment"
-            app:destination="@id/createDressFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/googleMapsFragment"
         android:name="com.example.bride_dresses_project.MapsFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps2" />
+        tools:layout="@layout/fragment_maps" />
     <fragment
         android:id="@+id/deleteDressFragment2"
         android:name="com.example.bride_dresses_project.fragments.dresses.DeleteDressFragment"
@@ -53,4 +44,13 @@
         android:name="com.example.bride_dresses_project.fragments.dresses.EditDressFragment"
         android:label="fragment_edit_dress"
         tools:layout="@layout/fragment_edit_dress" />
+    <fragment
+        android:id="@+id/dressesListFragment"
+        android:name="com.example.bride_dresses_project.fragments.dresses.DressesListFragment"
+        android:label="fragment_dresses_list"
+        tools:layout="@layout/fragment_dresses_list" >
+        <action
+            android:id="@+id/action_dressesListFragment_to_createDressFragment"
+            app:destination="@id/createDressFragment" />
+    </fragment>
 </navigation>
