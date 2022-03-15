@@ -244,10 +244,6 @@ public class ModelFirebase {
 
     /* Dresses*/
 
-
-
-
-
     public void getDressById(String dressId,Model.GetDressByIdListener listener) {
         db.collection("Dresses")
                 .document(dressId)

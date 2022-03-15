@@ -123,7 +123,6 @@ public class Model {
 */
     /* Dresses */
 
-
     public interface DressesListener<T> {
         void onComplete(T object);
         void onFailure(Exception e);
