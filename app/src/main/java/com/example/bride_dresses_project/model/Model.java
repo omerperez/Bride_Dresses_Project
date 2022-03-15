@@ -1,5 +1,6 @@
 package com.example.bride_dresses_project.model;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -22,6 +23,10 @@ public class Model {
         loaded
     }
 
+    public interface Listener<T>{
+        void onComplete(T result);
+    }
+
     MutableLiveData<DesignerListLoadingState> designerListLoadingState = new MutableLiveData<DesignerListLoadingState>();
     public LiveData<DesignerListLoadingState> getDesignerListLoadingState() {
         return designerListLoadingState;
@@ -33,19 +38,30 @@ public class Model {
     }
 
 
-    public interface AddDesignerListener{
+    public interface AddUserListener{
         void onComplete();
     }
 
-    public void createDesigner(Designer designer, Uri profileImage, AddDesignerListener listener){
+    public void addUser(User user, AddUserListener listener){
+        modelFirebase.addUser(user, listener);
+    }
+
+
+    public interface AddDesignerListener{
+        void onComplete();
+    }
+/*
+    public void createDesigner(User designer, Uri profileImage, AddDesignerListener listener){
         modelFirebase.createDesigner( designer, profileImage ,listener);
     }
 
+
+ */
     public interface GetDesignerById{
-        void onComplete(Designer designer);
+        void onComplete(User designer);
     }
 
-    public Designer getDesignerByPhone(String designerPhoneNumber, GetDesignerById listener) {
+    public User getDesignerByPhone(String designerPhoneNumber, GetDesignerById listener) {
         modelFirebase.getDesignerByPhone(designerPhoneNumber, listener);
         return null;
     }
@@ -56,7 +72,7 @@ public class Model {
     }
 
     public interface GetDesignerListener{
-        void onComplete(Designer designer);
+        void onComplete(User designer);
     }
 
     public void GetDesigner(String phone, GetDesignerListener listener) {
@@ -64,9 +80,7 @@ public class Model {
     }
 
 
-    public interface GetAllDesignersListener{
-        void onComplete(List<Designer> data);
-    }
+    public interface GetAllDesignersListener extends Listener<List<User>> {}
 
 
     public void getAllDesigners(final GetAllDesignersListener listener){
@@ -77,17 +91,36 @@ public class Model {
 
     }
 
-    public void updateDesigner(final Designer designer, final AddDesignerListener listener){
+    public void updateDesigner(final User designer, final AddDesignerListener listener){
         modelFirebase.updateDesigner(designer, listener);
     }
 
-    interface deleteListener extends AddDesignerListener{
-
-    }
-   /* public void deleteDesigner(Designer designer, deleteListener listener){
+    interface deleteListener extends AddDesignerListener{}
+    public void deleteDesigner(User designer, deleteListener listener){
         modelFirebase.deleteDesigner(designer,listener);
-    }*/
+    }
 
+    public interface uploadImageListener extends Listener<String>{}
+
+    public static void uploadImage(Bitmap imageBmp, String name,final uploadImageListener listener) {
+        modelFirebase.uploadImage(imageBmp,name,listener);
+    }
+
+
+  /*  public final static Model instance = new Model();
+
+    ModelFirebase modelFirebase = new ModelFirebase();
+    ModelSql modelSql = new ModelSql();
+
+    public void getAllDresses(final GetAllDressListener listener){
+        modelFirebase.getAllDresses(listener);
+    }
+
+    public void addDress(final Dress dress, final AddDressListener listener){
+        modelFirebase.addDress(dress,listener);
+    }
+
+*/
     /* Dresses */
 
 
@@ -158,3 +191,4 @@ public class Model {
 
 
 }
+

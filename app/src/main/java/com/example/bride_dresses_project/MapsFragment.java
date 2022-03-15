@@ -3,7 +3,6 @@ package com.example.bride_dresses_project;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -17,9 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.bride_dresses_project.R;
-import com.example.bride_dresses_project.model.Designer;
-import com.example.bride_dresses_project.model.Model;
+import com.example.bride_dresses_project.model.User;
 import com.example.bride_dresses_project.model.ModelFirebase;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,8 +29,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,8 +95,8 @@ public class MapsFragment extends Fragment {
         }
     }
 
-    Designer designer;
-    List<Designer> designersList = new ArrayList<>();
+    User designer;
+    List<User> designersList = new ArrayList<>();
 
     void getDataFromFirebase(GoogleMap googleMap){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://bridedressesproject-default-rtdb.firebaseio.com/");
@@ -110,13 +105,12 @@ public class MapsFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Map<String, String> map = (Map<String, String>) snapshot.getValue();
-                designer = new Designer(map.get("fullName"),
+                designer = new User(map.get("fullName"),
                         map.get("phone"),
                         map.get("password"),
                         map.get("streetAddress"),
                         map.get("state"),
-                        map.get("country"),
-                        map.get("image"));
+                        map.get("country"));
 
                 designersList.add(designer);
                 Log.d("tag1", String.valueOf(designersList.size()));

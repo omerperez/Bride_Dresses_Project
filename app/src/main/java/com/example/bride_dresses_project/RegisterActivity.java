@@ -1,6 +1,7 @@
+/*
+
 package com.example.bride_dresses_project;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -11,7 +12,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,16 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.bride_dresses_project.model.Designer;
+import com.example.bride_dresses_project.model.User;
 import com.example.bride_dresses_project.model.Model;
-import com.example.bride_dresses_project.model.ModelFirebase;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -56,17 +48,17 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        fullName = findViewById(R.id.register_full_name);
-        phone = findViewById(R.id.register_phone);
-        password = findViewById(R.id.register_password);
-        confirmPassword = findViewById(R.id.register_confirm_password);
-        edStreetAddress = findViewById(R.id.edStreet);
-        edState = findViewById(R.id.edState);
-        edCountry = findViewById(R.id.edCountry);
-        imgDesigner = findViewById(R.id.register_img_designer);
+        fullName = findViewById(R.id.register_name_et);
+        phone = findViewById(R.id.register_phone_et);
+        password = findViewById(R.id.register_password_et);
+        confirmPassword = findViewById(R.id.register_confirm_password_et);
+        edStreetAddress = findViewById(R.id.register_street_et);
+        edState = findViewById(R.id.register_state_et);
+        edCountry = findViewById(R.id.register_country_et);
+        imgDesigner = findViewById(R.id.register_avatar_imv);
 
         registerBtn = findViewById(R.id.register_btn);
-        clickForLogin = findViewById(R.id.register_click_here);
+        clickForLogin = findViewById(R.id.register_login_tv);
 
         imgDesigner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateNewDesigner();
+                AddUser();
             }
         });
 
@@ -100,6 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    /*
     private void CreateNewDesigner() {
         final String fullNameTxt = fullName.getText().toString();
         final String phoneTxt = phone.getText().toString();
@@ -109,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
         final String stateTxt = edState.getText().toString();
         final String countryTxt = edCountry.getText().toString();
 
-        Designer designer = new Designer(fullNameTxt,phoneTxt,
+        User designer = new User(fullNameTxt,phoneTxt,
                 passwordTxt, streetTxt, stateTxt, countryTxt, fileName);
         if (fullNameTxt.isEmpty() || passwordTxt.isEmpty() || passwordTxt.isEmpty() || confirmPasswordTxt.isEmpty()) {
             Toast.makeText(RegisterActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -123,6 +116,8 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+     */
+/*
     public boolean checkCameraPermission(){
         int result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         int result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -165,3 +160,4 @@ public class RegisterActivity extends AppCompatActivity {
     }
 }
 
+*/
