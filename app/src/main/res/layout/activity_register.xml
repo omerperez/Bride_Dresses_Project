@@ -8,7 +8,7 @@
     android:background="@drawable/coverr">
 
     <TextView
-        android:id="@+id/register_title"
+        android:id="@+id/register_title_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -23,19 +23,19 @@
         android:textStyle="bold" />
 
     <ImageView
-        android:id="@+id/register_img_designer"
+        android:id="@+id/register_avatar_imv"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:layout_below="@+id/register_title"
+        android:layout_below="@+id/register_title_tv"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:src="@drawable/ic_add_img" />
 
     <EditText
-        android:id="@+id/register_full_name"
+        android:id="@+id/register_name_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/register_img_designer"
+        android:layout_below="@+id/register_avatar_imv"
         android:layout_marginStart="10dp"
         android:layout_marginTop="-7dp"
         android:layout_marginEnd="10dp"
@@ -50,10 +50,10 @@
         android:textColorHint="@color/white" />
 
     <EditText
-        android:id="@+id/register_phone"
+        android:id="@+id/register_phone_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/register_full_name"
+        android:layout_below="@+id/register_name_et"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
@@ -68,10 +68,10 @@
         android:textColorHint="@color/white" />
 
     <EditText
-        android:id="@+id/register_password"
+        android:id="@+id/register_password_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/register_phone"
+        android:layout_below="@+id/register_phone_et"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
@@ -86,10 +86,10 @@
 
 
     <EditText
-        android:id="@+id/register_confirm_password"
+        android:id="@+id/register_confirm_password_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/register_password"
+        android:layout_below="@+id/register_password_et"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
@@ -103,10 +103,10 @@
         android:textColorHint="@color/white" />
 
     <EditText
-        android:id="@+id/edStreet"
+        android:id="@+id/register_street_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/register_confirm_password"
+        android:layout_below="@+id/register_confirm_password_et"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
@@ -120,10 +120,10 @@
         android:textColorHint="@color/white" />
 
     <EditText
-        android:id="@+id/edState"
+        android:id="@+id/register_state_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edStreet"
+        android:layout_below="@+id/register_street_et"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
@@ -137,10 +137,10 @@
         android:textColorHint="@color/white" />
 
     <EditText
-        android:id="@+id/edCountry"
+        android:id="@+id/register_country_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edState"
+        android:layout_below="@+id/register_state_et"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
@@ -157,7 +157,7 @@
         android:id="@+id/register_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edCountry"
+        android:layout_below="@+id/register_country_et"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="50dp"
         android:layout_marginTop="15dp"
@@ -166,7 +166,7 @@
         app:backgroundTint="#C81F3D95" />
 
     <TextView
-        android:id="@+id/register_click_here"
+        android:id="@+id/register_login_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/register_btn"

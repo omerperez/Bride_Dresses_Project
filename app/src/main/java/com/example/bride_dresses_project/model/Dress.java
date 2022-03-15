@@ -1,13 +1,20 @@
 package com.example.bride_dresses_project.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Dress
 {
+    @PrimaryKey
+    @NonNull
     Integer id;
     String price;
     String imageUrl;
     String type;
     boolean isAvailable;
-    Designer designer;
+    //User user;
     public Dress()
     {
         id = (int)Math.floor(Math.random()*(100-50+1)+50);
