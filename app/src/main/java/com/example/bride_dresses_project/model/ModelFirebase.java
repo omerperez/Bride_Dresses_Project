@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -321,7 +322,7 @@ public class ModelFirebase {
                 }).addOnFailureListener(listener::onFailure);
     }
 
-    public void getAllDresses(Model.GetAllDressesListener listener) {
+    public void getAllDresses(MutableLiveData<List<Dress>> dressListLiveData,MutableLiveData<Exception> exceptionLiveData) {
         db.collection("Dresses") // name
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -331,12 +332,12 @@ public class ModelFirebase {
                         for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
                             allDresses.add (doc.toObject(Dress.class));
                         }
-                        listener.onComplete(allDresses);
+                        dressListLiveData.postValue(allDresses);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                listener.onFailure(e);
+                exceptionLiveData.postValue(e);
             }
         });
 

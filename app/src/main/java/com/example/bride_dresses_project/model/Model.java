@@ -169,8 +169,8 @@ public class Model {
         void onFailure(Exception e);
     }
 
-    public void getAllDresses(final GetAllDressesListener listener){
-        modelFirebase.getAllDresses(listener);
+    public void getAllDresses(MutableLiveData<List<Dress>> dressListLiveData,MutableLiveData<Exception> exceptionLiveData){
+        modelFirebase.getAllDresses(dressListLiveData,exceptionLiveData);
     }
 
     public void addDress(final Dress dress,Uri dressImageUri, final AddDressListener listener) {
