@@ -21,7 +21,7 @@ public class Dress
     String imageUrl;
     String type;
     boolean isAvailable;
-    String idOfUser;
+    String userPhone;
     public Dress()
     {
         this.id = UUID.randomUUID().toString();
@@ -38,7 +38,7 @@ public class Dress
     }
 
     public String getIdOfUser() {
-        return idOfUser;
+        return userPhone;
     }
 
     public void setAvailable(boolean available) {
@@ -50,7 +50,7 @@ public class Dress
     }
 
     public void setIdOfUser(String idOfUser) {
-        this.idOfUser = idOfUser;
+        this.userPhone = idOfUser;
     }
 
     public String getType() {

@@ -42,13 +42,13 @@ public class DressDescriptionFragment extends Fragment {
     }
 
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if(mDress!=null) {
-            TextView tv = view.findViewById(R.id.dress_example);
-            tv.setText(mDress.getType());
-        }
-    }
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//        if(mDress!=null) {
+//            TextView tv = view.findViewById(R.id.dressItemType);
+//            tv.setText(mDress.getType());
+//        }
+//    }
 }
