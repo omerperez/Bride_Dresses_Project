@@ -87,7 +87,9 @@ public class Model {
         modelFirebase.getAllDesigners(listener);
     }
 
-    public interface UpdateDesignerListener extends AddDesignerListener {}
+    public interface UpdateDesignerListener extends AddDesignerListener {
+
+    }
 
     public void updateDesigner(final User designer, final AddDesignerListener listener){
         modelFirebase.updateDesigner(designer, listener);
@@ -119,4 +121,73 @@ public class Model {
     }
 
 */
+    /* Dresses */
+
+    public interface DressesListener<T> {
+        void onComplete(T object);
+        void onFailure(Exception e);
+    }
+
+    public interface AddDressListener extends DressesListener<FirebaseDressStatus>{
+        @Override
+        void onComplete(FirebaseDressStatus status);
+
+        @Override
+        void onFailure(Exception e);
+    }
+
+
+    public interface GetDressByIdListener extends DressesListener<Dress>{
+        @Override
+        void onComplete(Dress dress);
+
+        @Override
+        void onFailure(Exception e);
+    }
+
+    public interface GetAllDressesListener extends DressesListener<List<Dress>> {
+        @Override
+        void onComplete(List<Dress> dresses);
+
+        @Override
+        void onFailure(Exception e);
+    }
+
+    public interface UpdateDressListener extends DressesListener<FirebaseDressStatus> {
+        @Override
+        void onComplete(FirebaseDressStatus updateStatus);
+
+        @Override
+        void onFailure(Exception e);
+    }
+
+    public interface DeleteDressByIdListener extends DressesListener<FirebaseDressStatus> {
+        @Override
+        void onComplete(FirebaseDressStatus status);
+
+        @Override
+        void onFailure(Exception e);
+    }
+
+    public void getAllDresses(MutableLiveData<List<Dress>> dressListLiveData,MutableLiveData<Exception> exceptionLiveData){
+        modelFirebase.getAllDresses(dressListLiveData,exceptionLiveData);
+    }
+
+    public void addDress(final Dress dress,Uri dressImageUri, final AddDressListener listener) {
+        modelFirebase.addDress(dress,dressImageUri, listener);
+    }
+    public void getDressById(String dressId,final GetDressByIdListener listener){
+        modelFirebase.getDressById(dressId,listener);
+    }
+
+    public void updateDress(final Dress dress, final UpdateDressListener listener) {
+        modelFirebase.updateDress(dress, listener);
+    }
+
+    public void deleteDress(final String dressId, final DeleteDressByIdListener listener) {
+        modelFirebase.deleteDress(dressId, listener);
+    }
+
+
 }
+

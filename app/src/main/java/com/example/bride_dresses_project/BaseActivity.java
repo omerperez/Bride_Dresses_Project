@@ -18,12 +18,12 @@ public class BaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base);
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
-        fragment.onActivityResult(requestCode, resultCode, data);
-    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+//        fragment.onActivityResult(requestCode, resultCode, data);
+//    }
 
 }

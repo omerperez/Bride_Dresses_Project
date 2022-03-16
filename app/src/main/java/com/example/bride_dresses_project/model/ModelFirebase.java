@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -16,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -241,13 +243,104 @@ public class ModelFirebase {
         });
     }
 
-    /*
-    public void getAllDresses(Model.GetAllDressListener listener) {
-        listener.onComplete(null);
+    /* Dresses*/
+
+    public void getDressById(String dressId,Model.GetDressByIdListener listener) {
+        db.collection("Dresses")
+                .document(dressId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        listener.onComplete(documentSnapshot.toObject(Dress.class));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onFailure(e);
+            }
+        });
     }
 
-    public void addDress(Dress dress, Model.AddDressListener listener) {
+
+    public void updateDress(Dress dress,Model.UpdateDressListener listener) {
+
+        db.collection("Dresses")
+                .document(dress.getId())
+                .set(dress)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        listener.onComplete(new FirebaseDressStatus("Successfully updated " + dress.getId()));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onFailure(e);
+            }
+        });
+
     }
-    */
+
+    public void deleteDress(String dressId,Model.DeleteDressByIdListener listener) {
+        db.collection("Dresses")
+                .document(dressId)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        listener.onComplete(new FirebaseDressStatus("Successfully deleted dress " + dressId));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onFailure(e);
+            }
+        });
+    }
+
+
+    public void addDress(Dress dress,Uri dressImageUri, Model.AddDressListener listener) {
+        StorageReference dressStorageRef = storageReference.child("dresses/" + dress.getId());
+        dressStorageRef.putFile(dressImageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    if(taskSnapshot.getMetadata() != null) {
+                        dressStorageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            dress.setImageUrl(uri.toString());
+                            db.collection("Dresses")
+                                    .document(dress.getId())
+                                    .set(dress)
+                                    .addOnSuccessListener(unused -> listener.onComplete(new FirebaseDressStatus("Successfully added dress " + dress.getId()))).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    listener.onFailure(e);
+                                }
+                            });
+                        }).addOnFailureListener(listener::onFailure);
+
+                    }
+                }).addOnFailureListener(listener::onFailure);
+    }
+
+    public void getAllDresses(MutableLiveData<List<Dress>> dressListLiveData,MutableLiveData<Exception> exceptionLiveData) {
+        db.collection("Dresses") // name
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<Dress> allDresses = new ArrayList<>();
+                        for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                            allDresses.add (doc.toObject(Dress.class));
+                        }
+                        dressListLiveData.postValue(allDresses);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                exceptionLiveData.postValue(e);
+            }
+        });
+
+    }
 
 }

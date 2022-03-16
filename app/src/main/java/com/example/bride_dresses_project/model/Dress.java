@@ -4,31 +4,55 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.util.UUID;
+
+
 @Entity
 public class Dress
 {
     @PrimaryKey
     @NonNull
-    Integer id;
+    String id;
+
+
     String price;
     String imageUrl;
     String type;
     boolean isAvailable;
-    //User user;
+    String idOfUser;
     public Dress()
     {
-        id = (int)Math.floor(Math.random()*(100-50+1)+50);
+        this.id = UUID.randomUUID().toString();
         type = "";
         price = "";
         imageUrl = "";
     }
     public Dress(String type,String price,String imageUrl)
     {
-        this.id = (int)Math.floor(Math.random()*(100-50+1)+50);
+        this.id = UUID.randomUUID().toString();
         this.type=type;
         this.price=price+"$";
         this.imageUrl=imageUrl;
     }
+
+    public String getIdOfUser() {
+        return idOfUser;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setIdOfUser(String idOfUser) {
+        this.idOfUser = idOfUser;
+    }
+
     public String getType() {
         return type;
     }
