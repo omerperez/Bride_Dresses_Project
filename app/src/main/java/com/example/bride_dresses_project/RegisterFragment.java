@@ -24,9 +24,10 @@ import android.widget.TextView;
 
 import com.example.bride_dresses_project.model.Model;
 import com.example.bride_dresses_project.model.User;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends CameraUtilFragment {
 
     EditText fullNameEt, phoneEt, passwordEt, confirmPasswordEt,streetAddressEt, stateEt, countryEt;
     Button registerBtn;
@@ -35,6 +36,8 @@ public class RegisterFragment extends Fragment {
     String fileName;
     Uri imageToSave;
     String path;
+    private CircularProgressIndicator progressIndicator;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,12 +57,20 @@ public class RegisterFragment extends Fragment {
         registerBtn = view.findViewById(R.id.register_btn);
         clickForLoginTv = view.findViewById(R.id.register_login_tv);
 
+        progressIndicator = view.findViewById(R.id.register_fragment_progress_indicator);
+
+
+           avatarImageView.setOnClickListener(this::showCameraMenu);
+
+        /*
         avatarImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadImage();
             }
         });
+
+         */
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +104,9 @@ public class RegisterFragment extends Fragment {
     }
 
     private void saveUser() {
+        registerBtn.setEnabled(false);
+        progressIndicator.show();
+
         User user = new User();
         user.setFullName(fullNameEt.getText().toString());
         user.setPhone(phoneEt.getText().toString());
