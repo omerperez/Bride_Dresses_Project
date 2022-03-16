@@ -29,7 +29,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.bride_dresses_project.R;
-import com.example.bride_dresses_project.databinding.FragmentHomeBinding;
+
 import com.example.bride_dresses_project.model.Dress;
 import com.example.bride_dresses_project.model.FirebaseDressStatus;
 import com.example.bride_dresses_project.model.Model;

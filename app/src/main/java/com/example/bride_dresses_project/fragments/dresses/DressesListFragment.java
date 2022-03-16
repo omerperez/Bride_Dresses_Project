@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +25,7 @@ import com.example.bride_dresses_project.R;
 import com.example.bride_dresses_project.model.Dress;
 import com.example.bride_dresses_project.model.Model;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -31,7 +34,7 @@ public class DressesListFragment extends Fragment  implements DressItemClickList
 
     FloatingActionButton addBtn;
     RecyclerView rvDresses;
-    Model model = Model.instance;
+    DressListViewModel viewModel;
 
     boolean isLoading = false;
     @Override
@@ -54,57 +57,32 @@ public class DressesListFragment extends Fragment  implements DressItemClickList
         dialog.setMessage("Loading..");
         dialog.show();
         isLoading = true;
-        model.getAllDresses(new Model.GetAllDressesListener() {
-            @Override
-            public void onComplete(List<Dress> dresses) {
-                DressesRvAdapter adapter = new DressesRvAdapter(dresses,DressesListFragment.this);
-                rvDresses.setAdapter(adapter);
-                dialog.dismiss();
-                isLoading = false;
-            }
+        viewModel = new ViewModelProvider(this).get(DressListViewModel.class);
 
-            @Override
-            public void onFailure(Exception e) {
-                Toast.makeText(getContext(),"There was a problem loading the dresses",Toast.LENGTH_SHORT).show();
-                Log.d("DressListFragment","getAllDresses " + e.getMessage());
-                dialog.dismiss();
-                isLoading = false;
-            }
+
+        viewModel.getDressesLiveData().observe(getViewLifecycleOwner(), dresses -> {
+            DressesRvAdapter adapter = new DressesRvAdapter(dresses,DressesListFragment.this);
+            rvDresses.setAdapter(adapter);
+            dialog.dismiss();
+            isLoading = false;
         });
 
+        viewModel.getExceptionsLiveData().observe(getViewLifecycleOwner(), e -> {
+            Toast.makeText(getContext(),"There was a problem loading the dresses",Toast.LENGTH_SHORT).show();
+            Log.d("DressListFragment","getAllDresses " + e.getMessage());
+            dialog.dismiss();
+            isLoading = false;
+        });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(!isLoading) {
-            isLoading = true;
-            ProgressDialog dialog = new ProgressDialog(getContext());
-            dialog.setTitle("Bride Dresses");
-            dialog.setMessage("Loading..");
-            dialog.show();
-            model.getAllDresses(new Model.GetAllDressesListener() {
-                @Override
-                public void onComplete(List<Dress> dresses) {
-                    DressesRvAdapter adapter = new DressesRvAdapter(dresses,DressesListFragment.this);
-                    rvDresses.setAdapter(adapter);
-                    dialog.dismiss();
-                    isLoading = false;
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Toast.makeText(getContext(),"There was a problem loading the dresses",Toast.LENGTH_SHORT).show();
-                    Log.d("DressListFragment","getAllDresses " + e.getMessage());
-                    dialog.dismiss();
-                    isLoading = false;
-                }
-            });
-        }
-    }
 
     @Override
     public void onClick(Dress dress) {
-        // @TODO Move to details screen with dress
+        if(getView() == null)  return;
+        Gson g = new Gson();
+        String stringFromObject = g.toJson(dress);
+        Bundle b = new Bundle();
+        b.putString(DressDescriptionFragment.DRESS_PARAM,stringFromObject);
+        Navigation.findNavController(getView()).navigate(R.id.action_dressesListFragment_to_dressDescriptionFragment,b);
     }
 }

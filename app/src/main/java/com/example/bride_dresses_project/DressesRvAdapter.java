@@ -39,7 +39,7 @@ public class DressesRvAdapter extends RecyclerView.Adapter<DressesRvAdapter.Dres
         holder.priceTextView.setText(dress.getPrice());
         holder.typeTextView.setText(dress.getType());
         holder.designerTextView.setText("unset"); //@TODO Add Designer or User to Dress object
-        Picasso.with(holder.itemView.getContext()).load(dress.getImageUrl()).into(holder.imageView);
+        Picasso.get().load(dress.getImageUrl()).into(holder.imageView);
         holder.moreDetails.setOnClickListener(view -> listener.onClick(dress));
     }
 
