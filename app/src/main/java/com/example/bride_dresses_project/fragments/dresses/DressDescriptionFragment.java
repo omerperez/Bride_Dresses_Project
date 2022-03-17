@@ -2,51 +2,35 @@ package com.example.bride_dresses_project.fragments.dresses;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.bride_dresses_project.R;
+import com.example.bride_dresses_project.model.Dress;
+import com.google.gson.Gson;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DressDescriptionFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class DressDescriptionFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
+    public static final String DRESS_PARAM = "Dress";
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public DressDescriptionFragment() {
-        // Required empty public constructor
-    }
-
-
-    // TODO: Rename and change types and number of parameters
-    public static DressDescriptionFragment newInstance(String param1, String param2) {
-        DressDescriptionFragment fragment = new DressDescriptionFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private Dress mDress;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String stringObjectDress = getArguments().getString(DRESS_PARAM);
+            Gson g = new Gson();
+            mDress = g.fromJson(stringObjectDress,Dress.class);
         }
     }
 
@@ -55,5 +39,16 @@ public class DressDescriptionFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dress_description, container, false);
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if(mDress!=null) {
+            TextView tv = view.findViewById(R.id.dress_example);
+            tv.setText(mDress.getType());
+        }
     }
 }

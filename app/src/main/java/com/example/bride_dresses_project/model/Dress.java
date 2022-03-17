@@ -1,17 +1,27 @@
 package com.example.bride_dresses_project.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.UUID;
 
+
+@Entity
 public class Dress
 {
+    @PrimaryKey
+    @NonNull
     String id;
+
+
     String price;
     String imageUrl;
     String type;
     boolean isAvailable;
-    Designer designer;
+    String idOfUser;
     public Dress()
     {
         this.id = UUID.randomUUID().toString();
@@ -25,6 +35,22 @@ public class Dress
         this.type=type;
         this.price=price+"$";
         this.imageUrl=imageUrl;
+    }
+
+    public String getIdOfUser() {
+        return idOfUser;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setIdOfUser(String idOfUser) {
+        this.idOfUser = idOfUser;
     }
 
     public String getType() {

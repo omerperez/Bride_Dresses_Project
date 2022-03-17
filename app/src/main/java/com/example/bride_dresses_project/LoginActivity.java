@@ -13,16 +13,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.bride_dresses_project.model.Designer;
 import com.example.bride_dresses_project.model.Model;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-public class LoginActivity extends AppCompatActivity {
-
+public class LoginActivity extends AppCompatActivity {}
+/*
     EditText phone, password;
     Button loginBtn;
     TextView clickForRegister;
@@ -41,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
         phone = findViewById(R.id.login_phone);
         password = findViewById(R.id.login_password);
-        loginBtn = findViewById(R.id.login_btn);
+        loginBtn = findViewById(R.id.login_login_btn);
         clickForRegister = findViewById(R.id.login_click_here);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -74,3 +70,5 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 }
+
+ */

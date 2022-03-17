@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_createDressFragment_to_googleMapsFragment"
             app:destination="@id/googleMapsFragment" />
-        <action
-            android:id="@+id/action_createDressFragment_to_dressDescriptionFragment"
-            app:destination="@id/dressDescriptionFragment" />
     </fragment>
     <fragment
         android:id="@+id/googleMapsFragment"
@@ -52,6 +49,9 @@
         <action
             android:id="@+id/action_dressesListFragment_to_createDressFragment"
             app:destination="@id/createDressFragment" />
+        <action
+            android:id="@+id/action_dressesListFragment_to_dressDescriptionFragment"
+            app:destination="@id/dressDescriptionFragment" />
     </fragment>
     <action android:id="@+id/action_global_dressesListFragment" app:destination="@id/dressesListFragment" />
     <action android:id="@+id/action_global_createDressFragment" app:destination="@id/createDressFragment" />
