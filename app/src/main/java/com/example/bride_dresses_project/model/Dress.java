@@ -20,8 +20,8 @@ public class Dress
     String price;
     String imageUrl;
     String type;
-    boolean isAvailable;
-    String userPhone;
+    boolean isDeleted;
+    String userID;
     public Dress()
     {
         this.id = UUID.randomUUID().toString();
@@ -38,11 +38,11 @@ public class Dress
     }
 
     public String getIdOfUser() {
-        return userPhone;
+        return userID;
     }
 
     public void setAvailable(boolean available) {
-        isAvailable = available;
+        isDeleted = available;
     }
 
     public void setId(String id) {
@@ -50,7 +50,7 @@ public class Dress
     }
 
     public void setIdOfUser(String idOfUser) {
-        this.userPhone = idOfUser;
+        this.userID = idOfUser;
     }
 
     public String getType() {
