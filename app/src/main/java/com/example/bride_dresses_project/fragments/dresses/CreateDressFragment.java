@@ -92,7 +92,7 @@ public class CreateDressFragment extends Fragment {
                 saveBtn.setOnClickListener(view1 -> {
                     final String priceTxt = price.getText().toString();
                     final String typeTxt = type.getText().toString();
-                    Dress dress = new Dress(priceTxt, typeTxt, "");// ברגע שאוסיף בלייאאוט את השדות להוסיף גם פה בשביל שזה ישמר בפייר ביס
+                    Dress dress = new Dress(typeTxt ,priceTxt, "");// ברגע שאוסיף בלייאאוט את השדות להוסיף גם פה בשביל שזה ישמר בפייר ביס
 
                     if(dressImageUri ==null) {
                         Toast.makeText(getContext(), "Please Select an image for the dress", Toast.LENGTH_SHORT).show();
