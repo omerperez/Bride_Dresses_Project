@@ -24,7 +24,7 @@
         android:theme="@style/Theme.Bride_Dresses_Project"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activities.UsersActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,7 +57,7 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.UsersActivity"
             android:exported="false">
         </activity>
         <activity
