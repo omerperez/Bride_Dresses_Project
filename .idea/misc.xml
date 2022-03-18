@@ -17,15 +17,19 @@
         <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/app_bar_main.xml" value="0.389945652173913" />
         <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/content_main.xml" value="0.39719202898550726" />
         <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/dress_item.xml" value="0.290625" />
-        <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_create_dress.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_create_dress.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_delete.xml" value="0.39719202898550726" />
         <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_delete_dress.xml" value="0.2734375" />
-        <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_dress_description.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_dress_description.xml" value="0.5" />
         <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_dresses_list.xml" value="0.29635416666666664" />
         <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_edit_dress.xml" value="0.39719202898550726" />
         <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_gallery.xml" value="0.29635416666666664" />
+        <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_home_page.xml" value="0.1" />
+        <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_list.xml" value="0.1" />
+        <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/layout/fragment_maps.xml" value="0.1" />
         <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/menu/activity_main_drawer.xml" value="0.4296875" />
+        <entry key="..\:/Users/linoy bekker/Desktop/BrideDressesProject/Bride_Dresses_Project/app/src/main/res/menu/bottom_nav_menu.xml" value="0.30572916666666666" />
         <entry key="app/src/main/res/drawable-v21/ic_menu_camera.xml" value="0.3625" />
         <entry key="app/src/main/res/drawable-v21/ic_menu_gallery.xml" value="0.3625" />
         <entry key="app/src/main/res/drawable/ic_email.xml" value="0.28072916666666664" />

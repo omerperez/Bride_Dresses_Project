@@ -7,6 +7,47 @@
     android:layout_height="match_parent"
     android:background="@color/begin">
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/dress_description_delete_button"
+        android:layout_width="47dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="10dp"
+        app:backgroundTint="@color/black"
+        app:icon="@drawable/delete"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="15dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/dress_description_edit_button"
+        android:layout_width="47dp"
+        android:layout_height="35dp"
+        android:layout_marginRight="16dp"
+        app:backgroundTint="@color/black"
+        app:icon="@drawable/edit"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/dress_description_delete_button"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="15dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/dress_description_back_button"
+        android:layout_width="47dp"
+        android:layout_height="35dp"
+        app:backgroundTint="#838181"
+        app:icon="@drawable/back_arrow_icon"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="16dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="19dp"
+        tools:layout_editor_absoluteY="15dp" />
+
     <TextView
         android:id="@+id/main_title"
         android:layout_width="wrap_content"
