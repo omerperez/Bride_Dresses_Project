@@ -20,27 +20,14 @@
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
     <fragment
-        android:id="@+id/deleteDressFragment2"
-        android:name="com.example.bride_dresses_project.fragments.dresses.DeleteDressFragment"
-        android:label="fragment_delete_dress"
-        tools:layout="@layout/fragment_delete_dress" />
-    <fragment
         android:id="@+id/dressDescriptionFragment"
         android:name="com.example.bride_dresses_project.fragments.dresses.DressDescriptionFragment"
         android:label="fragment_dress_description"
         tools:layout="@layout/fragment_dress_description" >
         <action
-            android:id="@+id/action_dressDescriptionFragment_to_editDressFragment"
-            app:destination="@id/editDressFragment" />
-        <action
-            android:id="@+id/action_dressDescriptionFragment_to_deleteDressFragment2"
-            app:destination="@id/deleteDressFragment2" />
+            android:id="@+id/action_dressDescriptionFragment_to_dressesListFragment"
+            app:destination="@id/dressesListFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/editDressFragment"
-        android:name="com.example.bride_dresses_project.fragments.dresses.EditDressFragment"
-        android:label="fragment_edit_dress"
-        tools:layout="@layout/fragment_edit_dress" />
     <fragment
         android:id="@+id/dressesListFragment"
         android:name="com.example.bride_dresses_project.fragments.dresses.DressesListFragment"
