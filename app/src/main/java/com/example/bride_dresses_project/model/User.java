@@ -16,6 +16,8 @@ import java.util.Map;
 public class User {
     @PrimaryKey
     @NonNull
+    private String id;
+    private String email;
     private String phone;
     private String fullName;
     private String password;
@@ -28,13 +30,32 @@ public class User {
 
     public User(){}
 
-    public User(String fullName, String phone, String password, String streetAddress, String state, String country) {
+    public User(String id,String email,String fullName, String phone, String password, String streetAddress, String state, String country) {
+        this.id = id;
+        this.email = email;
         this.fullName = fullName;
         this.phone = phone;
         this.password = password;
         this.streetAddress = streetAddress;
         this.state = state;
         this.country = country;
+    }
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getImageUrl() {
@@ -103,6 +124,7 @@ public class User {
 
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<String, Object>();
+        json.put("email", this.email);
         json.put("phone", this.phone);
         json.put("fullName", this.fullName);
         json.put("password", this.password);
@@ -115,8 +137,9 @@ public class User {
         json.put("updateDate", FieldValue.serverTimestamp());
         return json;
     }
-
+/*
     public static User create(Map<String, Object> json) {
+        String email = (String) json.get("email");
         String phone = (String) json.get("phone");
         String fullName = (String) json.get("fullName");
         String password = (String) json.get("password");
@@ -129,11 +152,13 @@ public class User {
         Timestamp ts = (Timestamp)json.get("updateDate");
         Long updateDate = ts.getSeconds();
 
-        User user = new User(fullName, phone, password, streetAddress, state, country);
+        User user = new User(id,email,fullName, phone, password, streetAddress, state, country);
         user.setUpdateDate(updateDate);
         user.setImageUrl(imageUrl);
         Log.d("tag","img"+imageUrl);
         return user;
     }
+
+ */
 
 }

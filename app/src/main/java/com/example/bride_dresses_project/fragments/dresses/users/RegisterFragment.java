@@ -1,4 +1,4 @@
-package com.example.bride_dresses_project;
+package com.example.bride_dresses_project.fragments.dresses.users;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bride_dresses_project.CameraUtilFragment;
+import com.example.bride_dresses_project.R;
 import com.example.bride_dresses_project.model.Model;
 import com.example.bride_dresses_project.model.User;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
@@ -29,7 +32,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 public class RegisterFragment extends CameraUtilFragment {
 
-    EditText fullNameEt, phoneEt, passwordEt, confirmPasswordEt,streetAddressEt, stateEt, countryEt;
+    EditText idEt,emailEt,fullNameEt, phoneEt, passwordEt, confirmPasswordEt,streetAddressEt, stateEt, countryEt;
     Button registerBtn;
     TextView clickForLoginTv;
     ImageView avatarImageView;
@@ -45,6 +48,8 @@ public class RegisterFragment extends CameraUtilFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
+        idEt = view.findViewById(R.id.register_id_et);
+        emailEt = view.findViewById(R.id.register_email_et);
         fullNameEt = view.findViewById(R.id.register_name_et);
         phoneEt = view.findViewById(R.id.register_phone_et);
         passwordEt = view.findViewById(R.id.register_password_et);
@@ -59,8 +64,7 @@ public class RegisterFragment extends CameraUtilFragment {
 
         progressIndicator = view.findViewById(R.id.register_fragment_progress_indicator);
 
-
-           avatarImageView.setOnClickListener(this::showCameraMenu);
+        avatarImageView.setOnClickListener(this::showCameraMenu);
 
         /*
         avatarImageView.setOnClickListener(new View.OnClickListener() {
@@ -86,9 +90,6 @@ public class RegisterFragment extends CameraUtilFragment {
                 //?finish
             }
         });
-
-
-
         return view;
     }
 
@@ -108,7 +109,9 @@ public class RegisterFragment extends CameraUtilFragment {
         progressIndicator.show();
 
         User user = new User();
+        //user.setId(idEt.getText().toString());
         user.setFullName(fullNameEt.getText().toString());
+        user.setEmail(emailEt.getText().toString());
         user.setPhone(phoneEt.getText().toString());
         user.setPassword(passwordEt.getText().toString());
         user.setStreetAddress(streetAddressEt.getText().toString());
@@ -124,11 +127,12 @@ public class RegisterFragment extends CameraUtilFragment {
 
                 }else{
                     user.setImageUrl(url);
-                    Model.instance.addUser(user, new Model.AddUserListener() {
+                    Log.d("tag","frag");
+                    Model.instance.register(user, passwordEt.getText().toString(),new Model.AddUserListener(){
                         @Override
                         public void onComplete() {
+                            Log.d("tag","frag");
                             Navigation.findNavController(registerBtn).popBackStack();
-
                         }
                     });
                 }
