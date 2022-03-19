@@ -4,8 +4,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterFragment"
+    tools:context=".fragments.dresses.users.RegisterFragment"
     android:background="@drawable/coverr">
+
+    <EditText
+        android:id="@+id/register_email_et"
+        android:layout_width="119dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/register_avatar_imv"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-63dp"
+        android:layout_marginEnd="10dp"
+        android:background="#30ffffff"
+        android:drawableLeft="@drawable/ic_person_signin"
+        android:drawablePadding="20dp"
+        android:hint="Email"
+        android:inputType="text"
+        android:maxLines="1"
+        android:padding="15dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
     <TextView
         android:id="@+id/register_title_tv"
@@ -54,15 +72,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/register_name_et"
-        android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
         android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_person_signin"
         android:drawablePadding="20dp"
         android:hint="Mobile Number"
-        android:maxLines="1"
         android:inputType="phone"
+        android:maxLines="1"
         android:padding="15dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white" />
@@ -177,5 +195,17 @@
         android:layout_marginBottom="20dp"
         android:text="Have an account? Click here"
         android:textColor="@color/white" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/register_fragment_progress_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:indeterminate="true"
+        app:showAnimationBehavior="none"
+        android:visibility="gone"/>
 
 </RelativeLayout>
