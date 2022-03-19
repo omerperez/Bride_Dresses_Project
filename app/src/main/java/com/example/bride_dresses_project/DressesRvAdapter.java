@@ -1,5 +1,6 @@
 package com.example.bride_dresses_project;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,19 +9,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bride_dresses_project.model.Dress;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DressesRvAdapter extends RecyclerView.Adapter<DressesRvAdapter.DressViewHolder> {
 
     private List<Dress> dresses;
     private DressItemClickListener listener;
-    public DressesRvAdapter(List<Dress> dresses,DressItemClickListener listener) {
-        this.dresses = dresses;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public DressesRvAdapter(List<Dress> dresses, DressItemClickListener listener) {
+        this.dresses = dresses.stream().filter( dress -> {
+            return !dress.isDeleted();
+        }).collect(Collectors.toList());
         this.listener = listener;
     }
 
@@ -33,9 +39,7 @@ public class DressesRvAdapter extends RecyclerView.Adapter<DressesRvAdapter.Dres
 
     @Override
     public void onBindViewHolder(@NonNull DressViewHolder holder, int position) {
-
         Dress dress = dresses.get(position);
-
         holder.priceTextView.setText(dress.getPrice());
         holder.typeTextView.setText(dress.getType());
         holder.designerTextView.setText("unset"); //@TODO Add Designer or User to Dress object

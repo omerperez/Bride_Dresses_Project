@@ -50,13 +50,7 @@ public class Model {
     public interface AddDesignerListener{
         void onComplete();
     }
-/*
-    public void createDesigner(User designer, Uri profileImage, AddDesignerListener listener){
-        modelFirebase.createDesigner( designer, profileImage ,listener);
-    }
 
-
- */
     public interface GetDesignerById{
         void onComplete(User designer);
     }
@@ -152,14 +146,17 @@ public class Model {
         @Override
         void onFailure(Exception e);
     }
-
-    public interface UpdateDressListener extends DressesListener<FirebaseDressStatus> {
-        @Override
-        void onComplete(FirebaseDressStatus updateStatus);
-
-        @Override
-        void onFailure(Exception e);
-    }
+//
+//    public interface UpdateDressListener extends DressesListener<FirebaseDressStatus> {
+//        @Override
+//        void onComplete(FirebaseDressStatus updateStatus);
+//
+//        @Override
+//        void onFailure(Exception e);
+//    }
+public interface UpdateDressListener {
+    void onComplete();
+}
 
     public interface DeleteDressByIdListener extends DressesListener<FirebaseDressStatus> {
         @Override
@@ -180,13 +177,17 @@ public class Model {
         modelFirebase.getDressById(dressId,listener);
     }
 
-    public void updateDress(final Dress dress, final UpdateDressListener listener) {
-        modelFirebase.updateDress(dress, listener);
+    public void updateDress( Dress dress,  UpdateDressListener lis) {
+        modelFirebase.updateDress(dress, lis);
     }
 
-    public void deleteDress(final String dressId, final DeleteDressByIdListener listener) {
-        modelFirebase.deleteDress(dressId, listener);
+    public void deleteDress(Dress dress, UpdateDressListener lis) {
+        dress.setDeleted(true);
+        modelFirebase.updateDress(dress, lis);
     }
+//    public void deleteDress(final String dressId, final DeleteDressByIdListener listener) {
+//        modelFirebase.deleteDress(dressId, listener);
+//    }
 
 
 }

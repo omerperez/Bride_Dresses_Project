@@ -39,9 +39,9 @@ public class ModelFirebase {
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://bridedressesproject-default-rtdb.firebaseio.com/");
     FirebaseStorage storage = FirebaseStorage.getInstance();
   DatabaseReference databaseReference = firebaseDatabase.getReference("designers");
-  StorageReference storageReference;
+    StorageReference storageReference;
 
-  User designer;
+    User designer;
     List<User> designersList = new ArrayList<>();
 
     public List<User> getDesignersList() {
@@ -168,19 +168,7 @@ public class ModelFirebase {
         void onComplete(List<Dress> list);
     }
 
-    /*
-    public void createDesigner(User designer, Uri profileImage , Model.AddDesignerListener listener) {
-        Map<String, Object> json = designer.toJson();
-        StorageReference riversFile = storageReference.child("images/" + designer.getImage());
-        riversFile.putFile(profileImage);
-        db.collection("Designer")
-                .document(designer.getPhone())
-                .set(json)
-                .addOnSuccessListener(unused -> listener.onComplete())
-                .addOnFailureListener(e -> listener.onComplete());
-    }
 
-     */
 
     public void addDesigner(User designer, Model.AddDesignerListener listener){
         db.collection("Designer")
@@ -261,43 +249,17 @@ public class ModelFirebase {
             }
         });
     }
-
-
-    public void updateDress(Dress dress,Model.UpdateDressListener listener) {
-
+    public void updateDress (Dress r, Model.UpdateDressListener lis) {
+        Map<String, Object> jsonReview = r.toMap();
         db.collection("Dresses")
-                .document(dress.getId())
-                .set(dress)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        listener.onComplete(new FirebaseDressStatus("Successfully updated " + dress.getId()));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                listener.onFailure(e);
-            }
-        });
-
+                .document(r.getId())
+                .update(jsonReview)
+                .addOnSuccessListener(unused -> lis.onComplete())
+                .addOnFailureListener(e -> lis.onComplete());
     }
 
-    public void deleteDress(String dressId,Model.DeleteDressByIdListener listener) {
-        db.collection("Dresses")
-                .document(dressId)
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        listener.onComplete(new FirebaseDressStatus("Successfully deleted dress " + dressId));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                listener.onFailure(e);
-            }
-        });
-    }
+
+
 
 
     public void addDress(Dress dress,Uri dressImageUri, Model.AddDressListener listener) {
