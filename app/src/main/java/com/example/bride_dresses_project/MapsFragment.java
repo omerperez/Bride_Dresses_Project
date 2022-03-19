@@ -105,9 +105,10 @@ public class MapsFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Map<String, String> map = (Map<String, String>) snapshot.getValue();
-                designer = new User(map.get("fullName"),
+                designer = new User(map.get("id"),
+                        map.get("email"),
+                        map.get("fullName"),
                         map.get("phone"),
-                        map.get("password"),
                         map.get("streetAddress"),
                         map.get("state"),
                         map.get("country"));

@@ -1,4 +1,4 @@
-package com.example.bride_dresses_project;
+package com.example.bride_dresses_project.fragments.dresses.users;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,19 +23,24 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bride_dresses_project.CameraUtilFragment;
+import com.example.bride_dresses_project.R;
 import com.example.bride_dresses_project.model.Model;
 import com.example.bride_dresses_project.model.User;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends CameraUtilFragment {
 
-    EditText fullNameEt, phoneEt, passwordEt, confirmPasswordEt,streetAddressEt, stateEt, countryEt;
+    EditText emailEt,fullNameEt, phoneEt, passwordEt, confirmPasswordEt,streetAddressEt, stateEt, countryEt;
     Button registerBtn;
     TextView clickForLoginTv;
     ImageView avatarImageView;
     String fileName;
     Uri imageToSave;
     String path;
+    private CircularProgressIndicator progressIndicator;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,6 +48,7 @@ public class RegisterFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
+        emailEt = view.findViewById(R.id.register_email_et);
         fullNameEt = view.findViewById(R.id.register_name_et);
         phoneEt = view.findViewById(R.id.register_phone_et);
         passwordEt = view.findViewById(R.id.register_password_et);
@@ -54,12 +61,19 @@ public class RegisterFragment extends Fragment {
         registerBtn = view.findViewById(R.id.register_btn);
         clickForLoginTv = view.findViewById(R.id.register_login_tv);
 
+        progressIndicator = view.findViewById(R.id.register_fragment_progress_indicator);
+
+        avatarImageView.setOnClickListener(this::showCameraMenu);
+
+        /*
         avatarImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 uploadImage();
             }
         });
+
+         */
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,13 +85,10 @@ public class RegisterFragment extends Fragment {
         clickForLoginTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(view).popBackStack();
+                Navigation.findNavController(view).navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment());
                 //?finish
             }
         });
-
-
-
         return view;
     }
 
@@ -93,10 +104,14 @@ public class RegisterFragment extends Fragment {
     }
 
     private void saveUser() {
+        registerBtn.setEnabled(false);
+        progressIndicator.show();
+
         User user = new User();
+        //user.setId(idEt.getText().toString());
         user.setFullName(fullNameEt.getText().toString());
+        user.setEmail(emailEt.getText().toString());
         user.setPhone(phoneEt.getText().toString());
-        user.setPassword(passwordEt.getText().toString());
         user.setStreetAddress(streetAddressEt.getText().toString());
         user.setState(stateEt.getText().toString());
         user.setCountry(countryEt.getText().toString());
@@ -110,11 +125,12 @@ public class RegisterFragment extends Fragment {
 
                 }else{
                     user.setImageUrl(url);
-                    Model.instance.addUser(user, new Model.AddUserListener() {
+                    Log.d("tag","frag");
+                    Model.instance.register(user, passwordEt.getText().toString(),new Model.AddUserListener(){
                         @Override
                         public void onComplete() {
-                            Navigation.findNavController(registerBtn).popBackStack();
-
+                            Log.d("tag","frag");
+                            Navigation.findNavController(registerBtn).navigate(RegisterFragmentDirections.actionRegisterFragmentToNavGraph());
                         }
                     });
                 }
@@ -129,6 +145,11 @@ public class RegisterFragment extends Fragment {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             avatarImageView.setImageBitmap(imageBitmap);
+        }else if (requestCode == REQUEST_OPEN_GALLERY && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            if (selectedImageUri != null) {
+                avatarImageView.setImageURI(selectedImageUri);
+            }
         }
     }
     /*

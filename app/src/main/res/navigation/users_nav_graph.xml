@@ -6,20 +6,27 @@
     app:startDestination="@id/registerFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.bride_dresses_project.LoginFragment"
+        android:name="com.example.bride_dresses_project.fragments.dresses.users.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_nav_graph"
+            app:destination="@id/nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.bride_dresses_project.RegisterFragment"
+        android:name="com.example.bride_dresses_project.fragments.dresses.users.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_nav_graph"
+            app:destination="@id/nav_graph" />
     </fragment>
+    <include app:graph="@navigation/nav_graph" />
 </navigation>

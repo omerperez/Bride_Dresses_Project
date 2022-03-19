@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
@@ -15,6 +16,8 @@ import java.util.concurrent.Executors;
 
 public class Model {
     public static final Model instance = new Model();
+    private final AuthFirebase authFirebase = new AuthFirebase();
+    static ModelFirebase modelFirebase = new ModelFirebase();
     Executor executor = Executors.newFixedThreadPool(1);
     Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
 
@@ -32,11 +35,9 @@ public class Model {
         return designerListLoadingState;
     }
 
-    static ModelFirebase modelFirebase = new ModelFirebase();
     private Model(){
         designerListLoadingState.setValue(DesignerListLoadingState.loaded);
     }
-
 
     public interface AddUserListener{
         void onComplete();
@@ -46,60 +47,80 @@ public class Model {
         modelFirebase.addUser(user, listener);
     }
 
-
-    public interface AddDesignerListener{
-        void onComplete();
+/*
+    public void createDesigner(User designer, Uri profileImage, AddDesignerListener listener){
+        modelFirebase.createDesigner( designer, profileImage ,listener);
     }
-
-    public interface GetDesignerById{
-        void onComplete(User designer);
+ */
+    public interface GetUserById{
+        void onComplete(User user);
     }
-
-    public User getDesignerByPhone(String designerPhoneNumber, GetDesignerById listener) {
-        modelFirebase.getDesignerByPhone(designerPhoneNumber, listener);
+/*
+    public User getUserById(String userId, GetUserById listener) {
+        modelFirebase.getUserById(userId, listener);
         return null;
     }
+
+ */
 
     public static void getDataFromFirebase()
     {
         modelFirebase.getDataFromFirebase();
     }
 
-    public interface GetDesignerListener{
-        void onComplete(User designer);
+    public interface GetUserListener{
+        void onComplete(User user);
+    }
+/*
+    public void GetUser(String id, GetUserListener listener) {
+        modelFirebase.getUserById(id,listener);
     }
 
-    public void GetDesigner(String phone, GetDesignerListener listener) {
-        modelFirebase.getDesiner(phone,listener);
+    public interface GetAllUsersListener extends Listener<List<User>> {}
+
+
+    public void getAllDesigners(final GetAllUsersListener listener){
+        modelFirebase.getAllUsers(listener);
     }
 
-
-    public interface GetAllDesignersListener extends Listener<List<User>> {}
-
-
-    public void getAllDesigners(final GetAllDesignersListener listener){
-        modelFirebase.getAllDesigners(listener);
+    public void updateUser(final User designer, final AddUserListener listener){
+        modelFirebase.updateuser(designer, listener);
     }
 
-    public interface UpdateDesignerListener extends AddDesignerListener {
+     */
 
-    }
-
-    public void updateDesigner(final User designer, final AddDesignerListener listener){
-        modelFirebase.updateDesigner(designer, listener);
-    }
-
-    interface deleteListener extends AddDesignerListener{}
-    public void deleteDesigner(User designer, deleteListener listener){
-        modelFirebase.deleteDesigner(designer,listener);
+    interface deleteListener extends AddUserListener{}
+    public void deleteUser(User user, deleteListener listener){
+        modelFirebase.deleteUser(user,listener);
     }
 
     public interface uploadImageListener extends Listener<String>{}
+
+    public interface LoginListener extends AddUserListener{}
+
+    public interface RegisterListener extends Listener<String>{}
 
     public static void uploadImage(Bitmap imageBmp, String name,final uploadImageListener listener) {
         modelFirebase.uploadImage(imageBmp,name,listener);
     }
 
+    public void register(User user, String password,AddUserListener userLis) {
+        Log.d("tag","model register");
+        authFirebase.register(user.getEmail(), password, userId -> {
+            Log.d("tag","auth");
+            user.setId(userId);
+            modelFirebase.addUser(user, userLis);
+        });
+    }
+
+    public void login(String email, String password, final LoginListener listener) {
+        Log.d("tag","model");
+        authFirebase.login(email, password,listener);
+    }
+
+    public boolean isSignedIn() {
+        return authFirebase.isSignedIn();
+    }
 
   /*  public final static Model instance = new Model();
 
