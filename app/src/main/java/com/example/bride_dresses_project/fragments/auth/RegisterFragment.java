@@ -64,7 +64,6 @@ public class RegisterFragment extends CameraUtilFragment {
         avatarImageView.setOnClickListener(this::showCameraMenu);
 
 
-
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
