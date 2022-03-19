@@ -339,6 +339,7 @@ public class ModelFirebase {
             public void onFailure(@NonNull Exception e) {
                 exceptionLiveData.postValue(e);
             }
+            // להוסיף מקרה שהוא לא הצליח להביא את השמלות
         });
 
     }
