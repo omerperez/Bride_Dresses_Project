@@ -61,8 +61,9 @@ public class RegisterFragment extends CameraUtilFragment {
         clickForLogin = registerFragment.findViewById(R.id.register_login_tv);
         progressIndicator = registerFragment.findViewById(R.id.register_fragment_progress_indicator);
         navController = NavHostFragment.findNavController(this);
-
         avatarImageView.setOnClickListener(this::showCameraMenu);
+
+
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,8 +86,8 @@ public class RegisterFragment extends CameraUtilFragment {
         }
     }
 
-    private void saveUser() {
 
+    private void saveUser() {
         String fullName = fullNameEt.getText().toString();
         String phone =  phoneEt.getText().toString();
         String email = emailEt.getText().toString();
