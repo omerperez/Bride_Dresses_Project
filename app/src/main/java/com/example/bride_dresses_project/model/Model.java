@@ -4,11 +4,16 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.example.bride_dresses_project.model.entities.Dress;
+import com.example.bride_dresses_project.model.entities.User;
+import com.example.bride_dresses_project.model.firebase.AuthFirebase;
+import com.example.bride_dresses_project.model.firebase.FirebaseDressStatus;
+import com.example.bride_dresses_project.model.firebase.ModelFirebase;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -39,105 +44,22 @@ public class Model {
         designerListLoadingState.setValue(DesignerListLoadingState.loaded);
     }
 
-    public interface AddUserListener{
-        void onComplete();
-    }
-
-    public void addUser(User user, AddUserListener listener){
-        modelFirebase.addUser(user, listener);
-    }
-
-/*
-    public void createDesigner(User designer, Uri profileImage, AddDesignerListener listener){
-        modelFirebase.createDesigner( designer, profileImage ,listener);
-    }
- */
-    public interface GetUserById{
-        void onComplete(User user);
-    }
-/*
-    public User getUserById(String userId, GetUserById listener) {
-        modelFirebase.getUserById(userId, listener);
-        return null;
-    }
-
- */
-
-    public static void getDataFromFirebase()
-    {
-        modelFirebase.getDataFromFirebase();
-    }
-
-    public interface GetUserListener{
-        void onComplete(User user);
-    }
-/*
-    public void GetUser(String id, GetUserListener listener) {
-        modelFirebase.getUserById(id,listener);
-    }
-
-    public interface GetAllUsersListener extends Listener<List<User>> {}
-
-
-    public void getAllDesigners(final GetAllUsersListener listener){
-        modelFirebase.getAllUsers(listener);
-    }
-
-    public void updateUser(final User designer, final AddUserListener listener){
-        modelFirebase.updateuser(designer, listener);
-    }
-
-     */
-
-    interface deleteListener extends AddUserListener{}
-    public void deleteUser(User user, deleteListener listener){
-        modelFirebase.deleteUser(user,listener);
-    }
-
-    public interface uploadImageListener extends Listener<String>{}
-
-    public interface LoginListener extends AddUserListener{}
-
-    public interface RegisterListener extends Listener<String>{}
-
-    public static void uploadImage(Bitmap imageBmp, String name,final uploadImageListener listener) {
-        modelFirebase.uploadImage(imageBmp,name,listener);
-    }
-
-    public void register(User user, String password,AddUserListener userLis) {
-        Log.d("tag","model register");
-        authFirebase.register(user.getEmail(), password, userId -> {
-            Log.d("tag","auth");
-            user.setId(userId);
-            modelFirebase.addUser(user, userLis);
+    public void register(ModelFirebase.AddUserListener addUserListener, User user, String password) {
+        authFirebase.register(user.getEmail(), password, uid -> {
+            user.setId(uid);
+            modelFirebase.addUser(addUserListener, user);
         });
     }
 
-    public void login(String email, String password, final LoginListener listener) {
-        Log.d("tag","model");
-        authFirebase.login(email, password,listener);
+    public static void uploadImage(Bitmap imageBmp, String name, ModelFirebase.UploadUserImageListener listener) {
+        modelFirebase.uploadUserImage(imageBmp,name,listener);
     }
 
-    public boolean isSignedIn() {
-        return authFirebase.isSignedIn();
+    public void login(String email, String password, AuthFirebase.LoginOnSuccessListener onSuccessListener, AuthFirebase.LoginOnFailureListener onFailureListener) {
+        authFirebase.login(email, password, onSuccessListener, onFailureListener);
     }
 
-  /*  public final static Model instance = new Model();
-
-    ModelFirebase modelFirebase = new ModelFirebase();
-    ModelSql modelSql = new ModelSql();
-
-    public void getAllDresses(final GetAllDressListener listener){
-        modelFirebase.getAllDresses(listener);
-    }
-
-    public void addDress(final Dress dress, final AddDressListener listener){
-        modelFirebase.addDress(dress,listener);
-    }
-
-*/
     /* Dresses */
-
     public interface DressesListener<T> {
         void onComplete(T object);
         void onFailure(Exception e);

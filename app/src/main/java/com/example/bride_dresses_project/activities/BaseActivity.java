@@ -17,24 +17,15 @@ import com.example.bride_dresses_project.R;
 
 public class BaseActivity extends AppCompatActivity {
 
-//    private Uri mCropImageUri;
-    BottomNavigationView navigationView;
     NavController navCtl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         NavHost navHost = (NavHost)getSupportFragmentManager().findFragmentById(R.id.base_navhost);
         navCtl = navHost.getNavController();
-
-//        View navView = findViewById(R.id.bottom_navigation);
-//        navView.setBackground(null);
-        View placeholder = findViewById(R.id.menub_create);
-        placeholder.setEnabled(false);
-
-        NavigationUI.setupActionBarWithNavController(this, navCtl);
     }
 
     @Override
@@ -68,13 +59,4 @@ public class BaseActivity extends AppCompatActivity {
         }
         return false;
     }
-
-    //
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
-//        fragment.onActivityResult(requestCode, resultCode, data);
-//    }
-
 }

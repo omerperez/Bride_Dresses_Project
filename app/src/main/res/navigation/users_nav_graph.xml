@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/users_nav_graph"
-    app:startDestination="@id/registerFragment">
+    app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.bride_dresses_project.fragments.dresses.users.LoginFragment"
+        android:name="com.example.bride_dresses_project.fragments.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -18,15 +18,13 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.bride_dresses_project.fragments.dresses.users.RegisterFragment"
+        android:name="com.example.bride_dresses_project.fragments.auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_registerFragment_to_nav_graph"
-            app:destination="@id/nav_graph" />
     </fragment>
     <include app:graph="@navigation/nav_graph" />
+    <action android:id="@+id/action_global_loginFragment" app:destination="@id/loginFragment" />
 </navigation>

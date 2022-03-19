@@ -1,6 +1,6 @@
 package com.example.bride_dresses_project.Interfaces;
 
-import com.example.bride_dresses_project.model.Dress;
+import com.example.bride_dresses_project.model.entities.Dress;
 
 public interface DressItemClickListener {
 

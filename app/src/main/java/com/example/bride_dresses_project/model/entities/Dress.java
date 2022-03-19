@@ -1,4 +1,4 @@
-package com.example.bride_dresses_project.model;
+package com.example.bride_dresses_project.model.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -10,7 +10,6 @@ import com.google.firebase.firestore.FieldValue;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 
 @Entity
 public class Dress

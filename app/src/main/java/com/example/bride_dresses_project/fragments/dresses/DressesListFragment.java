@@ -20,12 +20,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
+import com.example.bride_dresses_project.DressItemClickListener;
+import com.example.bride_dresses_project.adapters.DressesRvAdapter;
 import com.example.bride_dresses_project.Interfaces.DressItemClickListener;
 import com.example.bride_dresses_project.DressesRvAdapter;
 import com.example.bride_dresses_project.R;
-import com.example.bride_dresses_project.model.Dress;
-import com.example.bride_dresses_project.model.Model;
+import com.example.bride_dresses_project.model.entities.Dress;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
@@ -37,6 +37,8 @@ public class DressesListFragment extends Fragment  implements DressItemClickList
     FloatingActionButton addBtn;
     RecyclerView rvDresses;
     DressListViewModel viewModel;
+
+    public DressesListFragment(){}
 
     boolean isLoading = false;
     @Override

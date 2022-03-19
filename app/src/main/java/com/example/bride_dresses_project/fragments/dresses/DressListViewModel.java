@@ -3,7 +3,7 @@ package com.example.bride_dresses_project.fragments.dresses;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.bride_dresses_project.model.Dress;
+import com.example.bride_dresses_project.model.entities.Dress;
 import com.example.bride_dresses_project.model.Model;
 
 import java.util.List;
