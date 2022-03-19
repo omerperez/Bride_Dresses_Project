@@ -53,4 +53,7 @@
             android:id="@+id/action_dressesListFragment_to_dressDescriptionFragment"
             app:destination="@id/dressDescriptionFragment" />
     </fragment>
+    <action android:id="@+id/action_global_dressesListFragment" app:destination="@id/dressesListFragment" />
+    <action android:id="@+id/action_global_createDressFragment" app:destination="@id/createDressFragment" />
+    <include app:graph="@navigation/mobile_navigation" />
 </navigation>
