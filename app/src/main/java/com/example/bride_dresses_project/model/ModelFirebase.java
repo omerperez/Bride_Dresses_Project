@@ -41,8 +41,8 @@ public class ModelFirebase {
   DatabaseReference databaseReference = firebaseDatabase.getReference("designers");
   StorageReference storageReference;
 
-  User designer;
-    List<User> designersList = new ArrayList<>();
+  User user;
+    List<User> usersList = new ArrayList<>();
 
     public List<User> getUsersList() {
         return usersList;
