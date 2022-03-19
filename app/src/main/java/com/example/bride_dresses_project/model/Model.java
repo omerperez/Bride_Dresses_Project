@@ -58,7 +58,7 @@ public class Model {
     public void login(String email, String password, AuthFirebase.LoginOnSuccessListener onSuccessListener, AuthFirebase.LoginOnFailureListener onFailureListener) {
         authFirebase.login(email, password, onSuccessListener, onFailureListener);
     }
-
+    
     /* Dresses */
     public interface DressesListener<T> {
         void onComplete(T object);
@@ -89,14 +89,7 @@ public class Model {
         @Override
         void onFailure(Exception e);
     }
-//
-//    public interface UpdateDressListener extends DressesListener<FirebaseDressStatus> {
-//        @Override
-//        void onComplete(FirebaseDressStatus updateStatus);
-//
-//        @Override
-//        void onFailure(Exception e);
-//    }
+
 public interface UpdateDressListener {
     void onComplete();
 }
@@ -128,9 +121,6 @@ public interface UpdateDressListener {
         dress.setDeleted(true);
         modelFirebase.updateDress(dress, lis);
     }
-//    public void deleteDress(final String dressId, final DeleteDressByIdListener listener) {
-//        modelFirebase.deleteDress(dressId, listener);
-//    }
 
 
 }
