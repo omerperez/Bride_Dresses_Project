@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.bride_dresses_project.DressItemClickListener;
+import com.example.bride_dresses_project.Interfaces.DressItemClickListener;
 import com.example.bride_dresses_project.DressesRvAdapter;
 import com.example.bride_dresses_project.R;
 import com.example.bride_dresses_project.model.Dress;

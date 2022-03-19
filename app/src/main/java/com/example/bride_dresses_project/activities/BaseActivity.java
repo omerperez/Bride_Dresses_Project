@@ -29,8 +29,8 @@ public class BaseActivity extends AppCompatActivity {
         NavHost navHost = (NavHost)getSupportFragmentManager().findFragmentById(R.id.base_navhost);
         navCtl = navHost.getNavController();
 
-        View navView = findViewById(R.id.bottom_navigation);
-        navView.setBackground(null);
+//        View navView = findViewById(R.id.bottom_navigation);
+//        navView.setBackground(null);
         View placeholder = findViewById(R.id.menub_create);
         placeholder.setEnabled(false);
 

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bride_dresses_project.Interfaces.DressItemClickListener;
 import com.example.bride_dresses_project.model.Dress;
 import com.squareup.picasso.Picasso;
 
