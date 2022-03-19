@@ -62,11 +62,9 @@ public class ModelFirebase {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Map<String, String> map = (Map<String, String>) snapshot.getValue();
-                user = new User(map.get("id"),
-                        map.get("email"),
+                user = new User(map.get("email"),
                         map.get("fullName"),
                         map.get("phone"),
-                        map.get("password"),
                         map.get("streetAddress"),
                         map.get("state"),
                         map.get("country"));

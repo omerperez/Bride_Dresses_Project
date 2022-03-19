@@ -96,6 +96,8 @@ public class Model {
 
     public interface uploadImageListener extends Listener<String>{}
 
+    public interface LoginListener extends AddUserListener{}
+
     public interface RegisterListener extends Listener<String>{}
 
     public static void uploadImage(Bitmap imageBmp, String name,final uploadImageListener listener) {
@@ -111,8 +113,9 @@ public class Model {
         });
     }
 
-    public void login(String email, String password) {
-        authFirebase.login(email, password);
+    public void login(String email, String password, final LoginListener listener) {
+        Log.d("tag","model");
+        authFirebase.login(email, password,listener);
     }
 
     public boolean isSignedIn() {

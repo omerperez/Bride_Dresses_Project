@@ -109,7 +109,6 @@ public class MapsFragment extends Fragment {
                         map.get("email"),
                         map.get("fullName"),
                         map.get("phone"),
-                        map.get("password"),
                         map.get("streetAddress"),
                         map.get("state"),
                         map.get("country"));

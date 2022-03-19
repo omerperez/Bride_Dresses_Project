@@ -32,7 +32,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 public class RegisterFragment extends CameraUtilFragment {
 
-    EditText idEt,emailEt,fullNameEt, phoneEt, passwordEt, confirmPasswordEt,streetAddressEt, stateEt, countryEt;
+    EditText emailEt,fullNameEt, phoneEt, passwordEt, confirmPasswordEt,streetAddressEt, stateEt, countryEt;
     Button registerBtn;
     TextView clickForLoginTv;
     ImageView avatarImageView;
@@ -48,7 +48,6 @@ public class RegisterFragment extends CameraUtilFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        idEt = view.findViewById(R.id.register_id_et);
         emailEt = view.findViewById(R.id.register_email_et);
         fullNameEt = view.findViewById(R.id.register_name_et);
         phoneEt = view.findViewById(R.id.register_phone_et);
@@ -86,7 +85,7 @@ public class RegisterFragment extends CameraUtilFragment {
         clickForLoginTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(view).popBackStack();
+                Navigation.findNavController(view).navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment());
                 //?finish
             }
         });
@@ -113,7 +112,6 @@ public class RegisterFragment extends CameraUtilFragment {
         user.setFullName(fullNameEt.getText().toString());
         user.setEmail(emailEt.getText().toString());
         user.setPhone(phoneEt.getText().toString());
-        user.setPassword(passwordEt.getText().toString());
         user.setStreetAddress(streetAddressEt.getText().toString());
         user.setState(stateEt.getText().toString());
         user.setCountry(countryEt.getText().toString());
@@ -132,7 +130,7 @@ public class RegisterFragment extends CameraUtilFragment {
                         @Override
                         public void onComplete() {
                             Log.d("tag","frag");
-                            Navigation.findNavController(registerBtn).popBackStack();
+                            Navigation.findNavController(registerBtn).navigate(RegisterFragmentDirections.actionRegisterFragmentToNavGraph());
                         }
                     });
                 }
@@ -147,6 +145,11 @@ public class RegisterFragment extends CameraUtilFragment {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             avatarImageView.setImageBitmap(imageBitmap);
+        }else if (requestCode == REQUEST_OPEN_GALLERY && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            if (selectedImageUri != null) {
+                avatarImageView.setImageURI(selectedImageUri);
+            }
         }
     }
     /*

@@ -20,7 +20,6 @@ public class User {
     private String email;
     private String phone;
     private String fullName;
-    private String password;
     private String streetAddress;
     private String state;
     private String country;
@@ -30,12 +29,20 @@ public class User {
 
     public User(){}
 
-    public User(String id,String email,String fullName, String phone, String password, String streetAddress, String state, String country) {
+    public User(String id,String email,String fullName, String phone, String streetAddress, String state, String country) {
         this.id = id;
         this.email = email;
         this.fullName = fullName;
         this.phone = phone;
-        this.password = password;
+        this.streetAddress = streetAddress;
+        this.state = state;
+        this.country = country;
+    }
+
+    public User(String email,String fullName, String phone, String streetAddress, String state, String country) {
+        this.email = email;
+        this.fullName = fullName;
+        this.phone = phone;
         this.streetAddress = streetAddress;
         this.state = state;
         this.country = country;
@@ -82,14 +89,6 @@ public class User {
         this.phone = phone;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getStreetAddress() {
         return streetAddress;
     }
@@ -127,7 +126,6 @@ public class User {
         json.put("email", this.email);
         json.put("phone", this.phone);
         json.put("fullName", this.fullName);
-        json.put("password", this.password);
         json.put("streetAddress", this.streetAddress);
         json.put("state", this.state);
         json.put("country", this.country);

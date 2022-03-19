@@ -41,32 +41,24 @@ public class AuthFirebase {
                         }
                     }
                 });
-
-
-        /*mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult().getUser() != null) {
-                        Log.d("tag","auth register");
-                        registerListener.onComplete(task.getResult().getUser().getUid());
-                    }
-                });
-
-         */
     }
 
-    public void login(String email, String password) {
+    public void login(String email, String password, Model.LoginListener loginListener) {
+        Log.d("tag","auth");
+
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("TAG", "signInWithEmail:success");
+                            Log.d("tag", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            loginListener.onComplete();
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w("TAG", "signInWithEmail:failure", task.getException());
+                            Log.w("tag", "signInWithEmail:failure", task.getException());
                             Toast.makeText(MyApplication.getContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);

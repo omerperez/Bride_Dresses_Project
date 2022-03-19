@@ -23,7 +23,7 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/login_phone_ed"
+        android:id="@+id/login_email_ed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_title_tv"
@@ -34,8 +34,8 @@
         android:background="#30ffffff"
         android:drawableStart="@drawable/ic_person_signin"
         android:drawablePadding="20dp"
-        android:hint="Mobile Number"
-        android:inputType="phone"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
         android:maxLines="1"
         android:padding="20dp"
         android:textColor="@color/white"
@@ -45,7 +45,7 @@
         android:id="@+id/login_password_ed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_phone_ed"
+        android:layout_below="@+id/login_email_ed"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
@@ -86,5 +86,17 @@
         android:text="New Account ? Click here"
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/login_fragment_progress_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:indeterminate="true"
+        app:showAnimationBehavior="none"
+        android:visibility="gone"/>
 
 </RelativeLayout>

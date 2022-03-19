@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/miHome"
+        android:id="@+id/menub_homepage"
         android:icon="@drawable/ic_home"
         android:title="Home" />
 
-    <item android:id="@+id/miSearch"
+    <item android:id="@+id/menub_map"
         android:title="Search"
         android:icon="@drawable/ic_search" />
 
-    <item android:id="@+id/placeholder"
+    <item android:id="@+id/menub_create"
         android:title="" />
 
-    <item android:id="@+id/miProfile"
+    <item android:id="@+id/menub_logout"
         android:title="Profile"
         android:icon="@drawable/ic_person" />
 
-    <item android:id="@+id/miSettings"
+    <item android:id="@+id/menub_my_product"
         android:title="Settings"
         android:icon="@drawable/ic_settings" />
 </menu>
