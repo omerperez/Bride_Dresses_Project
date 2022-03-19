@@ -3,7 +3,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.bride_dresses_project.model.Model;
-import com.example.bride_dresses_project.model.Dress;
+import com.example.bride_dresses_project.model.entities.Dress;
 import java.util.List;
 
 public class DressesListRvViewModel {LiveData<List<Dress>> data;
