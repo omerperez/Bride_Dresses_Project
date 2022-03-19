@@ -1,4 +1,4 @@
-package com.example.bride_dresses_project;
+package com.example.bride_dresses_project.Interfaces;
 
 import com.example.bride_dresses_project.model.Dress;
 
