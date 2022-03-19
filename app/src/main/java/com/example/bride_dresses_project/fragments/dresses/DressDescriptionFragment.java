@@ -2,15 +2,11 @@ package com.example.bride_dresses_project.fragments.dresses;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bride_dresses_project.R;
-import com.example.bride_dresses_project.model.Dress;
+import com.example.bride_dresses_project.model.entities.Dress;
 import com.example.bride_dresses_project.model.Model;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 

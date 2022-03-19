@@ -1,11 +1,15 @@
-package com.example.bride_dresses_project.model;
+package com.example.bride_dresses_project.model.entities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.example.bride_dresses_project.ContextApplication;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
@@ -14,6 +18,10 @@ import java.util.Map;
 
 @Entity
 public class User {
+
+    private static final String LAST_UPDATED = "UserLastUpdated";
+    public static final String UPDATE_FIELD = "updateDate";
+
     @PrimaryKey
     @NonNull
     private String id;
@@ -24,13 +32,12 @@ public class User {
     private String state;
     private String country;
     private String imageUrl;
-
-    Long updateDate = new Long(0);
+    private Long updateDate = new Long(0);
 
     public User(){}
 
-    public User(String id,String email,String fullName, String phone, String streetAddress, String state, String country) {
-        this.id = id;
+    @Ignore
+    public User(String fullName, String email, String phone, String streetAddress, String state, String country) {
         this.email = email;
         this.fullName = fullName;
         this.phone = phone;
@@ -39,7 +46,8 @@ public class User {
         this.country = country;
     }
 
-    public User(String email,String fullName, String phone, String streetAddress, String state, String country) {
+    public User(String id, String fullName, String email, String phone, String streetAddress, String state, String country) {
+        this.id = id;
         this.email = email;
         this.fullName = fullName;
         this.phone = phone;
@@ -57,6 +65,34 @@ public class User {
         return email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public Long getUpdateDate() {
+        return updateDate;
+    }
+
     public void setId(@NonNull String id) {
         this.id = id;
     }
@@ -65,63 +101,35 @@ public class User {
         this.email = email;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getFullName() {
-        return fullName;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getStreetAddress() {
-        return streetAddress;
-    }
-
     public void setStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
-    }
-
-    public String getState() {
-        return state;
     }
 
     public void setState(String state) {
         this.state = state;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
     public void setCountry(String country) {
         this.country = country;
     }
 
-    public Long getUpdateDate() {
-        return updateDate;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public void setUpdateDate(Long updateDate) {
         this.updateDate = updateDate;
     }
 
-    public Map<String, Object> toJson() {
+    public Map<String, Object> convertUserToJson() {
         Map<String, Object> json = new HashMap<String, Object>();
         json.put("email", this.email);
         json.put("phone", this.phone);
@@ -130,33 +138,21 @@ public class User {
         json.put("state", this.state);
         json.put("country", this.country);
         json.put("imageUrl", imageUrl);
-        Log.d("tag",imageUrl);
-
         json.put("updateDate", FieldValue.serverTimestamp());
+
         return json;
     }
-/*
-    public static User create(Map<String, Object> json) {
-        String email = (String) json.get("email");
-        String phone = (String) json.get("phone");
-        String fullName = (String) json.get("fullName");
-        String password = (String) json.get("password");
-        String streetAddress = (String) json.get("streetAddress");
-        String state = (String) json.get("state");
-        String country = (String) json.get("country");
-        String imageUrl = (String) json.get("imageUrl");
-        Log.d("tag",imageUrl);
 
-        Timestamp ts = (Timestamp)json.get("updateDate");
-        Long updateDate = ts.getSeconds();
-
-        User user = new User(id,email,fullName, phone, password, streetAddress, state, country);
-        user.setUpdateDate(updateDate);
-        user.setImageUrl(imageUrl);
-        Log.d("tag","img"+imageUrl);
-        return user;
+    public static Long getLocalLastUpdated() {
+        SharedPreferences sp = ContextApplication
+                .getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        return sp.getLong(User.LAST_UPDATED, 0);
     }
 
- */
+    public static void setLocalLastUpdated(Long timestamp) {
+        SharedPreferences.Editor ed = ContextApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
+        ed.putLong(User.LAST_UPDATED, timestamp);
+        ed.apply();
+    }
 
 }

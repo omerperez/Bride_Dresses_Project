@@ -1,10 +1,7 @@
 package com.example.bride_dresses_project.fragments.dresses;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,10 +9,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -30,25 +23,9 @@ import android.widget.Toast;
 
 import com.example.bride_dresses_project.R;
 
-import com.example.bride_dresses_project.model.Dress;
-import com.example.bride_dresses_project.model.FirebaseDressStatus;
+import com.example.bride_dresses_project.model.entities.Dress;
+import com.example.bride_dresses_project.model.firebase.FirebaseDressStatus;
 import com.example.bride_dresses_project.model.Model;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
-
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-import me.shaohui.advancedluban.Luban;
-import me.shaohui.advancedluban.OnCompressListener;
 
 public class CreateDressFragment extends Fragment {
     EditText price, type;

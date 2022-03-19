@@ -16,8 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.bride_dresses_project.model.User;
-import com.example.bride_dresses_project.model.ModelFirebase;
+import com.example.bride_dresses_project.model.entities.User;
+import com.example.bride_dresses_project.model.firebase.ModelFirebase;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

@@ -1,4 +1,4 @@
-package com.example.bride_dresses_project;
+package com.example.bride_dresses_project.utils;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;

@@ -1,4 +1,4 @@
-package com.example.bride_dresses_project.model;
+package com.example.bride_dresses_project.model.firebase;
 
 public class FirebaseDressStatus {
     private String message;
