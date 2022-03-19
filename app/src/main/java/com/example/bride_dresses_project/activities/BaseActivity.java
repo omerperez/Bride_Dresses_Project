@@ -1,4 +1,4 @@
-package com.example.bride_dresses_project;
+package com.example.bride_dresses_project.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import com.example.bride_dresses_project.R;
 
 public class BaseActivity extends AppCompatActivity {
 

@@ -1,10 +1,12 @@
 package com.example.bride_dresses_project.fragments.dresses;
 
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -44,6 +46,7 @@ public class DressesListFragment extends Fragment  implements DressItemClickList
         return inflater.inflate(R.layout.fragment_dresses_list, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

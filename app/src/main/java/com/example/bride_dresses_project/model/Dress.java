@@ -5,7 +5,10 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -14,14 +17,14 @@ public class Dress
 {
     @PrimaryKey
     @NonNull
-    String id;
+    private String id;
+    private String price;
+    private String imageUrl;
+    private String type;
+    private Long updateDate;
+    private String ownerId;
+    private boolean deleted;
 
-
-    String price;
-    String imageUrl;
-    String type;
-    boolean isDeleted;
-    String userID;
     public Dress()
     {
         this.id = UUID.randomUUID().toString();
@@ -35,46 +38,76 @@ public class Dress
         this.type=type;
         this.price=price+"$";
         this.imageUrl=imageUrl;
+        this.updateDate=System.currentTimeMillis();
     }
 
-    public String getIdOfUser() {
-        return userID;
+    @NonNull
+    public String getId() {
+        return id;
     }
 
-    public void setAvailable(boolean available) {
-        isDeleted = available;
-    }
-
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
-    public void setIdOfUser(String idOfUser) {
-        this.userID = idOfUser;
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getType() {
         return type;
     }
-    public String getId() {
-        return id.toString();
-    }
+
     public void setType(String type) {
         this.type = type;
     }
-    public String getPrice() {
-        return price;
-    }
-    public void setPrice(String price) {
-        this.price = price;
-    }
-    public String getImageUrl() {
-        return imageUrl;
-    }
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+
+    public Long getUpdateDate() {
+        return updateDate;
     }
 
+    public void setUpdateDate(Long updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("price", price);
+        result.put("type", type);
+        result.put("imageUrl", imageUrl);
+        result.put("deleted", deleted);
+        result.put("ownerId", ownerId);
+        result.put("updateDate",updateDate);
+        return result;
+    }
     //---------------------------------//
 
 }

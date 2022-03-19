@@ -7,6 +7,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bride_dresses_project.activities.BaseActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     Button designerBtn, clientBtn;
