@@ -23,7 +23,6 @@ import com.squareup.picasso.Picasso;
 
 public class DressDescriptionFragment extends Fragment {
 
-
     public static final String DRESS_PARAM = "Dress";
     private Dress mDress;
     MaterialButton backButton;
@@ -45,24 +44,21 @@ public class DressDescriptionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_dress_description, container, false);
         TextView dressType=view.findViewById(R.id.dressItemType);
         TextView dressDesigner=view.findViewById(R.id.dressItemDesigner);
         TextView dressPrice=view.findViewById(R.id.dressItemPrice);
         ImageView dressImage=view.findViewById(R.id.dressItemImage);
-      editButton=view.findViewById(R.id.dress_description_edit_button);
+        editButton=view.findViewById(R.id.dress_description_edit_button);
          deleteButton=view.findViewById(R.id.dress_description_delete_button);
          backButton=view.findViewById(R.id.dress_description_back_button);
         navController = NavHostFragment.findNavController(this);
-
         dressType.setText(mDress.getType());
         dressPrice.setText(mDress.getPrice());
-       // dressDesigner.setText(mDress.getUser().getFullName());
+       // dressDesigner.setText(mDress.getUser().getFullName()); TODO
         Picasso.get().load(mDress.getImageUrl()).into(dressImage);
         setBackButtonOnClickListener();
         setDeleteButtonOnClickListener();
-
 
         return  view;
     }

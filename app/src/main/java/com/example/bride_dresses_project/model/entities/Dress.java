@@ -1,28 +1,27 @@
 package com.example.bride_dresses_project.model.entities;
-
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+
 @Entity
 public class Dress
 {
+    public static final String DRESS_COLLECTION_NAME ="Dresses" ;
     @PrimaryKey
-    @NonNull
+   @NonNull
     private String id;
     private String price;
-    private String imageUrl;
-    private String type;
+    private  String imageUrl;
+    private  String type;
     private Long updateDate;
     private String ownerId;
-    private boolean deleted;
+    private  boolean deleted;
 
     public Dress()
     {
@@ -40,12 +39,19 @@ public class Dress
         this.updateDate=System.currentTimeMillis();
     }
 
-    @NonNull
-    public String getId() {
+    public Dress(String type,String price, String id, Boolean deleted) {
+        this.type = type;
+        this.price=price;
+        this.id = id;
+        this.deleted = deleted;
+    }
+
+//  @NonNull
+    public  String getId() {
         return id;
     }
 
-    public void setId(@NonNull String id) {
+    public void setId( String id) {
         this.id = id;
     }
 
@@ -97,10 +103,36 @@ public class Dress
         this.deleted = deleted;
     }
 
+    public  Map<String, Object> toJson() {
+        Map<String, Object> json = new HashMap<String, Object>();
+        json.put("id",id);
+        json.put("type",type);
+        json.put("price",price);
+        json.put("deleted",deleted);
+        json.put("updateDate", FieldValue.serverTimestamp());
+        json.put("imageUrl",imageUrl);
+        return json;
+    }
+
+    public static Dress create(Map<String, Object> json) {
+        String id = (String) json.get("id");
+        String type = (String) json.get("type");
+        String price = (String) json.get("price");
+        Boolean deleted = (Boolean) json.get("deleted");
+        Timestamp ts = (Timestamp)json.get("updateDate");
+        Long updateDate = ts.getSeconds();
+        String imageUrl = (String)json.get("imageUrl");
+        Dress dress = new Dress(type,price,id,deleted);
+        dress.setUpdateDate(updateDate);
+        dress.setImageUrl(imageUrl);
+        return dress;
+    }
+
+
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("price", price);
         result.put("type", type);
+        result.put("price", price);
         result.put("imageUrl", imageUrl);
         result.put("deleted", deleted);
         result.put("ownerId", ownerId);

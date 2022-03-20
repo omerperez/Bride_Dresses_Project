@@ -7,12 +7,15 @@
 
     <fragment
         android:id="@+id/createDressFragment"
-        android:name="com.example.bride_dresses_project.fragments.dresses.CreateDressFragment"
+        android:name="com.example.bride_dresses_project.fragments.dresses.AddDressFragment"
         android:label="fragment_create_dress"
-        tools:layout="@layout/fragment_create_dress" >
+        tools:layout="@layout/fragment_add_dress" >
         <action
             android:id="@+id/action_createDressFragment_to_googleMapsFragment"
             app:destination="@id/googleMapsFragment" />
+        <action
+            android:id="@+id/action_createDressFragment_to_dressesListFragment"
+            app:destination="@id/dressesListFragment" />
     </fragment>
     <fragment
         android:id="@+id/googleMapsFragment"
