@@ -8,7 +8,7 @@
     android:background="@color/begin">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/dress_description_delete_button"
+        android:id="@+id/dress_description_page_delete_button"
         android:layout_width="47dp"
         android:layout_height="35dp"
         android:layout_marginStart="10dp"
@@ -22,7 +22,7 @@
         tools:layout_editor_absoluteY="15dp" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/dress_description_edit_button"
+        android:id="@+id/dress_description_page_edit_button"
         android:layout_width="47dp"
         android:layout_height="35dp"
         android:layout_marginRight="16dp"
@@ -31,7 +31,7 @@
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconSize="16dp"
-        app:layout_constraintEnd_toStartOf="@+id/dress_description_delete_button"
+        app:layout_constraintEnd_toStartOf="@+id/dress_description_page_delete_button"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="15dp" />
 

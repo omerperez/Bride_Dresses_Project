@@ -49,8 +49,8 @@ public class DressDescriptionFragment extends Fragment {
         TextView dressDesigner=view.findViewById(R.id.dressItemDesigner);
         TextView dressPrice=view.findViewById(R.id.dressItemPrice);
         ImageView dressImage=view.findViewById(R.id.dressItemImage);
-        editButton=view.findViewById(R.id.dress_description_edit_button);
-         deleteButton=view.findViewById(R.id.dress_description_delete_button);
+        editButton=view.findViewById(R.id.dress_description_page_edit_button);
+         deleteButton=view.findViewById(R.id.dress_description_page_delete_button);
          backButton=view.findViewById(R.id.dress_description_back_button);
         navController = NavHostFragment.findNavController(this);
         dressType.setText(mDress.getType());
