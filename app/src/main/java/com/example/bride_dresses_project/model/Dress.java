@@ -15,13 +15,13 @@ public class Dress
     @PrimaryKey
     @NonNull
     String id;
-
-
     String price;
     String imageUrl;
     String type;
     boolean isAvailable;
     String idOfUser;
+
+    Long updateDate = new Long(0);
     public Dress()
     {
         this.id = UUID.randomUUID().toString();

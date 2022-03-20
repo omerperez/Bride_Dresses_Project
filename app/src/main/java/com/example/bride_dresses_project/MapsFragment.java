@@ -15,9 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.bride_dresses_project.model.Model;
 import com.example.bride_dresses_project.model.User;
 import com.example.bride_dresses_project.model.ModelFirebase;
+import com.example.bride_dresses_project.viewModel.UsersListViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,42 +40,89 @@ import java.util.Map;
 
 public class MapsFragment extends Fragment {
 
+    UsersListViewModel viewModel;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(UsersListViewModel.class);
+    }
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
-
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-
-        ModelFirebase modelFirebase;
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
+            Log.d("tag1", "map ready");
+
             // LatLng sydney = new LatLng(-34, 151);
             //googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
             //googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-            getDataFromFirebase(googleMap);
+            viewModel.getUsersList().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+                @Override
+                public void onChanged(List<User> users) {
+                    LatLng address = null;
+                    Log.d("tag1", "here2");
+
+                    for (int i = 0; i < users.size(); i++) {
+                        try {
+                            String addr = users.get(i).getStreetAddress() + "," +
+                                    users.get(i).getState() + "," +
+                                    users.get(i).getCountry() + ",";
+                            Log.d("tag1", addr);
+
+                            address = getLatLongFromAddress(getActivity(), addr);
+                            Log.d("tag1", address.toString());
+
+                            googleMap.addMarker(new MarkerOptions().position(address)
+                                    .title(users.get(i).getStreetAddress()));
+
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLng(address));
+
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }
+            });
+
+            /*
+            Model.getAllUsers(new Model.GetAllUsersListener() {
+                @Override
+                public void onComplete(List<User> result) {
+                    LatLng address = null;
+                    Log.d("tag1", "here2");
+
+                    for (int i = 0; i < result.size(); i++) {
+                        try {
+                            String addr = result.get(i).getStreetAddress() + "," +
+                                    result.get(i).getState() + "," +
+                                    result.get(i).getCountry() + ",";
+                            Log.d("tag1", addr);
+
+                            address = getLatLongFromAddress(getActivity(), addr);
+                            Log.d("tag1", address.toString());
+
+                            googleMap.addMarker(new MarkerOptions().position(address)
+                                    .title(result.get(i).getStreetAddress()));
+
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLng(address));
+
+
+
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }
+            });
+
+             */
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
                 Log.d("tag1", "permissions");
                 return;
             }
-            Log.d("tag1", "eden");
-
             googleMap.setMyLocationEnabled(true);
-
         }
     };
 
@@ -80,10 +131,12 @@ public class MapsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        Log.d("tag1", "onCreateView here");
+
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
+
         return view;
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -95,9 +148,9 @@ public class MapsFragment extends Fragment {
         }
     }
 
-    User designer;
-    List<User> designersList = new ArrayList<>();
 
+
+/*
     void getDataFromFirebase(GoogleMap googleMap){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://bridedressesproject-default-rtdb.firebaseio.com/");
         DatabaseReference databaseReference = firebaseDatabase.getReference("designers");
@@ -105,31 +158,30 @@ public class MapsFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Map<String, String> map = (Map<String, String>) snapshot.getValue();
-                designer = new User(map.get("id"),
-                        map.get("email"),
+                user = new User(map.get("email"),
                         map.get("fullName"),
                         map.get("phone"),
                         map.get("streetAddress"),
                         map.get("state"),
                         map.get("country"));
 
-                designersList.add(designer);
-                Log.d("tag1", String.valueOf(designersList.size()));
+                usersList.add(user);
+                Log.d("tag1", String.valueOf(usersList.size()));
                 LatLng address = null;
 
-                Log.d("tag1", String.valueOf(designersList.size()) + "deden");
-                for (int i = 0; i < designersList.size(); i++) {
+                Log.d("tag1", String.valueOf(usersList.size()) + "deden");
+                for (int i = 0; i < usersList.size(); i++) {
                     try {
-                        String addr = designersList.get(i).getStreetAddress() + "," +
-                                designersList.get(i).getState() + "," +
-                                designersList.get(i).getCountry() + ",";
+                        String addr = usersList.get(i).getStreetAddress() + "," +
+                                usersList.get(i).getState() + "," +
+                                usersList.get(i).getCountry() + ",";
                         Log.d("tag1", addr);
 
                         address = getLatLongFromAddress(getActivity(), addr);
                         Log.d("tag1", address.toString());
 
                         googleMap.addMarker(new MarkerOptions().position(address)
-                                .title(designersList.get(i).getStreetAddress()));
+                                .title(usersList.get(i).getStreetAddress()));
 
                         googleMap.moveCamera(CameraUpdateFactory.newLatLng(address));
 
@@ -161,6 +213,8 @@ public class MapsFragment extends Fragment {
     }
 
 
+ */
+
 
     LatLng getLatLongFromAddress(Context context,String strAddress){
         Geocoder geocoder = new Geocoder(context);
@@ -175,7 +229,6 @@ public class MapsFragment extends Fragment {
             Address loc = address.get(0);
             latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
         }catch (Exception e){}
-        Log.d("tag1", String.valueOf(latLng));
 
         return latLng;
     }

@@ -1,5 +1,7 @@
 package com.example.bride_dresses_project.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
@@ -10,6 +12,10 @@ import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.bride_dresses_project.model.room.AppLocalDb;
+import com.google.type.DateTime;
+
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -18,25 +24,25 @@ public class Model {
     public static final Model instance = new Model();
     private final AuthFirebase authFirebase = new AuthFirebase();
     static ModelFirebase modelFirebase = new ModelFirebase();
+    ModelSql modelSql = new ModelSql();
     Executor executor = Executors.newFixedThreadPool(1);
     Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
 
-    public enum DesignerListLoadingState{
+    public enum UserListLoadingState{
         loading,
         loaded
+    }
+    MutableLiveData<UserListLoadingState> userListLoadingState = new MutableLiveData<UserListLoadingState>();
+    public LiveData<UserListLoadingState> getUserListLoadingState() {
+        return userListLoadingState;
     }
 
     public interface Listener<T>{
         void onComplete(T result);
     }
 
-    MutableLiveData<DesignerListLoadingState> designerListLoadingState = new MutableLiveData<DesignerListLoadingState>();
-    public LiveData<DesignerListLoadingState> getDesignerListLoadingState() {
-        return designerListLoadingState;
-    }
-
     private Model(){
-        designerListLoadingState.setValue(DesignerListLoadingState.loaded);
+        userListLoadingState.setValue(UserListLoadingState.loaded);
     }
 
     public interface AddUserListener{
@@ -47,41 +53,81 @@ public class Model {
         modelFirebase.addUser(user, listener);
     }
 
-/*
-    public void createDesigner(User designer, Uri profileImage, AddDesignerListener listener){
-        modelFirebase.createDesigner( designer, profileImage ,listener);
-    }
- */
     public interface GetUserById{
         void onComplete(User user);
     }
-/*
-    public User getUserById(String userId, GetUserById listener) {
-        modelFirebase.getUserById(userId, listener);
-        return null;
-    }
 
- */
 
-    public static void getDataFromFirebase()
-    {
-        modelFirebase.getDataFromFirebase();
-    }
-
-    public interface GetUserListener{
-        void onComplete(User user);
-    }
-/*
-    public void GetUser(String id, GetUserListener listener) {
-        modelFirebase.getUserById(id,listener);
+    MutableLiveData<List<User>> usersList;
+    public LiveData<List<User>> getAll(){
+        if (usersList.getValue() == null) {
+            usersList=modelSql.getAllUsers();
+            refreshUsersList();
+        };
+        return  usersList;
     }
 
     public interface GetAllUsersListener extends Listener<List<User>> {}
 
+    public  MutableLiveData<List<User>> getAllUsers(){
 
-    public void getAllDesigners(final GetAllUsersListener listener){
-        modelFirebase.getAllUsers(listener);
+        Long lastUpdateDate = new Long(0);
+        modelFirebase.getAllUsers(lastUpdateDate, new GetAllUsersListener() {
+            @Override
+            public void onComplete(List<User> result) {
+                usersList.setValue(result);
+            }
+        });
+        return usersList;
     }
+
+
+    public void refreshUsersList(){
+        userListLoadingState.setValue(UserListLoadingState.loading);
+
+        // get last local update date
+        Long lastUpdateDate = User.getLocalLastUpdated();
+
+        // firebase get all updates since lastLocalUpdateDate
+        modelFirebase.getAllUsers(lastUpdateDate, new GetAllUsersListener() {
+            @Override
+            public void onComplete(List<User> list) {
+                // add all records to the local db
+                long lastU = 0;
+                for (User user: list) {
+                    modelSql.addUser(user,null);
+                    if(user.getUpdateDate()>lastUpdateDate){
+                        lastU = user.getUpdateDate();
+                    }
+                }
+                //update the local last update date
+                User.setLocalLastUpdated(lastU);
+
+                //returns the updates data to the listeners
+
+                 List<User> stList = AppLocalDb.db.userDao().getAll();
+                        usersList.postValue(stList);
+                        userListLoadingState.postValue(UserListLoadingState.loaded);
+
+                }
+            });
+    }
+
+    /*
+ public static void getAllUsers(final GetAllUsersListener listener){
+        Log.d("tag1", "model here");
+
+        Long lastUpdateDate = new Long(0);
+        modelFirebase.getAllUsers(lastUpdateDate,listener);
+    }
+
+ */
+
+
+/*
+
+
+    public interface GetAllUsersListener extends Listener<List<User>> {}
 
     public void updateUser(final User designer, final AddUserListener listener){
         modelFirebase.updateuser(designer, listener);
@@ -97,6 +143,10 @@ public class Model {
     public interface uploadImageListener extends Listener<String>{}
 
     public interface LoginListener extends AddUserListener{}
+
+    public interface LogoutListener{
+        void onComplete();
+    }
 
     public interface RegisterListener extends Listener<String>{}
 

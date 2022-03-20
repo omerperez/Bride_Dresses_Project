@@ -31,13 +31,11 @@ public class AuthFirebase {
                             Log.d("tag", "createUserWithEmail:success");
                             //FirebaseUser user = mAuth.getCurrentUser();
                             registerListener.onComplete(task.getResult().getUser().getUid());
-                            //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("tag", "createUserWithEmail:failure", task.getException());
                             Toast.makeText(MyApplication.getContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
                         }
                     }
                 });
@@ -78,5 +76,11 @@ public class AuthFirebase {
         }
         return null;
     }
+
+    public void logout(Model.LogoutListener lis) {
+        mAuth.signOut();
+        lis.onComplete();
+    }
+
 
 }

@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -35,67 +37,39 @@ import java.util.Map;
 public class ModelFirebase {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://bridedressesproject-default-rtdb.firebaseio.com/");
+    //FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://bridedressesproject-default-rtdb.firebaseio.com/");
     FirebaseStorage storage = FirebaseStorage.getInstance();
-  DatabaseReference databaseReference = firebaseDatabase.getReference("users");
-  StorageReference storageReference;
+    StorageReference storageReference;
 
-  User user;
-    List<User> usersList = new ArrayList<>();
-
-    public List<User> getUsersList() {
-        return usersList;
-    }
 
     public ModelFirebase(){
-//       this.databaseReference = db.getReferenceFromUrl("https://bridedressesproject-default-rtdb.firebaseio.com/");
         storageReference = storage.getReference();
-    //FromUrl("gs://bridedressesproject.appspot.com");
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(false)
                 .build();
         db.setFirestoreSettings(settings);
     }
 
-    public void getDataFromFirebase() {
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Map<String, String> map = (Map<String, String>) snapshot.getValue();
-                user = new User(map.get("email"),
-                        map.get("fullName"),
-                        map.get("phone"),
-                        map.get("streetAddress"),
-                        map.get("state"),
-                        map.get("country"));
+    public void getAllUsers(Long lastUpdateDate, Model.GetAllUsersListener listener) {
 
-                usersList.add(user);
-                Log.d("tag1", String.valueOf(usersList.size()));
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+            db.collection("Users")
+                    .whereGreaterThanOrEqualTo("updateDate", new Timestamp(lastUpdateDate, 0))
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        List<User> list = new ArrayList<>();
+                        if (task.isSuccessful()){
+                            for (QueryDocumentSnapshot doc : task.getResult()){
+                                User student = User.create(doc.getData());
+                                if (student != null){
+                                    list.add(student);
+                                }
+                            }
+                        }
+                        listener.onComplete(list);
+                    });
 
     }
+
 
     /*
     public void updateUser(User user, Model.AddUserListener listener) {
@@ -118,27 +92,6 @@ public class ModelFirebase {
             }
         });
     }
-
-
-
-    public void getStudentById(String studentId, Model.GetStudentById listener) {
-        db.collection(Student.COLLECTION_NAME)
-                .document(studentId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        Student student = null;
-                        if (task.isSuccessful() & task.getResult()!= null){
-                            student = Student.create(task.getResult().getData());
-                        }
-                        listener.onComplete(student);
-                    }
-                });
-
-    }
-
-
 
     public void getUserById(String id, Model.GetUserListener listener) {
         db.collection("Users")
@@ -182,26 +135,6 @@ public class ModelFirebase {
                 .addOnSuccessListener(unused -> listener.onComplete())
                 .addOnFailureListener(e -> listener.onComplete());
     }
-
-    /*
-
-    public void getDesignerByPhone(String designerPhoneNumber, Model.GetUserById listener) {
-        db.collection("Designer")
-                .document(designerPhoneNumber)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        User user = null;
-                        if (task.isSuccessful() & task.getResult()!= null){
-                            user = User.create(task.getResult().getData());
-                        }
-                        listener.onComplete(user);
-                    }
-                });
-    }
-
-     */
 
     public static void uploadImage(Bitmap imageBmp, String name, Model.uploadImageListener listener){
         FirebaseStorage storage = FirebaseStorage.getInstance();
