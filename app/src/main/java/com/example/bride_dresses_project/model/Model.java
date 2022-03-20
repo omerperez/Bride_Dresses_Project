@@ -94,11 +94,9 @@ public class Model {
         });
 
 
-        // firebase get all updates since lastLocalUpdateDate
         modelFirebase.getAllDresses(lastUpdateDate, new ModelFirebase.GetAllDressesListener() {
             @Override
             public void onComplete(List<Dress> list) {
-                // add all records to the local db
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -110,14 +108,12 @@ public class Model {
                                 lud = dress.getUpdateDate();
                             }
                         }
-                        // update last local update date
                         ContextApplication.getContext()
                                 .getSharedPreferences("TAG", Context.MODE_PRIVATE)
                                 .edit()
                                 .putLong("DressesLastUpdateDate", lud)
                                 .commit();
 
-                        //return all data to caller
                         List<Dress> stList = AppLocalDb.db.dressDao().getAll();
                         dressesList.postValue(stList);
                         dressListLoadingState.postValue(DressListLoadingState.loaded);
