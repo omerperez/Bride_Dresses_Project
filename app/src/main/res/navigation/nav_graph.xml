@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/googleMapsFragment"
-        android:name="com.example.bride_dresses_project.MapsFragment"
+        android:name="com.example.bride_dresses_project.fragments.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
     <fragment
