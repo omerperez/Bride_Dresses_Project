@@ -16,12 +16,12 @@
         android:layout_marginTop="60dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="60dp"
-        android:gravity="center"
         android:fontFamily="sans-serif-condensed"
-        android:textStyle="bold"
+        android:gravity="center"
         android:text="Bride Dresses Login"
         android:textColor="@color/white"
-        android:textSize="34dp" />
+        android:textSize="34dp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/login_phone"

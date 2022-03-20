@@ -4,26 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.dresses.users.RegisterFragment"
+    tools:context=".fragments.auth.RegisterFragment"
     android:background="@drawable/coverr">
-
-    <EditText
-        android:id="@+id/register_email_et"
-        android:layout_width="119dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/register_avatar_imv"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="-63dp"
-        android:layout_marginEnd="10dp"
-        android:background="#30ffffff"
-        android:drawableLeft="@drawable/ic_person_signin"
-        android:drawablePadding="20dp"
-        android:hint="Email"
-        android:inputType="text"
-        android:maxLines="1"
-        android:padding="15dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
 
     <TextView
         android:id="@+id/register_title_tv"
@@ -32,10 +14,10 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center"
-        android:text="Designer Register"
+        android:text="Sign Up"
         android:textColor="@color/white"
         android:textSize="30dp"
         android:textStyle="bold" />
@@ -50,17 +32,35 @@
         android:src="@drawable/ic_add_img" />
 
     <EditText
-        android:id="@+id/register_name_et"
+        android:id="@+id/register_email_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/register_avatar_imv"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="-7dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_person_signin"
         android:drawablePadding="20dp"
-        android:hint="Company Name"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:padding="15dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
+
+    <EditText
+        android:id="@+id/register_name_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/register_email_et"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:background="#30ffffff"
+        android:drawableLeft="@drawable/ic_person_signin"
+        android:drawablePadding="20dp"
+        android:hint="Full Name"
         android:inputType="text"
         android:maxLines="1"
         android:padding="15dp"

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.BaseActivity">
 
     <TextView
         android:id="@+id/textTitleDressList"
@@ -20,16 +20,26 @@
         android:text="Dresses List:" />
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dressRv"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/dresseslist_swiperefresh"
         android:layout_width="0dp"
-        tools:listitem="@layout/dress_item"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/textTitleDressList"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dressRv"
+            android:layout_width="0dp"
+            tools:listitem="@layout/dress_item"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/textTitleDressList"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_new_dress_btn"
         android:layout_width="wrap_content"
@@ -39,5 +49,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/ic_add"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
