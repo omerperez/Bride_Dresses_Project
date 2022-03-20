@@ -52,7 +52,6 @@ public class AddDressFragment extends Fragment {
     public static int PICK_IMAGE_REQUEST = 2;
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
