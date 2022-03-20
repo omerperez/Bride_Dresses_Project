@@ -46,7 +46,6 @@ public class Dress
         this.deleted = deleted;
     }
 
-//  @NonNull
     public  String getId() {
         return id;
     }
