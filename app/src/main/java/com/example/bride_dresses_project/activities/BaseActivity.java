@@ -36,7 +36,6 @@ public class BaseActivity extends AppCompatActivity {
         binding = ActivityBaseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new DressesListFragment());
-
         binding.bottomNavView.setOnItemSelectedListener(item ->{
             switch (item.getItemId()){
                 case R.id.nav_home:
