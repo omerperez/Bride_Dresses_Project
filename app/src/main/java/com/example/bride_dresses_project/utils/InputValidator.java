@@ -1,4 +1,4 @@
-package com.example.bride_dresses_project.Utils;
+package com.example.bride_dresses_project.utils;
 import android.text.Editable;
 import android.util.Patterns;
 import androidx.annotation.Nullable;
