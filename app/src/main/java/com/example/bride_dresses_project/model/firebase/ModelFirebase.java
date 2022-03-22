@@ -56,10 +56,10 @@ public class ModelFirebase {
                 .get()
                 .addOnCompleteListener(task -> {
                     List<User> list = new LinkedList<User>();
-                    if (task.isSuccessful()){
-                        for (QueryDocumentSnapshot doc : task.getResult()){
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
                             User user = User.create(doc.getData());
-                                list.add(user);
+                            list.add(user);
                         }
                     }
                     listener.onComplete(list);
@@ -71,15 +71,15 @@ public class ModelFirebase {
                 .document(id)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                User user= null;
-                if(task.isSuccessful() && task.getResult() != null){
-                    user = User.create(task.getResult().getData());
-                }
-                listener.onComplete(user);
-            }
-        });
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        User user = null;
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            user = User.create(task.getResult().getData());
+                        }
+                        listener.onComplete(user);
+                    }
+                });
     }
 
 //    public void deleteUser(User user, Model.DeleteListener listener) {
@@ -102,7 +102,7 @@ public class ModelFirebase {
                 .addOnFailureListener(e -> listener.onComplete());
     }
 
-    public void uploadImage(Bitmap imageBmp, String name, Model.uploadImageListener listener){
+    public void uploadImage(Bitmap imageBmp, String name, Model.uploadImageListener listener) {
         final StorageReference imagesRef = storage.getReference().child(USER_IMAGE_FOLDER).child(name);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         imageBmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -133,10 +133,11 @@ public class ModelFirebase {
 
     public void getAllDresses(Long lastUpdateDate, GetAllDressesListener listener) {
         db.collection(Dress.DRESS_COLLECTION_NAME)
-                .whereGreaterThanOrEqualTo("updateDate", new Timestamp(lastUpdateDate, 0))
+                //.whereGreaterThanOrEqualTo("updateDate", new Timestamp(lastUpdateDate, 0))
+                //.whereEqualTo("deleted", false)
                 .get()
                 .addOnCompleteListener(task -> {
-                    List<Dress> list = new LinkedList<Dress>();
+                    List<Dress> list = new LinkedList<>();
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
                             Dress student = Dress.create(doc.getData());

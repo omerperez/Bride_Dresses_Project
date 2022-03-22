@@ -1,10 +1,7 @@
 package com.example.bride_dresses_project.model;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -13,16 +10,12 @@ import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.bride_dresses_project.model.SQL.ModelSql;
-import com.google.type.DateTime;
-
-import java.util.Date;
 import com.example.bride_dresses_project.ContextApplication;
+import com.example.bride_dresses_project.model.SQL.ModelSql;
 import com.example.bride_dresses_project.model.entities.Dress;
 import com.example.bride_dresses_project.model.entities.User;
 import com.example.bride_dresses_project.model.firebase.AuthFirebase;
 import com.example.bride_dresses_project.model.firebase.ModelFirebase;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -39,7 +32,7 @@ public class Model {
     Executor executor = Executors.newFixedThreadPool(1);
     Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
 
-    public enum UserListLoadingState{
+    public enum UserListLoadingState {
         loading,
         loaded
     }
@@ -50,33 +43,36 @@ public class Model {
     }
 
     MutableLiveData<UserListLoadingState> userListLoadingState = new MutableLiveData<UserListLoadingState>();
+
     public LiveData<UserListLoadingState> getUserListLoadingState() {
         return userListLoadingState;
     }
 
-    private Model(){
+    private Model() {
         userListLoadingState.setValue(UserListLoadingState.loaded);
         dressListLoadingState.setValue(DressListLoadingState.loaded);
     }
 
-    public interface Listener<T>{
+    public interface Listener<T> {
         void onComplete(T result);
     }
 
-    public interface AddUserListener{
+    public interface AddUserListener {
         void onComplete();
     }
 
-    public void addUser(User user, AddUserListener listener){
+    public void addUser(User user, AddUserListener listener) {
         modelFirebase.addUser(user, listener);
     }
 
-    public interface GetUserByIdListener extends Listener<User>{}
+    public interface GetUserByIdListener extends Listener<User> {
+    }
 
     /* Need to do a function of getUserById */
 
     LiveData<List<User>> usersList;
-    public LiveData<List<User>> getAllUsers(){
+
+    public LiveData<List<User>> getAllUsers() {
 
         if (usersList == null) {
             usersList = modelSql.getAllUsers();
@@ -84,7 +80,9 @@ public class Model {
         }
         return usersList;
     }
-    public interface GetAllUsersListener extends Listener<List<User>>{}
+
+    public interface GetAllUsersListener extends Listener<List<User>> {
+    }
 
     public void refreshUsersList() {
 
@@ -94,16 +92,16 @@ public class Model {
             @Override
             public void onComplete(List<User> list) {
                 long lastUpdate = 0;
-                for (User user: list) {
+                for (User user : list) {
 
-                    if(user.getUpdateDate() > User.getLocalLastUpdated()) {
+                    if (user.getUpdateDate() > User.getLocalLastUpdated()) {
                         lastUpdate = user.getUpdateDate();
-                        Log.d("Phone",  user.getPhone());
-                        modelSql.addUser(user,null);
+                        Log.d("Phone", user.getPhone());
+                        modelSql.addUser(user, null);
 //                        Log.d("tag", modelSql.getAllUsers().getValue().get(0).toString());
                     }
                 }
-                if(lastUpdate != 0 ){
+                if (lastUpdate != 0) {
                     User.setLocalLastUpdated(lastUpdate);
                     usersList = AppLocalDb.db.userDao().getAll();
                 }
@@ -120,21 +118,24 @@ public class Model {
 //        modelFirebase.deleteUser(user,listener);
 //    }
 
-    public interface uploadImageListener extends Listener<String>{}
+    public interface uploadImageListener extends Listener<String> {
+    }
 
-    public interface LoginListener extends AddUserListener{}
+    public interface LoginListener extends AddUserListener {
+    }
 
-    public interface LogoutListener{
+    public interface LogoutListener {
         void onComplete();
     }
 
-    public interface RegisterListener extends Listener<String>{}
-
-    public static void uploadImage(Bitmap imageBmp, String name,final uploadImageListener listener) {
-        modelFirebase.uploadImage(imageBmp,name,listener);
+    public interface RegisterListener extends Listener<String> {
     }
 
-    public void register(User user, String password,AddUserListener userLis) {
+    public static void uploadImage(Bitmap imageBmp, String name, final uploadImageListener listener) {
+        modelFirebase.uploadImage(imageBmp, name, listener);
+    }
+
+    public void register(User user, String password, AddUserListener userLis) {
         authFirebase.register(user.getEmail(), password, userId -> {
             user.setId(userId);
             modelFirebase.addUser(user, userLis);
@@ -142,7 +143,7 @@ public class Model {
     }
 
     public void login(String email, String password, final LoginListener listener) {
-        authFirebase.login(email, password,listener);
+        authFirebase.login(email, password, listener);
     }
 
     public boolean isSignedIn() {
@@ -175,18 +176,14 @@ public class Model {
         return dressListLoadingState;
     }
 
-    MutableLiveData<List<Dress>> dressesList = new MutableLiveData<List<Dress>>();
+    MutableLiveData<List<Dress>> dressesList = new MutableLiveData<>();
 
-    public LiveData<List<Dress>> getAll() {
-        if (dressesList.getValue() == null) {
-            refreshDressList();
-        }
-        ;
+    public LiveData<List<Dress>> getAllDresses() {
         return dressesList;
     }
 
     public void refreshDressList() {
-        dressListLoadingState.setValue(DressListLoadingState.loading);
+        dressListLoadingState.postValue(DressListLoadingState.loading);
         Long lastUpdateDate = ContextApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("DressesLastUpdateDate", 0);
         executor.execute(() -> {
             List<Dress> stList = AppLocalDb.db.dressDao().getAll();
@@ -194,33 +191,28 @@ public class Model {
         });
 
 
-        modelFirebase.getAllDresses(lastUpdateDate, new ModelFirebase.GetAllDressesListener() {
+        modelFirebase.getAllDresses(lastUpdateDate, list -> executor.execute(new Runnable() {
             @Override
-            public void onComplete(List<Dress> list) {
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        Long lud = new Long(0);
-                        Log.d("TAG", "fb returned " + list.size());
-                        for (Dress dress : list) {
-                            AppLocalDb.db.dressDao().insertAll(dress);
-                            if (lud < dress.getUpdateDate()) {
-                                lud = dress.getUpdateDate();
-                            }
-                        }
-                        ContextApplication.getContext()
-                                .getSharedPreferences("TAG", Context.MODE_PRIVATE)
-                                .edit()
-                                .putLong("DressesLastUpdateDate", lud)
-                                .commit();
-
-                        List<Dress> stList = AppLocalDb.db.dressDao().getAll();
-                        dressesList.postValue(stList);
-                        dressListLoadingState.postValue(DressListLoadingState.loaded);
+            public void run() {
+                Long lud = new Long(0);
+                Log.d("TAG", "fb returned " + list.size());
+                for (Dress dress : list) {
+                    AppLocalDb.db.dressDao().insertAll(dress);
+                    if (lud < dress.getUpdateDate()) {
+                        lud = dress.getUpdateDate();
                     }
-                });
+                }
+                ContextApplication.getContext()
+                        .getSharedPreferences("TAG", Context.MODE_PRIVATE)
+                        .edit()
+                        .putLong("DressesLastUpdateDate", lud)
+                        .commit();
+
+                List<Dress> stList = AppLocalDb.db.dressDao().getAll();
+                dressesList.postValue(stList);
+                dressListLoadingState.postValue(DressListLoadingState.loaded);
             }
-        });
+        }));
     }
 
     public interface AddDressListener {
@@ -257,7 +249,7 @@ public class Model {
         void onComplete();
     }
 
-    public void updateDress( Dress dress,  UpdateDressListener lis) {
+    public void updateDress(Dress dress, UpdateDressListener lis) {
         modelFirebase.updateDress(dress, lis);
     }
 
