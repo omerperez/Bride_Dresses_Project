@@ -9,7 +9,7 @@
         android:id="@+id/createDressFragment"
         android:name="com.example.bride_dresses_project.fragments.dresses.AddDressFragment"
         android:label="fragment_create_dress"
-        tools:layout="@layout/fragment_add_dress" >
+        tools:layout="@layout/fragment_add_dress">
         <action
             android:id="@+id/action_createDressFragment_to_googleMapsFragment"
             app:destination="@id/googleMapsFragment" />
@@ -26,16 +26,19 @@
         android:id="@+id/dressDescriptionFragment"
         android:name="com.example.bride_dresses_project.fragments.dresses.DressDescriptionFragment"
         android:label="fragment_dress_description"
-        tools:layout="@layout/fragment_dress_description" >
+        tools:layout="@layout/fragment_dress_description">
         <action
             android:id="@+id/action_dressDescriptionFragment_to_dressesListFragment"
             app:destination="@id/dressesListFragment" />
+        <argument
+            android:name="dress"
+            app:argType="com.example.bride_dresses_project.model.entities.Dress" />
     </fragment>
     <fragment
         android:id="@+id/dressesListFragment"
         android:name="com.example.bride_dresses_project.fragments.dresses.DressesListFragment"
         android:label="fragment_dresses_list"
-        tools:layout="@layout/fragment_dresses_list" >
+        tools:layout="@layout/fragment_dresses_list">
         <action
             android:id="@+id/action_dressesListFragment_to_createDressFragment"
             app:destination="@id/createDressFragment" />
@@ -43,7 +46,14 @@
             android:id="@+id/action_dressesListFragment_to_dressDescriptionFragment"
             app:destination="@id/dressDescriptionFragment" />
     </fragment>
-    <action android:id="@+id/action_global_dressesListFragment" app:destination="@id/dressesListFragment" />
-    <action android:id="@+id/action_global_createDressFragment" app:destination="@id/createDressFragment" />
-    <include app:graph="@navigation/mobile_navigation" /><action android:id="@+id/action_global_googleMapsFragment" app:destination="@id/googleMapsFragment"/>
+    <action
+        android:id="@+id/action_global_dressesListFragment"
+        app:destination="@id/dressesListFragment" />
+    <action
+        android:id="@+id/action_global_createDressFragment"
+        app:destination="@id/createDressFragment" />
+    <include app:graph="@navigation/mobile_navigation" />
+    <action
+        android:id="@+id/action_global_googleMapsFragment"
+        app:destination="@id/googleMapsFragment" />
 </navigation>
