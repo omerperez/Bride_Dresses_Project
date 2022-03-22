@@ -29,8 +29,8 @@ public class Model {
     private static ModelFirebase modelFirebase = new ModelFirebase();
     private static ModelSql modelSql = new ModelSql();
 
-    Executor executor = Executors.newFixedThreadPool(1);
-    Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
+    public Executor executor = Executors.newFixedThreadPool(1);
+    public Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
 
     public enum UserListLoadingState {
         loading,
@@ -193,19 +193,23 @@ public class Model {
             @Override
             public void run() {
                 Long lud = new Long(0);
+                Integer counter = 0;
                 Log.d("TAG", "fb returned " + list.size());
                 for (Dress dress : list) {
                     if(dress.isDeleted()) {
                         Log.d("TAG", "fb returned " + dress.isDeleted());
                         lud = dress.getUpdateDate();
+                        counter++;
                         AppLocalDb.db.dressDao().delete(dress);
                     } else{
-                        if (lud < dress.getUpdateDate()) {
+                        if (lud < dress.getUpdateDate() && !dress.isDeleted()) {
                             lud = dress.getUpdateDate();
                             AppLocalDb.db.dressDao().insertAll(dress);
                         }
                     }
                 }
+                Log.d("TAG", "fb returned deleted " + counter);
+
                 ContextApplication.getContext()
                         .getSharedPreferences("TAG", Context.MODE_PRIVATE)
                         .edit()

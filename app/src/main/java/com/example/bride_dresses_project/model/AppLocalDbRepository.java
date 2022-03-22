@@ -13,5 +13,4 @@ import com.example.bride_dresses_project.model.entities.User;
 public abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract DressDao dressDao();
-
 }
