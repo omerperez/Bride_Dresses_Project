@@ -175,7 +175,6 @@ public class Model {
     public LiveData<DressListLoadingState> getDressListLoadingState() {
         return dressListLoadingState;
     }
-
     MutableLiveData<List<Dress>> dressesList = new MutableLiveData<>();
 
     public LiveData<List<Dress>> getAllDresses() {
@@ -235,13 +234,8 @@ public class Model {
         });
     }
 
-    public interface GetStudentById {
+    public interface GetDressById {
         void onComplete(Dress dress);
-    }
-
-    public Dress getStudentById(String studentId, GetStudentById listener) {
-        modelFirebase.getDressById(studentId, listener);
-        return null;
     }
 
 
