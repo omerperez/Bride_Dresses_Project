@@ -49,6 +49,7 @@ public class DressDescriptionFragment extends Fragment {
         // dressDesigner.setText(mDress.getUser().getFullName()); TODO
         Picasso.get().load(dress.getImageUrl()).into(dressImage);
         setDeleteButtonOnClickListener();
+//        setEditButtonOnClickListener();
         return view;
     }
 
@@ -64,5 +65,9 @@ public class DressDescriptionFragment extends Fragment {
             }).start();
         });
     }
-
+//    private void setEditButtonOnClickListener() {
+//        editButton.setOnClickListener(view -> {
+//            navController.navigate(DressDescriptionFragmentDirections.actionDressDescriptionFragmentToCreateDressFragment());
+//        });
+//    }
 }
