@@ -196,13 +196,15 @@ public class Model {
                 Long lud = new Long(0);
                 Log.d("TAG", "fb returned " + list.size());
                 for (Dress dress : list) {
-                    if(!dress.isDeleted()) {
-                        AppLocalDb.db.dressDao().insertAll(dress);
-                    }else{
-                        AppLocalDb.db.dressDao().delete(dress);
-                    }
-                    if (lud < dress.getUpdateDate()) {
+                    if(dress.isDeleted()) {
+                        Log.d("TAG", "fb returned " + dress.isDeleted());
                         lud = dress.getUpdateDate();
+                        AppLocalDb.db.dressDao().delete(dress);
+                    } else{
+                        if (lud < dress.getUpdateDate()) {
+                            lud = dress.getUpdateDate();
+                            AppLocalDb.db.dressDao().insertAll(dress);
+                        }
                     }
                 }
                 ContextApplication.getContext()
