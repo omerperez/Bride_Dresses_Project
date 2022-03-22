@@ -41,7 +41,7 @@ public class BaseActivity extends AppCompatActivity {
         binding.bottomNavView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_home_page:
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new DressesListFragment());
                     break;
                 case R.id.menu_map:
                     replaceFragment(new MapsFragment());
@@ -50,7 +50,7 @@ public class BaseActivity extends AppCompatActivity {
                     replaceFragment(new AddDressFragment());
                     break;
                 case R.id.menu_myproduct:
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new DressesListFragment());
                     break;
                 case R.id.menu_log_out:
                     Intent intent = new Intent(this, UsersActivity.class);
