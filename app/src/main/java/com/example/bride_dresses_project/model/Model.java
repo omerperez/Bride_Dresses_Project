@@ -196,9 +196,7 @@ public class Model {
                 Long lud = new Long(0);
                 Log.d("TAG", "fb returned " + list.size());
                 for (Dress dress : list) {
-                    if(!dress.isDeleted()) {
-                        AppLocalDb.db.dressDao().insertAll(dress);
-                    }else{
+                    if(dress.isDeleted()) {
                         AppLocalDb.db.dressDao().delete(dress);
                     }
                     if (lud < dress.getUpdateDate()) {

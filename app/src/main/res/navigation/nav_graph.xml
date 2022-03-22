@@ -52,7 +52,6 @@
     <action
         android:id="@+id/action_global_createDressFragment"
         app:destination="@id/createDressFragment" />
-    <include app:graph="@navigation/mobile_navigation" />
     <action
         android:id="@+id/action_global_googleMapsFragment"
         app:destination="@id/googleMapsFragment" />
