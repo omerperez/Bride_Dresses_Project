@@ -190,14 +190,17 @@ public class Model {
             dressesList.postValue(stList);
         });
 
-
         modelFirebase.getAllDresses(lastUpdateDate, list -> executor.execute(new Runnable() {
             @Override
             public void run() {
                 Long lud = new Long(0);
                 Log.d("TAG", "fb returned " + list.size());
                 for (Dress dress : list) {
-                    AppLocalDb.db.dressDao().insertAll(dress);
+                    if(!dress.isDeleted()) {
+                        AppLocalDb.db.dressDao().insertAll(dress);
+                    }else{
+                        AppLocalDb.db.dressDao().delete(dress);
+                    }
                     if (lud < dress.getUpdateDate()) {
                         lud = dress.getUpdateDate();
                     }
