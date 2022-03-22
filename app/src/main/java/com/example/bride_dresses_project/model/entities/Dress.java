@@ -25,8 +25,8 @@ public class Dress implements Parcelable {
     private String price;
     private String imageUrl;
     private String type;
-    private Long updateDate;
     private String ownerId;
+    private Long updateDate;
     private boolean deleted;
 
     public Dress() {
@@ -34,17 +34,19 @@ public class Dress implements Parcelable {
         type = "";
         price = "";
         imageUrl = "";
+        ownerId = "";
     }
 
-    public Dress(String type, String price, String imageUrl) {
+    public Dress(String type, String price, String imageUrl, String ownerId) {
         this.id = UUID.randomUUID().toString();
         this.type = type;
         this.price = price + "$";
         this.imageUrl = imageUrl;
         this.updateDate = System.currentTimeMillis();
+        this.ownerId = ownerId;
     }
 
-    public Dress(String type, String price, String id, Boolean deleted) {
+    public Dress(String type, String price, String id, String ownerId, Boolean deleted) {
         this.type = type;
         this.price = price;
         this.id = id;
@@ -130,6 +132,8 @@ public class Dress implements Parcelable {
         json.put("deleted", deleted);
         json.put("updateDate", FieldValue.serverTimestamp());
         json.put("imageUrl", imageUrl);
+        json.put("ownerId", ownerId);
+
         return json;
     }
 
@@ -137,6 +141,7 @@ public class Dress implements Parcelable {
         String id = (String) json.get("id");
         String type = (String) json.get("type");
         String price = (String) json.get("price");
+        String ownerId = (String) json.get("ownerId");
         Boolean deleted = (Boolean) json.get("deleted");
         Long updateDate = 0L;
         try {
@@ -146,7 +151,7 @@ public class Dress implements Parcelable {
 
         }
         String imageUrl = (String) json.get("imageUrl");
-        Dress dress = new Dress(type, price, id, deleted);
+        Dress dress = new Dress(type, price, id, ownerId, deleted);
         dress.setUpdateDate(updateDate);
         dress.setImageUrl(imageUrl);
         return dress;

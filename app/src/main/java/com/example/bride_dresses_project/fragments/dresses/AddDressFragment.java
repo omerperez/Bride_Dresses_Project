@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class AddDressFragment extends Fragment {
     ImageButton galleryBtn;
     ImageView image;
     MaterialButton backButton;
-
+    String ownerId;
     public static int PICK_IMAGE_REQUEST = 2;
 
 
@@ -56,6 +57,9 @@ public class AddDressFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_dress,container, false);
+        ownerId = Model.instance.getOwnerId();
+        Log.d("owner1", ownerId);
+        Log.d("owner2", Model.instance.getOwnerId());
         type = view.findViewById(R.id.add_dress_type);
         price = view.findViewById(R.id.add_dress_price);
         saveBtn = view.findViewById(R.id.add_dress_save_btn);
@@ -144,7 +148,9 @@ public class AddDressFragment extends Fragment {
 
         String dressType = type.getText().toString();
         String dressPrice = price.getText().toString();
-      Dress dress = new Dress(dressType,dressPrice,"");
+        Dress dress = new Dress(dressType,dressPrice,"", ownerId);
+        Log.d("owner2", ownerId);
+
         if (imageBitmap == null){
             Model.instance.addDress(dress,()->{
                 Navigation.findNavController(type).navigateUp();
