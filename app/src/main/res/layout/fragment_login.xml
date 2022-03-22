@@ -71,7 +71,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
         android:text="@string/login"
-        app:backgroundTint="#C81F3D95" />
+        android:backgroundTint="#C81F3D95" />
 
     <TextView
         android:id="@+id/login_register_btn"

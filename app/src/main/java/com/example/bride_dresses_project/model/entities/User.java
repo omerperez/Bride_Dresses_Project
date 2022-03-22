@@ -1,13 +1,15 @@
-package com.example.bride_dresses_project.model;
+package com.example.bride_dresses_project.model.entities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.bride_dresses_project.ContextApplication;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
@@ -16,6 +18,7 @@ import java.util.Map;
 
 @Entity
 public class User {
+
     @PrimaryKey
     @NonNull
     private String id;
@@ -33,7 +36,7 @@ public class User {
 
     public User(){}
 
-    public User(String id,String email,String fullName, String phone, String streetAddress, String state, String country) {
+    public User(@NonNull String id,String email,String fullName, String phone, String streetAddress, String state, String country) {
         this.id = id;
         this.email = email;
         this.fullName = fullName;
@@ -50,6 +53,19 @@ public class User {
         this.streetAddress = streetAddress;
         this.state = state;
         this.country = country;
+    }
+
+    public User(String email, String phone, String fullName,
+                String streetAddress, String state, String country,
+                String imageUrl, Long updateDate) {
+        this.email = email;
+        this.phone = phone;
+        this.fullName = fullName;
+        this.streetAddress = streetAddress;
+        this.state = state;
+        this.country = country;
+        this.imageUrl = imageUrl;
+        this.updateDate = updateDate;
     }
 
     @NonNull
@@ -147,25 +163,20 @@ public class User {
         String state = (String) json.get("state");
         String country = (String) json.get("country");
         String imageUrl = (String) json.get("imageUrl");
-
         Timestamp ts = (Timestamp)json.get("updateDate");
         Long updateDate = ts.getSeconds();
 
-        User user = new User(email,fullName, phone, streetAddress, state, country);
-        user.setUpdateDate(updateDate);
-        user.setImageUrl(imageUrl);
-        Log.d("tag","img"+imageUrl);
-        return user;
+        return new User(email, phone, fullName, streetAddress, state, country, imageUrl, updateDate);
     }
 
     public static void setLocalLastUpdated(Long timestamp) {
-        SharedPreferences.Editor ed = MyApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor ed = ContextApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
         ed.putLong(User.LAST_UPDATED, timestamp);
         ed.apply();
     }
 
     public static Long getLocalLastUpdated() {
-        SharedPreferences sp = MyApplication
+        SharedPreferences sp = ContextApplication
                 .getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
         return sp.getLong(User.LAST_UPDATED, 0);
     }

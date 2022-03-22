@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.bride_dresses_project.R;
+import com.example.bride_dresses_project.model.Model;
+import com.example.bride_dresses_project.model.firebase.AuthFirebase;
 
 public class UsersActivity extends AppCompatActivity {
 

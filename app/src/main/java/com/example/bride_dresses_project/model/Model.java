@@ -13,7 +13,7 @@ import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.bride_dresses_project.model.room.AppLocalDb;
+import com.example.bride_dresses_project.model.SQL.ModelSql;
 import com.google.type.DateTime;
 
 import java.util.Date;
@@ -29,10 +29,13 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class Model {
+
     public static final Model instance = new Model();
+
     private final AuthFirebase authFirebase = new AuthFirebase();
-    static ModelFirebase modelFirebase = new ModelFirebase();
-    ModelSql modelSql = new ModelSql();
+    private static ModelFirebase modelFirebase = new ModelFirebase();
+    private static ModelSql modelSql = new ModelSql();
+
     Executor executor = Executors.newFixedThreadPool(1);
     Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
 
@@ -40,6 +43,7 @@ public class Model {
         loading,
         loaded
     }
+
     public enum DressListLoadingState {
         loading,
         loaded
@@ -50,13 +54,13 @@ public class Model {
         return userListLoadingState;
     }
 
-    public interface Listener<T>{
-        void onComplete(T result);
-    }
-
     private Model(){
         userListLoadingState.setValue(UserListLoadingState.loaded);
         dressListLoadingState.setValue(DressListLoadingState.loaded);
+    }
+
+    public interface Listener<T>{
+        void onComplete(T result);
     }
 
     public interface AddUserListener{
@@ -67,92 +71,54 @@ public class Model {
         modelFirebase.addUser(user, listener);
     }
 
-    public interface GetUserById{
-        void onComplete(User user);
-    }
+    public interface GetUserByIdListener extends Listener<User>{}
 
+    /* Need to do a function of getUserById */
 
-    MutableLiveData<List<User>> usersList;
-    public LiveData<List<User>> getAll(){
-        if (usersList.getValue() == null) {
-            usersList=modelSql.getAllUsers();
+    LiveData<List<User>> usersList;
+    public LiveData<List<User>> getAllUsers(){
+
+        if (usersList == null) {
+            usersList = modelSql.getAllUsers();
             refreshUsersList();
-        };
-        return  usersList;
-    }
-
-    public interface GetAllUsersListener extends Listener<List<User>> {}
-
-    public  MutableLiveData<List<User>> getAllUsers(){
-
-        Long lastUpdateDate = new Long(0);
-        modelFirebase.getAllUsers(lastUpdateDate, new GetAllUsersListener() {
-            @Override
-            public void onComplete(List<User> result) {
-                usersList.setValue(result);
-            }
-        });
+        }
         return usersList;
     }
+    public interface GetAllUsersListener extends Listener<List<User>>{}
 
+    public void refreshUsersList() {
 
-    public void refreshUsersList(){
         userListLoadingState.setValue(UserListLoadingState.loading);
 
-        // get last local update date
-        Long lastUpdateDate = User.getLocalLastUpdated();
-
-        // firebase get all updates since lastLocalUpdateDate
-        modelFirebase.getAllUsers(lastUpdateDate, new GetAllUsersListener() {
+        modelFirebase.getAllUsers(User.getLocalLastUpdated(), new GetAllUsersListener() {
             @Override
             public void onComplete(List<User> list) {
-                // add all records to the local db
-                long lastU = 0;
+                long lastUpdate = 0;
                 for (User user: list) {
-                    modelSql.addUser(user,null);
-                    if(user.getUpdateDate()>lastUpdateDate){
-                        lastU = user.getUpdateDate();
+
+                    if(user.getUpdateDate() > User.getLocalLastUpdated()) {
+                        lastUpdate = user.getUpdateDate();
+                        Log.d("Phone",  user.getPhone());
+                        modelSql.addUser(user,null);
+//                        Log.d("tag", modelSql.getAllUsers().getValue().get(0).toString());
                     }
                 }
-                //update the local last update date
-                User.setLocalLastUpdated(lastU);
-
-                //returns the updates data to the listeners
-
-                List<User> stList = AppLocalDb.db.userDao().getAll();
-                usersList.postValue(stList);
+                if(lastUpdate != 0 ){
+                    User.setLocalLastUpdated(lastUpdate);
+                    usersList = AppLocalDb.db.userDao().getAll();
+                }
                 userListLoadingState.postValue(UserListLoadingState.loaded);
-
             }
         });
     }
 
-    /*
- public static void getAllUsers(final GetAllUsersListener listener){
-        Log.d("tag1", "model here");
-
-        Long lastUpdateDate = new Long(0);
-        modelFirebase.getAllUsers(lastUpdateDate,listener);
-    }
-
- */
-
-
-/*
-
-
-    public interface GetAllUsersListener extends Listener<List<User>> {}
-
-    public void updateUser(final User designer, final AddUserListener listener){
-        modelFirebase.updateuser(designer, listener);
-    }
-
-     */
-
-    interface deleteListener extends AddUserListener{}
-    public void deleteUser(User user, deleteListener listener){
-        modelFirebase.deleteUser(user,listener);
-    }
+//    public interface DeleteListener{
+//        void onComplete();
+//    }
+//
+//    public void deleteUser(User user, DeleteListener listener){
+//        modelFirebase.deleteUser(user,listener);
+//    }
 
     public interface uploadImageListener extends Listener<String>{}
 
@@ -169,21 +135,22 @@ public class Model {
     }
 
     public void register(User user, String password,AddUserListener userLis) {
-        Log.d("tag","model register");
         authFirebase.register(user.getEmail(), password, userId -> {
-            Log.d("tag","auth");
             user.setId(userId);
             modelFirebase.addUser(user, userLis);
         });
     }
 
     public void login(String email, String password, final LoginListener listener) {
-        Log.d("tag","model");
         authFirebase.login(email, password,listener);
     }
 
     public boolean isSignedIn() {
         return authFirebase.isSignedIn();
+    }
+
+    public void logout(final LogoutListener listener) {
+        authFirebase.logout(listener);
     }
 
   /*  public final static Model instance = new Model();
@@ -284,15 +251,6 @@ public class Model {
     public void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
         modelFirebase.saveImage(imageBitmap, imageName, listener);
 
-    }
-
-    /**
-     * Authentication
-     */
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-    public boolean isSignedIn() {
-        return modelFirebase.isSignedIn();
     }
 
     public interface UpdateDressListener {

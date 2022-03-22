@@ -1,4 +1,4 @@
-package com.example.bride_dresses_project;
+package com.example.bride_dresses_project.fragments;
 
 import android.Manifest;
 import android.content.Context;
@@ -18,9 +18,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.bride_dresses_project.R;
 import com.example.bride_dresses_project.model.Model;
-import com.example.bride_dresses_project.model.User;
-import com.example.bride_dresses_project.model.ModelFirebase;
+import com.example.bride_dresses_project.model.entities.User;
 import com.example.bride_dresses_project.viewModel.UsersListViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -62,7 +62,6 @@ public class MapsFragment extends Fragment {
                 @Override
                 public void onChanged(List<User> users) {
                     LatLng address = null;
-                    Log.d("tag1", "here2");
 
                     for (int i = 0; i < users.size(); i++) {
                         try {
@@ -72,7 +71,7 @@ public class MapsFragment extends Fragment {
                             Log.d("tag1", addr);
 
                             address = getLatLongFromAddress(getActivity(), addr);
-                            Log.d("tag1", address.toString());
+                            Log.d("tag1", "bdika"+address.toString());
 
                             googleMap.addMarker(new MarkerOptions().position(address)
                                     .title(users.get(i).getStreetAddress()));
@@ -233,4 +232,3 @@ public class MapsFragment extends Fragment {
         return latLng;
     }
 }
-

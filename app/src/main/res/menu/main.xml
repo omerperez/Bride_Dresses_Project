@@ -2,20 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_logout"
-        android:orderInCategory="100"
-        android:title="Logout"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/menu_home_page"
-        android:title="Home Page" />
+        android:title="Home Page"
+        android:icon="@drawable/ic_home"/>
     <item
         android:id="@+id/menu_map"
-        android:title="See Locations" />
+        android:title="See Locations"
+        android:icon="@drawable/ic_menu_camera"/>
     <item
         android:id="@+id/menu_create"
-        android:title="Add New" />
-    <item
-        android:id="@+id/menu_my_product"
-        android:title="My Product" />
+        android:title="Add New"
+        android:icon="@drawable/ic_add"/>
+<!--    <item-->
+<!--        android:id="@+id/menu_my_product"-->
+<!--        android:title="My Product"-->
+<!--        android:icon="@drawable/ic_person_signin"/>-->
+<!--    <item-->
+<!--        android:id="@+id/menu_log_out"-->
+<!--        android:title="Log Out"-->
+<!--        android:icon="@drawable/ic_person_signin"/>-->
 </menu>

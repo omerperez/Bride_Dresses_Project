@@ -9,7 +9,7 @@ import com.example.bride_dresses_project.model.dao.UserDao;
 import com.example.bride_dresses_project.model.entities.Dress;
 import com.example.bride_dresses_project.model.entities.User;
 
-@Database(entities = {User.class, Dress.class}, version = 1)
+@Database(entities = {User.class, Dress.class}, version = 7)
 public abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract DressDao dressDao();

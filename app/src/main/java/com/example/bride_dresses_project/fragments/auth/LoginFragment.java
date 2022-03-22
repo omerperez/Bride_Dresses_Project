@@ -13,63 +13,57 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.bride_dresses_project.R;
 import com.example.bride_dresses_project.model.Model;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
-import com.google.android.material.snackbar.Snackbar;
 
 public class LoginFragment extends Fragment {
 
-    View loginFragment;
     EditText emailEt, passwordEt;
     Button loginBtn;
-    TextView clickForRegister;
-    CircularProgressIndicator progressIndicator;
+    TextView registerBtn;
     NavController navController;
+    private CircularProgressIndicator progressIndicator;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        loginFragment =  inflater.inflate(R.layout.fragment_login, container, false);
-        emailEt = loginFragment.findViewById(R.id.login_email_ed);
-        passwordEt = loginFragment.findViewById(R.id.login_password_ed);
-        loginBtn = loginFragment.findViewById(R.id.login_login_btn);
-        clickForRegister = loginFragment.findViewById(R.id.login_register_btn);
-        progressIndicator = loginFragment.findViewById(R.id.login_fragment_progress_indicator);
+        View view =  inflater.inflate(R.layout.fragment_login, container, false);
+//        if(!Model.instance.isSignedIn()){
+        emailEt = view.findViewById(R.id.login_email_ed);
+        passwordEt = view.findViewById(R.id.login_password_ed);
+        loginBtn = view.findViewById(R.id.login_login_btn);
+        registerBtn = view.findViewById(R.id.login_register_btn);
+        progressIndicator = view.findViewById(R.id.login_fragment_progress_indicator);
         navController = NavHostFragment.findNavController(this);
-
+        progressIndicator.show();
+        if((Model.instance.isSignedIn())){
+            navController.navigate(R.id.action_loginFragment_to_nav_graph);
+        }
+        progressIndicator.hide();
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                signIn();
+            public void onClick(View v) {
+                    loginBtn.setEnabled(false);
+                    registerBtn.setEnabled(false);
+                    progressIndicator.show();
+                    Model.instance.login(
+                            emailEt.getText().toString(),
+                            passwordEt.getText().toString(),() -> {
+                                navController.navigate(R.id.action_loginFragment_to_nav_graph);
+//                                @Override
+//                                public void onComplete() {
+//                                    Navigation.findNavController(loginBtn).navigate(R.id.action_loginFragment_to_nav_graph);
+//                                }
+                            }
+                    );
             }
         });
-        clickForRegister.setOnClickListener((v) -> Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_registerFragment));
-
-        return loginFragment;
+//}
+        return view;
     }
 
-    public void signIn() {
-        String email = emailEt.getText().toString();
-        String password = passwordEt.getText().toString();
-        if(email.isEmpty() || password.isEmpty()){
-            Toast.makeText(getContext(), "Please fill the fields first", Toast.LENGTH_SHORT).show();
-        } else {
-            try {
-                loginBtn.setEnabled(false);
-                clickForRegister.setEnabled(false);
-                progressIndicator.show();
-                Model.instance.login(email, password, () -> {
-                    navController.navigate(R.id.action_loginFragment_to_nav_graph);
-                }, errorMessage -> {
-                    Snackbar.make(loginFragment, errorMessage, Snackbar.LENGTH_SHORT).show();
-                });
 
-            } catch (Exception e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+
 }
