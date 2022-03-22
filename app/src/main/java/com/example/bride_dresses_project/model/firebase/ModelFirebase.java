@@ -133,16 +133,16 @@ public class ModelFirebase {
 
     public void getAllDresses(Long lastUpdateDate, GetAllDressesListener listener) {
         db.collection(Dress.DRESS_COLLECTION_NAME)
-//                .whereGreaterThanOrEqualTo("updateDate", new Timestamp(lastUpdateDate, 0))
-//                .whereEqualTo("deleted", false)
+                .whereGreaterThanOrEqualTo("updateDate", new Timestamp(lastUpdateDate, 0))
+                .whereEqualTo("deleted", false)
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Dress> list = new LinkedList<>();
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot doc : task.getResult()) {
-                            Dress student = Dress.create(doc.getData());
-                            if (student != null) {
-                                list.add(student);
+                            Dress d = Dress.create(doc.getData());
+                            if (d != null) {
+                                list.add(d);
                             }
                         }
                     }
@@ -160,35 +160,28 @@ public class ModelFirebase {
                 .addOnFailureListener(e -> listener.onComplete());
     }
 
-    public void getDressById(String studentId, Model.GetStudentById listener) {
+    public void getDressById(String dressId, Model.GetDressById listener) {
         db.collection(Dress.DRESS_COLLECTION_NAME)
-                .document(studentId)
+                .document(dressId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        Dress student = null;
+                        Dress d = null;
                         if (task.isSuccessful() & task.getResult() != null) {
-                            student = Dress.create(task.getResult().getData());
+                            d = Dress.create(task.getResult().getData());
                         }
-                        listener.onComplete(student);
+                        listener.onComplete(d);
                     }
                 });
     }
 
-
-    /**
-     * Firebase Storage
-     */
-
     public void saveImage(Bitmap imageBitmap, String imageName, Model.SaveImageListener listener) {
         StorageReference storageRef = storage.getReference();
         StorageReference imgRef = storageRef.child("user_avatars/" + imageName);
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
-
         UploadTask uploadTask = imgRef.putBytes(data);
         uploadTask.addOnFailureListener(exception -> listener.onComplete(null))
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -201,7 +194,6 @@ public class ModelFirebase {
                     }
                 });
     }
-
 
     public void updateDress(Dress r, Model.UpdateDressListener lis) {
         Map<String, Object> jsonReview = r.toMap();
