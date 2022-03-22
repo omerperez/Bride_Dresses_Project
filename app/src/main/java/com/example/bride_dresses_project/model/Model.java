@@ -197,10 +197,14 @@ public class Model {
                 Log.d("TAG", "fb returned " + list.size());
                 for (Dress dress : list) {
                     if(dress.isDeleted()) {
-                        AppLocalDb.db.dressDao().delete(dress);
-                    }
-                    if (lud < dress.getUpdateDate()) {
+                        Log.d("TAG", "fb returned " + dress.isDeleted());
                         lud = dress.getUpdateDate();
+                        AppLocalDb.db.dressDao().delete(dress);
+                    } else{
+                        if (lud < dress.getUpdateDate()) {
+                            lud = dress.getUpdateDate();
+                            AppLocalDb.db.dressDao().insertAll(dress);
+                        }
                     }
                 }
                 ContextApplication.getContext()
