@@ -32,12 +32,11 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
         binding = ActivityBaseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new DressesListFragment());
-        binding.bottomNavView.setOnItemSelectedListener(item ->{
-            switch (item.getItemId()){
+        binding.bottomNavView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
                 case R.id.nav_home:
                     replaceFragment(new HomeFragment());
                     break;
@@ -53,40 +52,40 @@ public class BaseActivity extends AppCompatActivity {
 //        navCtl = ((NavHost)getSupportFragmentManager().findFragmentById(R.id.base_navhost)).getNavController();
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.base_navhost, fragment);
         fragmentTransaction.commit();
     }
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        super.onCreateOptionsMenu(menu);
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if(!super.onOptionsItemSelected(item)){
-//            switch (item.getItemId()){
-//                case R.id.menu_create:
-//                    navCtl.navigate(R.id.action_global_createDressFragment);
-//                    break;
-//                case R.id.menu_home_page:
-//                    navCtl.navigate(R.id.action_global_dressesListFragment);
-//                    break;
-//                case R.id.menu_map:
-//                    navCtl.navigate(R.id.action_global_googleMapsFragment);
-//                    break;
-////                case R.id.menu_my_product:
+////    @Override
+////    public boolean onCreateOptionsMenu(Menu menu) {
+////        super.onCreateOptionsMenu(menu);
+////        getMenuInflater().inflate(R.menu.main, menu);
+////        return true;
+////    }
+////
+////    @Override
+////    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+////        if(!super.onOptionsItemSelected(item)){
+////            switch (item.getItemId()){
+////                case R.id.menu_create:
 ////                    navCtl.navigate(R.id.action_global_createDressFragment);
 ////                    break;
-////                case R.id.menu_log_out:
-////                    Model.instance.logout(() -> {
-////                        navCtl.navigate(R.id.action_global_loginFragment);
-////                    });
+////                case R.id.menu_home_page:
+////                    navCtl.navigate(R.id.action_global_dressesListFragment);
 ////                    break;
+////                case R.id.menu_map:
+////                    navCtl.navigate(R.id.action_global_googleMapsFragment);
+////                    break;
+//////                case R.id.menu_my_product:
+//////                    navCtl.navigate(R.id.action_global_createDressFragment);
+//////                    break;
+//////                case R.id.menu_log_out:
+//////                    Model.instance.logout(() -> {
+//////                        navCtl.navigate(R.id.action_global_loginFragment);
+//////                    });
+//////                    break;
 //            }
 //
 //        }else{
