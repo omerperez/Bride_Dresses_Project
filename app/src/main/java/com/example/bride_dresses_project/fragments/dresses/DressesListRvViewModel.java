@@ -5,16 +5,18 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.bride_dresses_project.model.entities.Dress;
 import com.example.bride_dresses_project.model.Model;
+import com.example.bride_dresses_project.model.firebase.ModelFirebase;
 
 import java.util.List;
 
 public class DressesListRvViewModel extends ViewModel {
-    LiveData<List<Dress>> data;
 
-    public DressesListRvViewModel(){
-        data = Model.instance.getAll();
+
+    public LiveData<List<Dress>> getAllDresses() {
+        return Model.instance.getAllDresses();
     }
-    public LiveData<List<Dress>> getData() {
-        return data;
+
+    public void refreshDressList() {
+        Model.instance.refreshDressList();
     }
 }
