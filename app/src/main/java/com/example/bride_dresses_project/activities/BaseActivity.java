@@ -37,7 +37,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityBaseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new DressesListFragment());
+//        replaceFragment(new DressesListFragment());
         binding.bottomNavView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.menu_home_page:
