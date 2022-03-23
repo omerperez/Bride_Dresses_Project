@@ -245,12 +245,12 @@ public class Model {
     }
 
     public void addDress(Dress dress, AddDressListener listener) {
-        User user = AppLocalDb.db.userDao().getById(dress.getId());
-        if(user != null) {
-            dress.setUserName(user.getFullName());
-        } else{
-            dress.setUserName("No designer name");
-        }
+//        User user = AppLocalDb.db.userDao().getById(dress.getId());
+//        if(user != null) {
+//            dress.setUserName(user.getFullName());
+//        } else{
+//            dress.setUserName("No designer name");
+//        }
         modelFirebase.addDress(dress, () -> {
             listener.onComplete();
             refreshDressList(false);

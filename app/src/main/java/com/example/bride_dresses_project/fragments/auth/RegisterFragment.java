@@ -93,13 +93,13 @@ public class RegisterFragment extends CameraUtilFragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private void uploadImage() {
-
         Intent takePictureIntent = new Intent(
                 MediaStore.ACTION_IMAGE_CAPTURE);
         if(takePictureIntent.resolveActivity(getActivity().getPackageManager())!=null){
             startActivityForResult(takePictureIntent,REQUEST_IMAGE_CAPTURE);
         }
     }
+
     private User createNewUser(){
         String fullName = fullNameEt.getText().toString();
         String email = emailEt.getText().toString();
