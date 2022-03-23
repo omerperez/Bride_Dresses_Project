@@ -29,7 +29,6 @@ public class DressesListFragment extends Fragment implements DressListAdapter.On
     private DressesListRvViewModel viewModel;
     private DressListAdapter mAdapter;
     private SwipeRefreshLayout swipeRefresh;
-    private FloatingActionButton addDressButton;
 
     @Override
     public void onAttach(@NonNull Context context) {
