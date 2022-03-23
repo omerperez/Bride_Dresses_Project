@@ -195,10 +195,10 @@ public class ModelFirebase {
                 });
     }
 
-    public void updateDress(Dress r, Model.UpdateDressListener lis) {
-        Map<String, Object> jsonReview = r.toMap();
+    public void updateDress(Dress d, Model.UpdateDressListener lis) {
+        Map<String, Object> jsonReview = d.toMap();
         db.collection("Dresses")
-                .document(r.getId())
+                .document(d.getId())
                 .update(jsonReview)
                 .addOnSuccessListener(unused -> lis.onComplete())
                 .addOnFailureListener(e -> lis.onComplete());
