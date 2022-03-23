@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class ModelFirebase {
 
-    public static final String USER_IMAGE_FOLDER = "Users";
+    public static final String USER_IMAGE_FOLDER = "images";
     public static final String USER_COLLECTION_NAME = "Users";
     public static final String DRESS_IMAGE_FOLDER = "Dresses";
     public static final String DRESS_COLLECTION_NAME = "Dresses";
@@ -57,11 +57,16 @@ public class ModelFirebase {
                 .addOnCompleteListener(task -> {
                     List<User> list = new LinkedList<User>();
                     if (task.isSuccessful()) {
+                        Log.d("tag", "firebase check");
                         for (QueryDocumentSnapshot doc : task.getResult()) {
+                            Log.d("tag", "firebaseee 0 "+task.getResult().toString());
                             User user = User.create(doc.getData());
+                            Log.d("tag", "firebaseee 1 "+user.getPhone());
                             list.add(user);
                         }
                     }
+                    Log.d("tag", "firebaseee 2 " +list.size());
+
                     listener.onComplete(list);
                 });
     }
@@ -146,7 +151,8 @@ public class ModelFirebase {
                             }
                         }
                     }
-                    listener.onComplete(list);
+Log.d("tag", "dress"+String.valueOf(list.size())) ;
+                listener.onComplete(list);
                 });
     }
 

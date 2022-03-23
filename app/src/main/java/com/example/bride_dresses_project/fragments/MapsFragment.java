@@ -62,6 +62,7 @@ public class MapsFragment extends Fragment {
                 @Override
                 public void onChanged(List<User> users) {
                     LatLng address = null;
+                    Log.d("tag1", String.valueOf(users.size()));
 
                     for (int i = 0; i < users.size(); i++) {
                         try {
