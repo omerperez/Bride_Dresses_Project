@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.auth.LoginFragment"
-    android:background="@drawable/coverr">
+    android:background="@drawable/dress_example">
 
     <TextView
         android:id="@+id/login_title_tv"
