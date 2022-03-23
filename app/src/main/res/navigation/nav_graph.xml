@@ -61,4 +61,14 @@
     <action
         android:id="@+id/action_global_googleMapsFragment"
         app:destination="@id/googleMapsFragment" />
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:name="com.example.bride_dresses_project.fragments.dresses.MyProfileFragment"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" >
+        <action
+            android:id="@+id/action_myProfileFragment_to_dressDescriptionFragment"
+            app:destination="@id/dressDescriptionFragment" />
+    </fragment>
+    <action android:id="@+id/action_global_myProfileFragment" app:destination="@id/myProfileFragment" />
 </navigation>
