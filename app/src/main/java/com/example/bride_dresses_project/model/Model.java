@@ -202,12 +202,12 @@ public class Model {
                 Integer counter = 0;
                 Log.d("TAG", "fb returned " + list.size());
                 for (Dress dress : list) {
-                    if(dress.isDeleted()) {
+                    if (dress.isDeleted()) {
                         Log.d("TAG", "fb returned " + dress.isDeleted());
                         lud = dress.getUpdateDate();
                         counter++;
                         AppLocalDb.db.dressDao().delete(dress);
-                    } else{
+                    } else {
                         if (lud < dress.getUpdateDate() && !dress.isDeleted()) {
                             lud = dress.getUpdateDate();
                             AppLocalDb.db.dressDao().insertAll(dress);
@@ -240,6 +240,13 @@ public class Model {
         });
     }
 
+    public void editDress(Dress dress, AddDressListener listener) {
+        modelFirebase.editDress(dress, () -> {
+            listener.onComplete();
+            refreshDressList();
+        });
+    }
+
     public interface GetDressById {
         void onComplete(Dress dress);
     }
@@ -256,10 +263,6 @@ public class Model {
 
     public interface UpdateDressListener {
         void onComplete();
-    }
-
-    public void updateDress(Dress dress, UpdateDressListener lis) {
-        modelFirebase.updateDress(dress, lis);
     }
 
     public void deleteDress(Dress dress, UpdateDressListener lis) {
