@@ -81,8 +81,7 @@ public class Model {
         return usersList;
     }
 
-    public interface GetAllUsersListener extends Listener<List<User>> {
-    }
+    public interface GetAllUsersListener extends Listener<List<User>> {}
 
     public void refreshUsersList() {
 
@@ -148,6 +147,13 @@ public class Model {
 
     public boolean isSignedIn() {
         return authFirebase.isSignedIn();
+    }
+
+    public String getOwnerId() {
+        if(isSignedIn()){
+            return authFirebase.getCurrentUserid();
+        }
+        return null;
     }
 
     public void logout(final LogoutListener listener) {

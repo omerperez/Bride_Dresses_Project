@@ -9,6 +9,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavHost;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +26,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.example.bride_dresses_project.R;
 
+import java.util.Map;
+
 public class BaseActivity extends AppCompatActivity {
 
     ActivityBaseBinding binding;
@@ -34,17 +37,25 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityBaseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new DressesListFragment());
+//        replaceFragment(new DressesListFragment());
         binding.bottomNavView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.nav_home:
-                    replaceFragment(new HomeFragment());
+                case R.id.menu_home_page:
+                    replaceFragment(new DressesListFragment());
                     break;
-                case R.id.nav_gallery:
+                case R.id.menu_map:
+                    replaceFragment(new MapsFragment());
+                    break;
+                case R.id.menu_create:
                     replaceFragment(new AddDressFragment());
                     break;
-                case R.id.nav_slideshow:
-                    replaceFragment(new MapsFragment());
+                case R.id.menu_myproduct:
+                    replaceFragment(new DressesListFragment());
+                    break;
+                case R.id.menu_log_out:
+                    Intent intent = new Intent(this, UsersActivity.class);
+                    startActivity(intent);
+                    finish();
                     break;
             }
             return true;

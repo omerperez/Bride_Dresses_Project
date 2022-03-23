@@ -39,9 +39,16 @@ public class LoginFragment extends Fragment {
         navController = NavHostFragment.findNavController(this);
         progressIndicator.show();
         if((Model.instance.isSignedIn())){
-            navController.navigate(R.id.action_loginFragment_to_nav_graph);
+           Model.instance.logout(() -> {});
         }
         progressIndicator.hide();
+        registerBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                navController.navigate(R.id.action_loginFragment_to_registerFragment);
+            }
+        });
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
