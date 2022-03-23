@@ -7,6 +7,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +25,16 @@ import com.squareup.picasso.Picasso;
 
 public class DressDescriptionFragment extends Fragment implements View.OnClickListener {
 
+    View view, deleteDress, editDress;
+    String ownerId;
+    Dress dress;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dress_description, container, false);
-        Dress dress = DressDescriptionFragmentArgs.fromBundle(getArguments()).getDress();
+        view = inflater.inflate(R.layout.fragment_dress_description, container, false);
+        ownerId = Model.instance.getOwnerId();
+        dress = DressDescriptionFragmentArgs.fromBundle(getArguments()).getDress();
         TextView dressType = view.findViewById(R.id.dressItemType);
         TextView dressDesigner = view.findViewById(R.id.dressItemDesigner);
         TextView dressPrice = view.findViewById(R.id.dressItemPrice);
@@ -38,10 +44,21 @@ public class DressDescriptionFragment extends Fragment implements View.OnClickLi
         view.findViewById(R.id.dress_description_back_button).setOnClickListener(this);
         dressType.setText(dress.getType());
         dressPrice.setText(dress.getPrice());
+        editBtnView();
         Picasso.get().load(dress.getImageUrl()).into(dressImage);
         return view;
     }
 
+    private void editBtnView(){
+        if(!ownerId.equals(dress.getOwnerId())){
+            Log.d("tag1 ownerId ",  ownerId);
+            Log.d("tag1 getOwnerId ",  dress.getOwnerId());
+            deleteDress = view.findViewById(R.id.dress_description_page_delete_button);
+            editDress = view.findViewById(R.id.dress_description_page_edit_button);
+            deleteDress.setVisibility((View.GONE));
+            editDress.setVisibility((View.GONE));
+        }
+    }
 
     @Override
     public void onClick(View view) {

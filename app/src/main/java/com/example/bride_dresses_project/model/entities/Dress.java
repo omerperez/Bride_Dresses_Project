@@ -139,7 +139,7 @@ public class Dress implements Parcelable {
         Map<String, Object> json = new HashMap<String, Object>();
         json.put("type", type);
         json.put("price", price);
-        json.put("ownerId", price);
+        json.put("ownerId", ownerId);
         json.put("updateDate", FieldValue.serverTimestamp());
         json.put("imageUrl", imageUrl);
         return json;

@@ -32,6 +32,7 @@ import com.example.bride_dresses_project.model.Model;
 import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class AddDressFragment extends Fragment {
@@ -49,11 +50,12 @@ public class AddDressFragment extends Fragment {
     String ownerId;
     public static int PICK_IMAGE_REQUEST = 2;
     private Dress mEditDress;
+    View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_dress, container, false);
+        view = inflater.inflate(R.layout.fragment_add_dress, container, false);
         mEditDress = AddDressFragmentArgs.fromBundle(getArguments()).getEditDress();
         ownerId = Model.instance.getOwnerId();
         type = view.findViewById(R.id.add_dress_type);
@@ -129,20 +131,21 @@ public class AddDressFragment extends Fragment {
             String dressType = type.getText().toString();
             String dressPrice = price.getText().toString();
             Dress dress = new Dress(dressType, dressPrice, "", ownerId);
-            Model.instance.saveImage(imageBitmap, UUID.randomUUID() + ".jpg", url -> {
-                dress.setImageUrl(url);
-                if (mEditDress != null) {
-                    dress.setId(mEditDress.getId());
-                    Model.instance.editDress(dress, () -> Navigation.findNavController(type).navigateUp());
-                } else {
+            if(mEditDress != null){
+                dress.setId(mEditDress.getId());
+                dress.setImageUrl(mEditDress.getImageUrl());
+                Model.instance.editDress(dress, () -> Navigation.findNavController(type).navigateUp());
+            } else {
+                Model.instance.saveImage(imageBitmap, UUID.randomUUID() + ".jpg", url -> {
+                    dress.setImageUrl(url);
                     Model.instance.addDress(dress, () -> Navigation.findNavController(type).navigateUp());
-                }
-            });
+                });
+            }
         }
     }
 
     private boolean isValid() {
-        if (imageBitmap == null) {
+        if (imageBitmap == null && mEditDress == null) {
             Toast.makeText(getContext(), "You Must Select Image", Toast.LENGTH_SHORT).show();
             return false;
         } else if (TextUtils.isEmpty(type.getText().toString()) || TextUtils.isEmpty(price.getText().toString())) {
