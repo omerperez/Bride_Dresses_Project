@@ -1,6 +1,8 @@
 package com.example.bride_dresses_project.model.firebase;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import com.example.bride_dresses_project.model.AppLocalDb;
 import com.example.bride_dresses_project.model.Model;
