@@ -13,12 +13,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.bride_dresses_project.R;
 import com.example.bride_dresses_project.model.Model;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.snackbar.Snackbar;
 
 public class LoginFragment extends Fragment {
 
+    View view;
     EditText emailEt, passwordEt;
     Button loginBtn;
     TextView registerBtn;
@@ -29,8 +33,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.fragment_login, container, false);
-//        if(!Model.instance.isSignedIn()){
+        view =  inflater.inflate(R.layout.fragment_login, container, false);
         emailEt = view.findViewById(R.id.login_email_ed);
         passwordEt = view.findViewById(R.id.login_password_ed);
         loginBtn = view.findViewById(R.id.login_login_btn);
@@ -51,26 +54,44 @@ public class LoginFragment extends Fragment {
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                    loginBtn.setEnabled(false);
-                    registerBtn.setEnabled(false);
-                    progressIndicator.show();
-                    Model.instance.login(
-                            emailEt.getText().toString(),
-                            passwordEt.getText().toString(),() -> {
-                                navController.navigate(R.id.action_loginFragment_to_nav_graph);
-//                                @Override
-//                                public void onComplete() {
-//                                    Navigation.findNavController(loginBtn).navigate(R.id.action_loginFragment_to_nav_graph);
-//                                }
-                            }
-                    );
+            public void onClick(View view) {
+                signInUser();
             }
         });
-//}
+
         return view;
     }
 
+    public void setEnabledStatus(Boolean status){
+        loginBtn.setEnabled(status);
+        registerBtn.setEnabled(status);
+        emailEt.setEnabled(status);
+        passwordEt.setEnabled(status);
+    }
 
-
+    public void signInUser(){
+        setEnabledStatus(false);
+        String email = emailEt.getText().toString();
+        String password = passwordEt.getText().toString();
+        try {
+            if(email.isEmpty() || password.isEmpty()){
+                Toast.makeText(getContext(), "Please fill the fields first", Toast.LENGTH_SHORT).show();
+                setEnabledStatus(true);
+            }
+            else if(password.length() < 6 ){
+                Toast.makeText(getContext(), "Password length 6 characters minimum", Toast.LENGTH_SHORT).show();
+                setEnabledStatus(true);
+            }
+            else {
+                progressIndicator.show();
+                Model.instance.login(email, password ,() -> {
+                            navController.navigate(R.id.action_loginFragment_to_nav_graph);
+                });
+            }
+        }catch (Exception e){
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            setEnabledStatus(true);
+            progressIndicator.hide();
+        }
+    }
 }

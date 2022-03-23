@@ -45,9 +45,7 @@ public class RegisterFragment extends CameraUtilFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
-
         emailEt = view.findViewById(R.id.register_email_et);
         fullNameEt = view.findViewById(R.id.register_name_et);
         phoneEt = view.findViewById(R.id.register_phone_et);
@@ -57,22 +55,10 @@ public class RegisterFragment extends CameraUtilFragment {
         stateEt = view.findViewById(R.id.register_state_et);
         countryEt = view.findViewById(R.id.register_country_et);
         avatarImageView = view.findViewById(R.id.register_avatar_imv);
-
         registerBtn = view.findViewById(R.id.register_btn);
         clickForLoginTv = view.findViewById(R.id.register_login_tv);
-
         progressIndicator = view.findViewById(R.id.register_fragment_progress_indicator);
-
         avatarImageView.setOnClickListener(this::showCameraMenu);
-
-        /*
-        avatarImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadImage();
-            }
-        });
-         */
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,34 +93,73 @@ public class RegisterFragment extends CameraUtilFragment {
         String street = streetAddressEt.getText().toString();
         String state = stateEt.getText().toString();
         String country = countryEt.getText().toString();
+        if(fullName.isEmpty() || email.isEmpty() || phone.isEmpty() || state.isEmpty() || street.isEmpty() || country.isEmpty()){
+            return null;
+        }
         return new User(email, fullName, phone, street, state, country);
+    }
 
+    public void setEnabledStatus(Boolean status){
+        registerBtn.setEnabled(status);
+        clickForLoginTv.setEnabled(status);
+        emailEt.setEnabled(status);
+        phoneEt.setEnabled(status);
+        passwordEt.setEnabled(status);
+        streetAddressEt.setEnabled(status);
+        stateEt.setEnabled(status);
+        countryEt.setEnabled(status);
+        confirmPasswordEt.setEnabled(status);
+        passwordEt.setEnabled(status);
+    }
+
+    private String checkPassword(){
+        if(!(passwordEt.getText().toString().equals(confirmPasswordEt.getText().toString()))){
+            return "Passwords not matches";
+        }
+        else if (passwordEt.getText().toString().length() < 6) {
+            return "Password length 6 characters minimum";
+        }
+        return null;
     }
 
     private void saveUser() {
-        registerBtn.setEnabled(false);
+        setEnabledStatus(false);
         progressIndicator.show();
-
-        User user = createNewUser();
-
-        BitmapDrawable drawable = (BitmapDrawable) avatarImageView.getDrawable();
-        Bitmap image = drawable.getBitmap();
-        Model.instance.uploadImage(image, user.getPhone(), new Model.uploadImageListener() {
-            @Override
-            public void onComplete(String url) {
-                if(url != null){
-                    user.setImageUrl(url);
-                    Log.d("tag","frag");
-                    Model.instance.register(user, passwordEt.getText().toString(),new Model.AddUserListener(){
-                        @Override
-                        public void onComplete() {
-                            Log.d("tag","frag");
-                            Navigation.findNavController(registerBtn).navigate(R.id.action_global_nav_home);
+        try {
+            User user = createNewUser();
+            BitmapDrawable drawable = (BitmapDrawable) avatarImageView.getDrawable();
+            Bitmap image = drawable.getBitmap();
+            if(user == null){
+                Toast.makeText(getContext(), "Please fill the fields first", Toast.LENGTH_SHORT).show();
+                setEnabledStatus(true);
+                progressIndicator.hide();
+            }else if(checkPassword() != null) {
+                Toast.makeText(getContext(), checkPassword(), Toast.LENGTH_SHORT).show();
+                setEnabledStatus(true);
+                progressIndicator.hide();
+            } else {
+                Model.instance.uploadImage(image, user.getPhone(), new Model.uploadImageListener() {
+                    @Override
+                    public void onComplete(String url) {
+                        if(url != null){
+                            user.setImageUrl(url);
+                            Model.instance.register(user, passwordEt.getText().toString(),new Model.AddUserListener(){
+                                @Override
+                                public void onComplete() {
+                                    Navigation.findNavController(registerBtn).navigate(R.id.action_global_nav_home);
+                                }
+                            });
+                        } else{
+                            Toast.makeText(getContext(), "Please upload an image", Toast.LENGTH_SHORT).show();
+                            setEnabledStatus(true);
+                            progressIndicator.hide();
                         }
-                    });
-                }
+                    }
+                });
             }
-        });
+        } catch (Exception e){
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -144,37 +169,11 @@ public class RegisterFragment extends CameraUtilFragment {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             avatarImageView.setImageBitmap(imageBitmap);
-        }else if (requestCode == REQUEST_OPEN_GALLERY && resultCode == RESULT_OK) {
+        } else if (requestCode == REQUEST_OPEN_GALLERY && resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
             if (selectedImageUri != null) {
                 avatarImageView.setImageURI(selectedImageUri);
             }
         }
     }
-    /*
-    super.onActivityResult(requestCode, resultCode, data);
-    CropImage.ActivityResult result = CropImage.getActivityResult(data);
-        if(resultCode == RESULT_OK){
-        imageToSave = result.getUri();
-        path = FileUtils.getPath(RegisterActivity.this, imageToSave);
-        compressImage(path);
-    }
-    void compressImage(String path){
-        Luban.compress(RegisterActivity.this,new File(path))
-                .setMaxSize(50)
-                .launch(new OnCompressListener() {
-                    @Override
-                    public void onStart() {}
-                    @Override
-                    public void onSuccess(File file) {
-                        SimpleDateFormat format = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss", Locale.CANADA);
-                        Date now = new Date();
-                        fileName = format.format(now);
-                        Picasso.with(RegisterActivity.this).load(file).into(imgDesigner);
-                    }
-                    @Override
-                    public void onError(Throwable e) {}
-                });
-    }
-     */
 }

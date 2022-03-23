@@ -113,8 +113,6 @@ public class Model {
 
     public interface uploadImageListener extends Listener<String> {}
 
-    public interface LoginListener extends AddUserListener {}
-
     public interface LogoutListener {
         void onComplete();
     }
@@ -132,6 +130,7 @@ public class Model {
         });
     }
 
+    public interface LoginListener extends AddUserListener {}
     public void login(String email, String password, final LoginListener listener) {
         authFirebase.login(email, password, listener);
     }
@@ -157,11 +156,6 @@ public class Model {
 
     public void getUserById(String ownerId, UserByIdListener listener) {
         User user = AppLocalDb.db.userDao().getById(ownerId);
-        if(user == null) {
-            getAllUsers();
-            user = AppLocalDb.db.userDao().getById(ownerId);
-        }
-        listener.onComplete(user);
     }
   /*  public final static Model instance = new Model();
 
@@ -245,12 +239,6 @@ public class Model {
     }
 
     public void addDress(Dress dress, AddDressListener listener) {
-//        User user = AppLocalDb.db.userDao().getById(dress.getId());
-//        if(user != null) {
-//            dress.setUserName(user.getFullName());
-//        } else{
-//            dress.setUserName("No designer name");
-//        }
         modelFirebase.addDress(dress, () -> {
             listener.onComplete();
             refreshDressList(false);

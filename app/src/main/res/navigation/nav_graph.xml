@@ -81,5 +81,5 @@
             app:argType="string"
             app:nullable="true" />
     </fragment>
-    <action android:id="@+id/action_global_myProfileFragment" app:destination="@id/myProfileFragment" />
+    <action android:id="@+id/action_global_myProfileFragment" app:destination="@id/myProfileFragment" /><action android:id="@+id/action_global_dressDescriptionFragment" app:destination="@id/dressDescriptionFragment"/>
 </navigation>
