@@ -100,19 +100,22 @@ public class RegisterFragment extends CameraUtilFragment {
             startActivityForResult(takePictureIntent,REQUEST_IMAGE_CAPTURE);
         }
     }
+    private User createNewUser(){
+        String fullName = fullNameEt.getText().toString();
+        String email = emailEt.getText().toString();
+        String phone = phoneEt.getText().toString();
+        String street = streetAddressEt.getText().toString();
+        String state = stateEt.getText().toString();
+        String country = countryEt.getText().toString();
+        return new User(email, fullName, phone, street, state, country);
+
+    }
 
     private void saveUser() {
         registerBtn.setEnabled(false);
         progressIndicator.show();
 
-        User user = new User();
-        //user.setId(idEt.getText().toString());
-        user.setFullName(fullNameEt.getText().toString());
-        user.setEmail(emailEt.getText().toString());
-        user.setPhone(phoneEt.getText().toString());
-        user.setStreetAddress(streetAddressEt.getText().toString());
-        user.setState(stateEt.getText().toString());
-        user.setCountry(countryEt.getText().toString());
+        User user = createNewUser();
 
         BitmapDrawable drawable = (BitmapDrawable) avatarImageView.getDrawable();
         Bitmap image = drawable.getBitmap();

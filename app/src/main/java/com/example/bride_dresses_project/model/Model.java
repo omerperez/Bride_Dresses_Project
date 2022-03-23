@@ -70,14 +70,17 @@ public class Model {
 
     /* Need to do a function of getUserById */
 
-    LiveData<List<User>> usersList;
+    MutableLiveData<List<User>> usersList=new MutableLiveData<List<User>>();
 
     public LiveData<List<User>> getAllUsers() {
 
-        if (usersList == null) {
-            usersList = modelSql.getAllUsers();
+        if (usersList.getValue() == null) {
+            Log.d("tag1  ",  "null here" );
+            //usersList.postValue(AppLocalDb.db.userDao().getAll()) ;
             refreshUsersList();
+            Log.d("tag1  ",  "model here");
         }
+        //Log.d("tag1  ",  "model here" +usersList.getValue().size());
         return usersList;
     }
 
@@ -86,36 +89,36 @@ public class Model {
     public void refreshUsersList() {
 
         userListLoadingState.setValue(UserListLoadingState.loading);
+        Log.d("tag1  ",  "ref here");
+        Long lastUpdateDate = User.getLocalLastUpdated();
 
-        modelFirebase.getAllUsers(User.getLocalLastUpdated(), new GetAllUsersListener() {
-            @Override
-            public void onComplete(List<User> list) {
-                long lastUpdate = 0;
-                for (User user : list) {
-
-                    if (user.getUpdateDate() > User.getLocalLastUpdated()) {
-                        lastUpdate = user.getUpdateDate();
-                        Log.d("Phone", user.getPhone());
-                        modelSql.addUser(user, null);
-//                        Log.d("tag", modelSql.getAllUsers().getValue().get(0).toString());
-                    }
-                }
-                if (lastUpdate != 0) {
-                    User.setLocalLastUpdated(lastUpdate);
-                    usersList = AppLocalDb.db.userDao().getAll();
-                }
-                userListLoadingState.postValue(UserListLoadingState.loaded);
-            }
+        executor.execute(() -> {
+            List<User> userList = AppLocalDb.db.userDao().getAll();
+            usersList.postValue(userList);
         });
-    }
+        modelFirebase.getAllUsers(lastUpdateDate, list -> executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Long lastUpdate = new Long(0);
+                        for (User user : list) {
+                            Log.d("tag", "return"+String.valueOf(list.size()));
 
-//    public interface DeleteListener{
-//        void onComplete();
-//    }
-//
-//    public void deleteUser(User user, DeleteListener listener){
-//        modelFirebase.deleteUser(user,listener);
-//    }
+                            if (lastUpdate < user.getUpdateDate()) {
+                                lastUpdate = user.getUpdateDate();
+                                AppLocalDb.db.userDao().insertAll(user);
+                                Log.d("tag", "update");
+                            }
+                        }
+                        User.setLocalLastUpdated(lastUpdate);
+                        List<User> userList = AppLocalDb.db.userDao().getAll();
+                        Log.d("tag", "String.valueOf(userList.size())");
+                        usersList.postValue(userList);
+                        Log.d("tag", String.valueOf(userList.size()));
+
+                        userListLoadingState.postValue(UserListLoadingState.loaded);
+                    }
+        }));
+    }
 
     public interface uploadImageListener extends Listener<String> {
     }
