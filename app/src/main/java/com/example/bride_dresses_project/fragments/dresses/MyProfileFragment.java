@@ -42,7 +42,7 @@ public class MyProfileFragment extends Fragment implements DressListAdapter.OnIt
                              Bundle savedInstanceState) {
         myProfileView = inflater.inflate(R.layout.fragment_dresses_list, container, false);
         swipeRefresh = myProfileView.findViewById(R.id.profile_swiperefresh);
-        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshDressList());
+        swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshDressList(false));
         RecyclerView recyclerView = myProfileView.findViewById(R.id.profile_dressRv);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -58,7 +58,7 @@ public class MyProfileFragment extends Fragment implements DressListAdapter.OnIt
     @Override
     public void onResume() {
         super.onResume();
-        viewModel.refreshDressList();
+        viewModel.refreshDressList(false);
     }
 
     @Override

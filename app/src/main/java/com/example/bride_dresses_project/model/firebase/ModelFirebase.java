@@ -114,10 +114,6 @@ public class ModelFirebase {
         }));
     }
 
-
-
-
-
     /*********************************** Dresses *************************************/
 
     public interface GetAllDressesListener {
@@ -127,7 +123,6 @@ public class ModelFirebase {
     public void getAllDresses(Long lastUpdateDate, GetAllDressesListener listener) {
         db.collection(Dress.DRESS_COLLECTION_NAME)
                 .whereGreaterThanOrEqualTo("updateDate", new Timestamp(lastUpdateDate, 0))
-                .whereEqualTo("deleted", false)
                 .get()
                 .addOnCompleteListener(task -> {
                     List<Dress> list = new LinkedList<>();

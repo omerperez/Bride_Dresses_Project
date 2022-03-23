@@ -17,6 +17,7 @@ import com.example.bride_dresses_project.model.entities.User;
 import com.example.bride_dresses_project.model.firebase.AuthFirebase;
 import com.example.bride_dresses_project.model.firebase.ModelFirebase;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -179,11 +180,18 @@ public class Model {
         return dressesList;
     }
 
-    public void refreshDressList() {
+    String userId = authFirebase.getCurrentUserid();
+
+    public void refreshDressList(Boolean isOwnerDressesList) {
         dressListLoadingState.postValue(DressListLoadingState.loading);
         Long lastUpdateDate = ContextApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).getLong("DressesLastUpdateDate", 0);
         executor.execute(() -> {
-            List<Dress> stList = AppLocalDb.db.dressDao().getAll();
+            List<Dress> stList = new ArrayList<Dress>();
+            if(isOwnerDressesList){
+                stList = AppLocalDb.db.dressDao().getByUserId(userId);
+            } else {
+                stList = AppLocalDb.db.dressDao().getAll();
+            }
             dressesList.postValue(stList);
         });
 
@@ -192,12 +200,9 @@ public class Model {
             public void run() {
                 Long lud = new Long(0);
                 Integer counter = 0;
-                Log.d("TAG", "fb returned " + list.size());
                 for (Dress dress : list) {
                     if (dress.isDeleted()) {
-                        Log.d("TAG", "fb returned " + dress.isDeleted());
                         lud = dress.getUpdateDate();
-                        counter++;
                         AppLocalDb.db.dressDao().delete(dress);
                     } else {
                         if (lud < dress.getUpdateDate() && !dress.isDeleted()) {
@@ -206,15 +211,18 @@ public class Model {
                         }
                     }
                 }
-                Log.d("TAG", "fb returned deleted " + counter);
-
                 ContextApplication.getContext()
                         .getSharedPreferences("TAG", Context.MODE_PRIVATE)
                         .edit()
                         .putLong("DressesLastUpdateDate", lud)
                         .commit();
 
-                List<Dress> stList = AppLocalDb.db.dressDao().getAll();
+                List<Dress> stList = new ArrayList<Dress>();
+                if(isOwnerDressesList){
+                    stList = AppLocalDb.db.dressDao().getByUserId(userId);
+                } else {
+                    stList = AppLocalDb.db.dressDao().getAll();
+                }
                 dressesList.postValue(stList);
                 dressListLoadingState.postValue(DressListLoadingState.loaded);
             }
@@ -228,14 +236,14 @@ public class Model {
     public void addDress(Dress dress, AddDressListener listener) {
         modelFirebase.addDress(dress, () -> {
             listener.onComplete();
-            refreshDressList();
+            refreshDressList(false);
         });
     }
 
     public void editDress(Dress dress, AddDressListener listener) {
         modelFirebase.editDress(dress, () -> {
             listener.onComplete();
-            refreshDressList();
+            refreshDressList(false);
         });
     }
 
@@ -243,14 +251,12 @@ public class Model {
         void onComplete(Dress dress);
     }
 
-
     public interface SaveImageListener {
         void onComplete(String url);
     }
 
     public void saveImage(Bitmap imageBitmap, String imageName, SaveImageListener listener) {
         modelFirebase.saveImage(imageBitmap, imageName, listener);
-
     }
 
     public interface UpdateDressListener {

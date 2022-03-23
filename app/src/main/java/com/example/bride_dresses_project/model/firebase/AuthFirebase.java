@@ -51,7 +51,10 @@ public class AuthFirebase {
     }
 
     public String getCurrentUserid() {
-        return mAuth.getCurrentUser().getUid();
+        if(isSignedIn()){
+            return mAuth.getCurrentUser().getUid();
+        }
+        return null;
     }
 
     public void logout(Model.LogoutListener lis) {
