@@ -1,15 +1,11 @@
 package com.example.bride_dresses_project.model.entities;
-
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

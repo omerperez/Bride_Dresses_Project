@@ -49,34 +49,24 @@ public class MapsFragment extends Fragment {
     }
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
-
         @Override
         public void onMapReady(GoogleMap googleMap) {
             Log.d("tag1", "map ready");
-
-            // LatLng sydney = new LatLng(-34, 151);
-            //googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            //googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
             viewModel.getUsersList().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
                 @Override
                 public void onChanged(List<User> users) {
                     LatLng address = null;
                     Log.d("tag1", String.valueOf(users.size()));
-
                     for (int i = 0; i < users.size(); i++) {
                         try {
                             String addr = users.get(i).getStreetAddress() + "," +
                                     users.get(i).getState() + "," +
                                     users.get(i).getCountry() + ",";
                             Log.d("tag1", addr);
-
                             address = getLatLongFromAddress(getActivity(), addr);
                             Log.d("tag1", "bdika"+address.toString());
-
                             googleMap.addMarker(new MarkerOptions().position(address)
                                     .title(users.get(i).getStreetAddress()));
-
                             googleMap.moveCamera(CameraUpdateFactory.newLatLng(address));
 
                         } catch (Exception e) {
@@ -85,39 +75,6 @@ public class MapsFragment extends Fragment {
                     }
                 }
             });
-
-            /*
-            Model.getAllUsers(new Model.GetAllUsersListener() {
-                @Override
-                public void onComplete(List<User> result) {
-                    LatLng address = null;
-                    Log.d("tag1", "here2");
-
-                    for (int i = 0; i < result.size(); i++) {
-                        try {
-                            String addr = result.get(i).getStreetAddress() + "," +
-                                    result.get(i).getState() + "," +
-                                    result.get(i).getCountry() + ",";
-                            Log.d("tag1", addr);
-
-                            address = getLatLongFromAddress(getActivity(), addr);
-                            Log.d("tag1", address.toString());
-
-                            googleMap.addMarker(new MarkerOptions().position(address)
-                                    .title(result.get(i).getStreetAddress()));
-
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLng(address));
-
-
-
-                        } catch (Exception e) {
-
-                        }
-                    }
-                }
-            });
-
-             */
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 Log.d("tag1", "permissions");
                 return;
@@ -147,74 +104,6 @@ public class MapsFragment extends Fragment {
             mapFragment.getMapAsync(callback);
         }
     }
-
-
-
-/*
-    void getDataFromFirebase(GoogleMap googleMap){
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://bridedressesproject-default-rtdb.firebaseio.com/");
-        DatabaseReference databaseReference = firebaseDatabase.getReference("designers");
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Map<String, String> map = (Map<String, String>) snapshot.getValue();
-                user = new User(map.get("email"),
-                        map.get("fullName"),
-                        map.get("phone"),
-                        map.get("streetAddress"),
-                        map.get("state"),
-                        map.get("country"));
-
-                usersList.add(user);
-                Log.d("tag1", String.valueOf(usersList.size()));
-                LatLng address = null;
-
-                Log.d("tag1", String.valueOf(usersList.size()) + "deden");
-                for (int i = 0; i < usersList.size(); i++) {
-                    try {
-                        String addr = usersList.get(i).getStreetAddress() + "," +
-                                usersList.get(i).getState() + "," +
-                                usersList.get(i).getCountry() + ",";
-                        Log.d("tag1", addr);
-
-                        address = getLatLongFromAddress(getActivity(), addr);
-                        Log.d("tag1", address.toString());
-
-                        googleMap.addMarker(new MarkerOptions().position(address)
-                                .title(usersList.get(i).getStreetAddress()));
-
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(address));
-
-                    } catch (Exception e) {
-                    }
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-
- */
-
 
     LatLng getLatLongFromAddress(Context context,String strAddress){
         Geocoder geocoder = new Geocoder(context);

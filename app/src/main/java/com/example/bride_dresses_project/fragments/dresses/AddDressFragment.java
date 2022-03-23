@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -31,8 +30,6 @@ import com.example.bride_dresses_project.model.entities.Dress;
 import com.example.bride_dresses_project.model.Model;
 import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
-
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class AddDressFragment extends Fragment {

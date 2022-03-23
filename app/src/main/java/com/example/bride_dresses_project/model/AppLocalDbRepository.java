@@ -1,9 +1,6 @@
 package com.example.bride_dresses_project.model;
-
-
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
-
 import com.example.bride_dresses_project.model.dao.DressDao;
 import com.example.bride_dresses_project.model.dao.UserDao;
 import com.example.bride_dresses_project.model.entities.Dress;

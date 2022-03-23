@@ -1,5 +1,4 @@
 package com.example.bride_dresses_project.ui.gallery;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

@@ -1,10 +1,7 @@
 package com.example.bride_dresses_project;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.example.bride_dresses_project.activities.BaseActivity;
 import com.example.bride_dresses_project.activities.UsersActivity;
 import com.example.bride_dresses_project.model.Model;

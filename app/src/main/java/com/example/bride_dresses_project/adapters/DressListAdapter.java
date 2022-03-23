@@ -1,17 +1,14 @@
 package com.example.bride_dresses_project.adapters;
-
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.bride_dresses_project.R;
 import com.example.bride_dresses_project.model.entities.Dress;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

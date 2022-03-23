@@ -15,7 +15,6 @@ public class DressesListRvViewModel extends ViewModel {
     public LiveData<List<Dress>> getAllDresses() {
         return Model.instance.getAllDresses();
     }
-
     public void refreshDressList(Boolean isOnlyOwnerDresses) {
         Model.instance.refreshDressList(isOnlyOwnerDresses);
     }

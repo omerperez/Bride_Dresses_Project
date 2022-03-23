@@ -1,11 +1,7 @@
 package com.example.bride_dresses_project.model.entities;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;

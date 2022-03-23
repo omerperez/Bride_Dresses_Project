@@ -1,22 +1,17 @@
 package com.example.bride_dresses_project.model;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-
 import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
 import com.example.bride_dresses_project.ContextApplication;
-import com.example.bride_dresses_project.model.SQL.ModelSql;
 import com.example.bride_dresses_project.model.entities.Dress;
 import com.example.bride_dresses_project.model.entities.User;
 import com.example.bride_dresses_project.model.firebase.AuthFirebase;
 import com.example.bride_dresses_project.model.firebase.ModelFirebase;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -28,7 +23,6 @@ public class Model {
 
     private final AuthFirebase authFirebase = new AuthFirebase();
     private static ModelFirebase modelFirebase = new ModelFirebase();
-    private static ModelSql modelSql = new ModelSql();
 
     public Executor executor = Executors.newFixedThreadPool(1);
     public Handler mainThread = HandlerCompat.createAsync(Looper.getMainLooper());
@@ -67,8 +61,6 @@ public class Model {
     }
 
     public interface GetUserByIdListener extends Listener<User> {}
-
-    /* Need to do a function of getUserById */
     MutableLiveData<List<User>> usersList = new MutableLiveData<List<User>>();
 
     public LiveData<List<User>> getAllUsers() {
@@ -79,7 +71,6 @@ public class Model {
             refreshUsersList();
             Log.d("tag1  ",  "model here");
         }
-        //Log.d("tag1  ",  "model here" +usersList.getValue().size());
         return usersList;
     }
 
@@ -156,18 +147,6 @@ public class Model {
 
     public void getUserById(String ownerId, UserByIdListener listener) {
         User user = AppLocalDb.db.userDao().getById(ownerId);
-    }
-  /*  public final static Model instance = new Model();
-
-    ModelFirebase modelFirebase = new ModelFirebase();
-    ModelSql modelSql = new ModelSql();
-
-    public void getAllDresses(final GetAllDressListener listener){
-        modelFirebase.getAllDresses(listener);
-    }
-
-    public void addDress(final Dress dress, final AddDressListener listener){
-        modelFirebase.addDress(dress,listener);
     }
 
 

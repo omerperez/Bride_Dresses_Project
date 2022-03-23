@@ -1,8 +1,6 @@
 package com.example.bride_dresses_project.model.firebase;
-
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-
 import com.example.bride_dresses_project.ContextApplication;
 import com.example.bride_dresses_project.model.Model;
 import com.google.android.gms.tasks.OnCompleteListener;

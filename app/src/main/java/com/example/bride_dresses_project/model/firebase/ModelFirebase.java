@@ -2,14 +2,12 @@ package com.example.bride_dresses_project.model.firebase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import com.example.bride_dresses_project.model.AppLocalDb;
 import com.example.bride_dresses_project.model.Model;
 import com.example.bride_dresses_project.model.entities.Dress;
 import com.example.bride_dresses_project.model.entities.User;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -82,16 +80,6 @@ public class ModelFirebase {
                 });
     }
 
-//    public void deleteUser(User user, Model.DeleteListener listener) {
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        db.collection(USER_COLLECTION_NAME).document(user.getId()).delete()
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        listener.onComplete();
-//                    }
-//                });
-//    }
 
     public void addUser(User user, Model.AddUserListener listener) {
         Map<String, Object> json = user.toJson();
@@ -191,19 +179,6 @@ Log.d("tag", "dress"+String.valueOf(list.size())) ;
                 .update(jsonReview)
                 .addOnSuccessListener(unused -> lis.onComplete())
                 .addOnFailureListener(e -> lis.onComplete());
-    }
-
-    public void uploadDressImage(Bitmap imageBmp, String name, Model.uploadImageListener listener) {
-        final StorageReference imagesRef = storage.getReference().child(USER_IMAGE_FOLDER).child(name);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        imageBmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-
-        byte[] data = baos.toByteArray();
-
-        UploadTask uploadTask = imagesRef.putBytes(data);
-        uploadTask.addOnFailureListener(exception -> listener.onComplete(null)).addOnSuccessListener(taskSnapshot -> imagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            listener.onComplete(uri.toString());
-        }));
     }
 
     public void editDress(Dress dress, Model.AddDressListener listener) {
