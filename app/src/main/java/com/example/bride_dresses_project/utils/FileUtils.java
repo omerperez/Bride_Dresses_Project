@@ -1,5 +1,4 @@
 package com.example.bride_dresses_project.utils;
-
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
@@ -12,7 +11,6 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Log;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -22,18 +20,14 @@ public class FileUtils {
 
     @SuppressLint("NewApi")
     public static String getPath(final Context context, final Uri uri) {
-        // check here to KITKAT or new version
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
         String selection = null;
         String[] selectionArgs = null;
-        // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            // ExternalStorageProvider
             if (isExternalStorageDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
-
                 String fullPath = getPathFromExtSD(split);
                 if (fullPath != "") {
                     return fullPath;
@@ -42,7 +36,6 @@ public class FileUtils {
                 }
             }
 
-            // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     final String id;
@@ -102,7 +95,6 @@ public class FileUtils {
 
 
             }
-            // MediaProvider
             else if (isMediaDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -129,7 +121,6 @@ public class FileUtils {
         }
 
 
-        // MediaStore (and general)
         else if ("content".equalsIgnoreCase(uri.getScheme())) {
 
             if (isGooglePhotosUri(uri)) {
@@ -141,18 +132,13 @@ public class FileUtils {
             }
             if( Build.VERSION.SDK_INT == Build.VERSION_CODES.N)
             {
-                // return getFilePathFromURI(context,uri);
                 return getMediaFilePathForN(uri, context);
-                // return getRealPathFromURI(context,uri);
             }else
             {
 
                 return getDataColumn(context, uri, null, null);
             }
-
-
         }
-        // File
         else if ("file".equalsIgnoreCase(uri.getScheme())) {
             return uri.getPath();
         }
@@ -160,11 +146,7 @@ public class FileUtils {
         return null;
     }
 
-    /**
-     * Check if a file exists on device
-     *
-     * @param filePath The absolute file path
-     */
+
     private static boolean fileExists(String filePath) {
         File file = new File(filePath);
 
@@ -212,8 +194,6 @@ public class FileUtils {
             int read = 0;
             int maxBufferSize = 1 * 1024 * 1024;
             int bytesAvailable = inputStream.available();
-
-            //int bufferSize = 1024;
             int bufferSize = Math.min(bytesAvailable, maxBufferSize);
 
             final byte[] buffers = new byte[bufferSize];
@@ -247,8 +227,6 @@ public class FileUtils {
             int read = 0;
             int maxBufferSize = 1 * 1024 * 1024;
             int bytesAvailable = inputStream.available();
-
-            //int bufferSize = 1024;
             int bufferSize = Math.min(bytesAvailable, maxBufferSize);
 
             final byte[] buffers = new byte[bufferSize];
