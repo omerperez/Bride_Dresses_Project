@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/profile_dressRv"
+            android:id="@+id/dressRv"
             android:layout_width="0dp"
             tools:listitem="@layout/dress_item"
             android:layout_height="0dp"

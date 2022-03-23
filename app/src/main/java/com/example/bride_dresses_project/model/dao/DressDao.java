@@ -18,12 +18,11 @@ public interface DressDao {
     Dress getById(String dressId);
 
     @Transaction
-    @Query("SELECT * FROM Dress WHERE id=:ownerId")
+    @Query("SELECT * FROM Dress WHERE ownerId=:ownerId")
     List<Dress> getByUserId(String ownerId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Dress... dresses);
-
 
     @Query("UPDATE Dress SET type=:type , price=:price , imageUrl=:imageUrl WHERE id = :id")
     void update(String type, String price, String imageUrl, String id);

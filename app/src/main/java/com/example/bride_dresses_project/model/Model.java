@@ -188,6 +188,7 @@ public class Model {
         executor.execute(() -> {
             List<Dress> stList = new ArrayList<Dress>();
             if(isOwnerDressesList){
+                Log.d("tag1  ",  userId);
                 stList = AppLocalDb.db.dressDao().getByUserId(userId);
             } else {
                 stList = AppLocalDb.db.dressDao().getAll();

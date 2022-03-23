@@ -50,6 +50,7 @@ public class Dress implements Parcelable {
         this.price = price;
         this.id = id;
         this.deleted = deleted;
+        this.ownerId = ownerId;
     }
 
     protected Dress(Parcel in) {
@@ -65,7 +66,6 @@ public class Dress implements Parcelable {
         ownerId = in.readString();
         deleted = in.readByte() != 0;
     }
-
 
     public String getId() {
         return id;
@@ -132,7 +132,6 @@ public class Dress implements Parcelable {
         json.put("updateDate", FieldValue.serverTimestamp());
         json.put("imageUrl", imageUrl);
         json.put("ownerId", ownerId);
-
         return json;
     }
 
@@ -140,6 +139,7 @@ public class Dress implements Parcelable {
         Map<String, Object> json = new HashMap<String, Object>();
         json.put("type", type);
         json.put("price", price);
+        json.put("ownerId", price);
         json.put("updateDate", FieldValue.serverTimestamp());
         json.put("imageUrl", imageUrl);
         return json;
