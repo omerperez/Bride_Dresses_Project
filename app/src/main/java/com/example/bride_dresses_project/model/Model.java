@@ -87,51 +87,40 @@ public class Model {
     public interface GetAllUsersListener extends Listener<List<User>> {}
 
     public void refreshUsersList() {
-
         userListLoadingState.setValue(UserListLoadingState.loading);
-        Log.d("tag1  ",  "ref here");
         Long lastUpdateDate = User.getLocalLastUpdated();
-
         executor.execute(() -> {
             List<User> userList = AppLocalDb.db.userDao().getAll();
             usersList.postValue(userList);
         });
         modelFirebase.getAllUsers(lastUpdateDate, list -> executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        Long lastUpdate = new Long(0);
-                        for (User user : list) {
-                            Log.d("tag", "return"+String.valueOf(list.size()));
-
-                            if (lastUpdate < user.getUpdateDate()) {
-                                lastUpdate = user.getUpdateDate();
-                                AppLocalDb.db.userDao().insertAll(user);
-                                Log.d("tag", "update");
-                            }
-                        }
-                        User.setLocalLastUpdated(lastUpdate);
-                        List<User> userList = AppLocalDb.db.userDao().getAll();
-                        Log.d("tag", "String.valueOf(userList.size())");
-                        usersList.postValue(userList);
-                        Log.d("tag", String.valueOf(userList.size()));
-
-                        userListLoadingState.postValue(UserListLoadingState.loaded);
+            @Override
+            public void run() {
+                Long lastUpdate = new Long(0);
+                for (User user : list) {
+                    Log.d("tag", "return"+String.valueOf(list.size()));
+                    if (lastUpdate < user.getUpdateDate()) {
+                        lastUpdate = user.getUpdateDate();
+                        AppLocalDb.db.userDao().insertAll(user);
                     }
+                }
+                User.setLocalLastUpdated(lastUpdate);
+                List<User> userList = AppLocalDb.db.userDao().getAll();
+                usersList.postValue(userList);
+                userListLoadingState.postValue(UserListLoadingState.loaded);
+            }
         }));
     }
 
-    public interface uploadImageListener extends Listener<String> {
-    }
+    public interface uploadImageListener extends Listener<String> {}
 
-    public interface LoginListener extends AddUserListener {
-    }
+    public interface LoginListener extends AddUserListener {}
 
     public interface LogoutListener {
         void onComplete();
     }
 
-    public interface RegisterListener extends Listener<String> {
-    }
+    public interface RegisterListener extends Listener<String> {}
 
     public static void uploadImage(Bitmap imageBmp, String name, final uploadImageListener listener) {
         modelFirebase.uploadImage(imageBmp, name, listener);
