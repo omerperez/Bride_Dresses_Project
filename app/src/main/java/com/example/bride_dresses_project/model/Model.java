@@ -66,12 +66,10 @@ public class Model {
         modelFirebase.addUser(user, listener);
     }
 
-    public interface GetUserByIdListener extends Listener<User> {
-    }
+    public interface GetUserByIdListener extends Listener<User> {}
 
     /* Need to do a function of getUserById */
-
-    MutableLiveData<List<User>> usersList=new MutableLiveData<List<User>>();
+    MutableLiveData<List<User>> usersList = new MutableLiveData<List<User>>();
 
     public LiveData<List<User>> getAllUsers() {
 
@@ -153,6 +151,18 @@ public class Model {
         authFirebase.logout(listener);
     }
 
+    public interface UserByIdListener {
+        void onComplete(User user);
+    }
+
+    public void getUserById(String ownerId, UserByIdListener listener) {
+        User user = AppLocalDb.db.userDao().getById(ownerId);
+        if(user == null) {
+            getAllUsers();
+            user = AppLocalDb.db.userDao().getById(ownerId);
+        }
+        listener.onComplete(user);
+    }
   /*  public final static Model instance = new Model();
 
     ModelFirebase modelFirebase = new ModelFirebase();
@@ -235,6 +245,12 @@ public class Model {
     }
 
     public void addDress(Dress dress, AddDressListener listener) {
+        User user = AppLocalDb.db.userDao().getById(dress.getId());
+        if(user != null) {
+            dress.setUserName(user.getFullName());
+        } else{
+            dress.setUserName("No designer name");
+        }
         modelFirebase.addDress(dress, () -> {
             listener.onComplete();
             refreshDressList(false);
