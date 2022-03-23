@@ -41,8 +41,6 @@ public class DressesListFragment extends Fragment implements DressListAdapter.On
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dresses_list, container, false);
-        addDressButton = view.findViewById(R.id.add_new_dress_btn);
-        addDressButton.setOnClickListener((view1 -> Navigation.findNavController(view).navigate(R.id.action_dressesListFragment_to_createDressFragment)));
         swipeRefresh = view.findViewById(R.id.dresseslist_swiperefresh);
         swipeRefresh.setOnRefreshListener(() -> Model.instance.refreshDressList(false));
         RecyclerView recyclerView = view.findViewById(R.id.dressRv);

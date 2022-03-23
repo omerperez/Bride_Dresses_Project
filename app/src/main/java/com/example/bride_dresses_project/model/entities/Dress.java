@@ -10,7 +10,6 @@ import androidx.room.PrimaryKey;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -137,6 +136,15 @@ public class Dress implements Parcelable {
         return json;
     }
 
+    public Map<String, Object> toEditJson() {
+        Map<String, Object> json = new HashMap<String, Object>();
+        json.put("type", type);
+        json.put("price", price);
+        json.put("updateDate", FieldValue.serverTimestamp());
+        json.put("imageUrl", imageUrl);
+        return json;
+    }
+
     public static Dress create(Map<String, Object> json) {
         String id = (String) json.get("id");
         String type = (String) json.get("type");
@@ -146,7 +154,7 @@ public class Dress implements Parcelable {
         Long updateDate = 0L;
         try {
             Timestamp ts = (Timestamp) json.get("updateDate");
-             updateDate = ts.getSeconds();
+            updateDate = ts.getSeconds();
         }catch (Exception exception){
 
         }

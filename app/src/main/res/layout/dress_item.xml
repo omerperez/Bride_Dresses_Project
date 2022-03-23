@@ -31,19 +31,6 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/dress_description_page_edit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                app:backgroundTint="@color/begin"
-                app:icon="@drawable/ic_edit"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconSize="28dp"
-                app:iconTint="@color/black"
-                app:layout_constraintEnd_toStartOf="@+id/dress_description_page_delete_button" />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

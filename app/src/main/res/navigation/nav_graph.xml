@@ -9,6 +9,7 @@
         android:id="@+id/AddDressFragment"
         android:name="com.example.bride_dresses_project.fragments.dresses.AddDressFragment"
         android:label="fragment_create_dress"
+        app:popUpTo="@+id/dressesListFragment"
         tools:layout="@layout/fragment_add_dress">
         <action
             android:id="@+id/action_createDressFragment_to_googleMapsFragment"
@@ -18,7 +19,8 @@
             app:destination="@id/dressesListFragment" />
         <argument
             android:name="editDress"
-            app:argType="com.example.bride_dresses_project.model.entities.Dress" />
+            app:argType="com.example.bride_dresses_project.model.entities.Dress"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/googleMapsFragment"
@@ -29,6 +31,7 @@
         android:id="@+id/dressDescriptionFragment"
         android:name="com.example.bride_dresses_project.fragments.dresses.DressDescriptionFragment"
         android:label="fragment_dress_description"
+        app:popUpTo="@+id/dressesListFragment"
         tools:layout="@layout/fragment_dress_description">
         <action
             android:id="@+id/action_dressDescriptionFragment_to_dressesListFragment"
@@ -54,12 +57,16 @@
     </fragment>
     <action
         android:id="@+id/action_global_dressesListFragment"
+        app:popUpToInclusive="true"
+        app:popUpTo="@+id/dressesListFragment"
         app:destination="@id/dressesListFragment" />
     <action
         android:id="@+id/action_global_createDressFragment"
+        app:popUpTo="@+id/dressesListFragment"
         app:destination="@id/AddDressFragment" />
     <action
         android:id="@+id/action_global_googleMapsFragment"
+        app:popUpTo="@+id/dressesListFragment"
         app:destination="@id/googleMapsFragment" />
     <fragment
         android:id="@+id/myProfileFragment"
