@@ -1,6 +1,7 @@
 package com.example.bride_dresses_project.model.dao;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface UserDao {
 
     @Query("select * from User")
-    LiveData<List<User>> getAll();
+    List<User> getAll();
 
     @Query("SELECT * FROM User WHERE id = :userId")
     User getById(String userId);

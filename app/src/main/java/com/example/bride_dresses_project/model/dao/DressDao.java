@@ -14,12 +14,11 @@ public interface DressDao {
     @Query("select * from Dress")
     List<Dress> getAll();
 
-    @Query("SELECT * FROM Dress WHERE id=:dressId")
+    @Query("select * from Dress where id=:dressId")
     Dress getById(String dressId);
 
-    @Transaction
-    @Query("SELECT * FROM Dress WHERE id=:userId")
-    List<Dress> getByUserId(String userId);
+    @Query("SELECT * FROM Dress where ownerId = :ownerId")
+    List<Dress> getByUserId(String ownerId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Dress... dresses);

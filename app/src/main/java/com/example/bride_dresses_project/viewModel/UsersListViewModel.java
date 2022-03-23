@@ -14,9 +14,15 @@ import java.util.List;
 
 public class UsersListViewModel extends ViewModel {
 
-    private LiveData<List<User>> usersList = Model.instance.getAllUsers();
+    LiveData<List<User>> usersList;
+
+    public UsersListViewModel(){
+        usersList = Model.instance.getAllUsers();
+    }
+
+
     public LiveData<List<User>> getUsersList(){
-        Log.d("tag1 ViewModel ",  usersList.toString() );
+        Log.d("tag1 ViewModel ",  "usersList.getValue().toString()" );
         return usersList;
     }
 

@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.example.bride_dresses_project.ContextApplication;
@@ -46,6 +47,7 @@ public class User {
         this.country = country;
     }
 
+    @Ignore
     public User(String email,String fullName, String phone, String streetAddress, String state, String country) {
         this.email = email;
         this.fullName = fullName;
@@ -55,9 +57,10 @@ public class User {
         this.country = country;
     }
 
-    public User(String email, String phone, String fullName,
+    public User(String id,String email, String phone, String fullName,
                 String streetAddress, String state, String country,
                 String imageUrl, Long updateDate) {
+        this.id = id;
         this.email = email;
         this.phone = phone;
         this.fullName = fullName;
@@ -143,6 +146,7 @@ public class User {
 
     public Map<String, Object> toJson() {
         Map<String, Object> json = new HashMap<String, Object>();
+        json.put("id",id);
         json.put("email", email);
         json.put("phone", phone);
         json.put("fullName",fullName);
@@ -156,6 +160,7 @@ public class User {
     }
 
     public static User create(Map<String, Object> json) {
+        String id = (String) json.get("id");
         String email = (String) json.get("email");
         String phone = (String) json.get("phone");
         String fullName = (String) json.get("fullName");
@@ -166,13 +171,13 @@ public class User {
         Timestamp ts = (Timestamp)json.get("updateDate");
         Long updateDate = ts.getSeconds();
 
-        return new User(email, phone, fullName, streetAddress, state, country, imageUrl, updateDate);
+        return new User(id,email, phone, fullName, streetAddress, state, country, imageUrl, updateDate);
     }
 
     public static void setLocalLastUpdated(Long timestamp) {
         SharedPreferences.Editor ed = ContextApplication.getContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).edit();
         ed.putLong(User.LAST_UPDATED, timestamp);
-        ed.apply();
+        ed.commit();
     }
 
     public static Long getLocalLastUpdated() {

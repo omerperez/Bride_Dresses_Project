@@ -70,65 +70,57 @@ public class Model {
 
     /* Need to do a function of getUserById */
 
-    LiveData<List<User>> usersList;
+    MutableLiveData<List<User>> usersList=new MutableLiveData<List<User>>();
 
     public LiveData<List<User>> getAllUsers() {
 
-        if (usersList == null) {
-            usersList = modelSql.getAllUsers();
+        if (usersList.getValue() == null) {
+            Log.d("tag1  ",  "null here" );
+            //usersList.postValue(AppLocalDb.db.userDao().getAll()) ;
             refreshUsersList();
+            Log.d("tag1  ",  "model here");
         }
+        //Log.d("tag1  ",  "model here" +usersList.getValue().size());
         return usersList;
     }
 
     public interface GetAllUsersListener extends Listener<List<User>> {}
 
     public void refreshUsersList() {
-
         userListLoadingState.setValue(UserListLoadingState.loading);
-
-        modelFirebase.getAllUsers(User.getLocalLastUpdated(), new GetAllUsersListener() {
+        Long lastUpdateDate = User.getLocalLastUpdated();
+        executor.execute(() -> {
+            List<User> userList = AppLocalDb.db.userDao().getAll();
+            usersList.postValue(userList);
+        });
+        modelFirebase.getAllUsers(lastUpdateDate, list -> executor.execute(new Runnable() {
             @Override
-            public void onComplete(List<User> list) {
-                long lastUpdate = 0;
+            public void run() {
+                Long lastUpdate = new Long(0);
                 for (User user : list) {
-
-                    if (user.getUpdateDate() > User.getLocalLastUpdated()) {
+                    Log.d("tag", "return"+String.valueOf(list.size()));
+                    if (lastUpdate < user.getUpdateDate()) {
                         lastUpdate = user.getUpdateDate();
-                        Log.d("Phone", user.getPhone());
-                        modelSql.addUser(user, null);
-//                        Log.d("tag", modelSql.getAllUsers().getValue().get(0).toString());
+                        AppLocalDb.db.userDao().insertAll(user);
                     }
                 }
-                if (lastUpdate != 0) {
-                    User.setLocalLastUpdated(lastUpdate);
-                    usersList = AppLocalDb.db.userDao().getAll();
-                }
+                User.setLocalLastUpdated(lastUpdate);
+                List<User> userList = AppLocalDb.db.userDao().getAll();
+                usersList.postValue(userList);
                 userListLoadingState.postValue(UserListLoadingState.loaded);
             }
-        });
+        }));
     }
 
-//    public interface DeleteListener{
-//        void onComplete();
-//    }
-//
-//    public void deleteUser(User user, DeleteListener listener){
-//        modelFirebase.deleteUser(user,listener);
-//    }
+    public interface uploadImageListener extends Listener<String> {}
 
-    public interface uploadImageListener extends Listener<String> {
-    }
-
-    public interface LoginListener extends AddUserListener {
-    }
+    public interface LoginListener extends AddUserListener {}
 
     public interface LogoutListener {
         void onComplete();
     }
 
-    public interface RegisterListener extends Listener<String> {
-    }
+    public interface RegisterListener extends Listener<String> {}
 
     public static void uploadImage(Bitmap imageBmp, String name, final uploadImageListener listener) {
         modelFirebase.uploadImage(imageBmp, name, listener);
