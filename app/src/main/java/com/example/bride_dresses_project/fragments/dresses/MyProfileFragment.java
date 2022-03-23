@@ -21,7 +21,6 @@ import com.example.bride_dresses_project.R;
 import com.example.bride_dresses_project.adapters.DressListAdapter;
 import com.example.bride_dresses_project.model.Model;
 import com.example.bride_dresses_project.model.entities.Dress;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MyProfileFragment extends Fragment implements DressListAdapter.OnItemClickListener {
 
@@ -51,7 +50,6 @@ public class MyProfileFragment extends Fragment implements DressListAdapter.OnIt
         viewModel.getAllDresses().observe(getViewLifecycleOwner(), dresses -> mAdapter.differ.submitList(dresses));
         swipeRefresh.setRefreshing(Model.instance.getDressListLoadingState().getValue() == Model.DressListLoadingState.loading);
         Model.instance.getDressListLoadingState().observe(getViewLifecycleOwner(), dressListLoadingState -> swipeRefresh.setRefreshing(dressListLoadingState == Model.DressListLoadingState.loading));
-
         return myProfileView;
     }
 
@@ -63,7 +61,7 @@ public class MyProfileFragment extends Fragment implements DressListAdapter.OnIt
 
     @Override
     public void onItemClick(Dress dress) {
-        NavHostFragment.findNavController(this).navigate(DressesListFragmentDirections.actionDressesListFragmentToDressDescriptionFragment(dress));
+        NavHostFragment.findNavController(this).navigate(MyProfileFragmentDirections.actionMyProfileFragmentToDressDescriptionFragment(dress));
     }
 
 }
