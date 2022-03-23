@@ -21,11 +21,13 @@ public class BaseActivity extends AppCompatActivity {
                     Navigation.findNavController(this, R.id.base_navhost).navigate(NavGraphDirections.actionGlobalDressesListFragment());
                     break;
                 case R.id.menu_map:
+                    Navigation.findNavController(this,R.id.base_navhost).navigate(NavGraphDirections.actionGlobalGoogleMapsFragment());
                     break;
                 case R.id.menu_create:
                     Navigation.findNavController(this, R.id.base_navhost).navigate(NavGraphDirections.actionGlobalCreateDressFragment(null));
                     break;
-                case R.id.menu_myproduct:
+                case  R.id.menu_myproduct:
+                    Navigation.findNavController(this,R.id.base_navhost).navigate(NavGraphDirections.actionGlobalMyProfileFragment());
                     break;
                 case R.id.menu_log_out:
                     Intent intent = new Intent(this, UsersActivity.class);
