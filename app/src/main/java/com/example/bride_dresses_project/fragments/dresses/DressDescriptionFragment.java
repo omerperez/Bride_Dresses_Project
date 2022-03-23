@@ -65,9 +65,10 @@ public class DressDescriptionFragment extends Fragment {
             }).start();
         });
     }
-//    private void setEditButtonOnClickListener() {
-//        editButton.setOnClickListener(view -> {
-//            navController.navigate(DressDescriptionFragmentDirections.actionDressDescriptionFragmentToCreateDressFragment());
-//        });
-//    }
+    private void setEditButtonOnClickListener() {
+        Dress editDress = AddDressFragmentArgs.fromBundle(getArguments()).getEditDress();
+        editButton.setOnClickListener(view -> {
+            navController.navigate(DressDescriptionFragmentDirections.actionDressDescriptionFragmentToCreateDressFragment3(editDress));
+        });
+    }
 }
