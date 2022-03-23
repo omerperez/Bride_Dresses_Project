@@ -16,7 +16,7 @@ public class DressesListRvViewModel extends ViewModel {
         return Model.instance.getAllDresses();
     }
 
-    public void refreshDressList() {
-        Model.instance.refreshDressList();
+    public void refreshDressList(Boolean isOnlyOwnerDresses) {
+        Model.instance.refreshDressList(isOnlyOwnerDresses);
     }
 }

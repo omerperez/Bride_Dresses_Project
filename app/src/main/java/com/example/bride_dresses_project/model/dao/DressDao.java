@@ -21,8 +21,8 @@ public interface DressDao {
     Dress getById(String dressId);
 
     @Transaction
-    @Query("SELECT * FROM Dress WHERE id=:userId")
-    List<Dress> getByUserId(String userId);
+    @Query("SELECT * FROM Dress WHERE id=:ownerId")
+    List<Dress> getByUserId(String ownerId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Dress... dresses);

@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.rpc.context.AttributeContext;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -155,7 +156,6 @@ Log.d("tag", "dress"+String.valueOf(list.size())) ;
                 listener.onComplete(list);
                 });
     }
-
 
     public void addDress(Dress dress, Model.AddDressListener listener) {
         Map<String, Object> json = dress.toJson();
